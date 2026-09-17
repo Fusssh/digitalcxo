@@ -1,0 +1,238 @@
+{
+  "cxoMembers": [
+    {
+      "title": "Dr.",
+      "firstName": "Rajesh",
+      "lastName": "Menon",
+      "officialEmail": "rajesh.m@titanenterprises.in",
+      "mobile": "9811223344",
+      "organization": "Titan Enterprises",
+      "designation": "Chief Technology Officer",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Bengaluru",
+      "linkedin": "https://linkedin.com/in/rajesh-menon",
+      "contributeVia": "AI Literacy and Roundtables",
+      "strategicInterests": "Cloud Defense and AI Governance",
+      "industry": "Information Technology & ITES",
+      "preferredModeOfEngagement": "In-person Physical Conclaves & Roundtables",
+      "howDidYouHear": "LinkedIn Leadership Community",
+      "termsConsent": true,
+      "accuracyConsent": true,
+      "id": "cxo-1789627907418",
+      "submittedAt": "2026-09-17T06:51:47.420Z",
+      "status": "Pending Review"
+    },
+    {
+      "id": "cxo-001",
+      "submittedAt": "2026-09-15T06:19:24.970Z",
+      "status": "Approved",
+      "title": "Mr.",
+      "firstName": "Arun",
+      "lastName": "Verma",
+      "officialEmail": "arun.verma@apextech.in",
+      "mobile": "+91 98765 43210",
+      "organization": "Apex Global Technologies",
+      "designation": "Chief Information Officer (CIO)",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "linkedin": "https://linkedin.com/in/arunverma-cio",
+      "organizationWebsite": "https://apextech.in",
+      "boardExperience": "Yes, Active Board Advisor",
+      "leadershipExperience": "18",
+      "contributeVia": "Speaking at Roundtables, Mentorship Pods",
+      "strategicInterests": "Cloud Migration, Enterprise Cybersecurity, Generative AI",
+      "industry": "Information Technology & Services",
+      "preferredModeOfEngagement": "Physical Roundtables & Conclaves",
+      "howDidYouHear": "Invited by Existing CXO Member",
+      "otherCxoNetworks": "None",
+      "termsConsent": true,
+      "accuracyConsent": true
+    },
+    {
+      "id": "cxo-002",
+      "submittedAt": "2026-09-13T06:19:24.972Z",
+      "status": "Pending Review",
+      "title": "Dr.",
+      "firstName": "Sunita",
+      "lastName": "Rao",
+      "officialEmail": "s.rao@medivisionhealth.com",
+      "mobile": "+91 99887 76655",
+      "organization": "MediVision Health Systems",
+      "designation": "Chief Technology Officer (CTO)",
+      "country": "India",
+      "state": "Karnataka",
+      "city": "Bengaluru",
+      "linkedin": "https://linkedin.com/in/drsunitarao",
+      "organizationWebsite": "https://medivisionhealth.com",
+      "boardExperience": "Yes",
+      "leadershipExperience": "15",
+      "contributeVia": "AI Literacy Workshops, Healthcare Tech Forums",
+      "strategicInterests": "HealthTech AI, DPDP Compliance, Critical Data Security",
+      "industry": "Healthcare & Life Sciences",
+      "preferredModeOfEngagement": "Hybrid (In-person and Virtual)",
+      "howDidYouHear": "LinkedIn",
+      "termsConsent": true,
+      "accuracyConsent": true
+    }
+  ],
+  "partnerMembers": [
+    {
+      "id": "partner-001",
+      "submittedAt": "2026-09-14T06:19:24.972Z",
+      "status": "Pending Review",
+      "title": "Ms.",
+      "firstName": "Ritu",
+      "lastName": "Kapoor",
+      "email": "ritu.kapoor@cloudscale.io",
+      "mobile": "+91 91234 56789",
+      "organization": "CloudScale India Inc",
+      "designation": "VP Strategic Alliances",
+      "country": "India",
+      "state": "Delhi NCR",
+      "city": "Gurugram",
+      "presenceInIndia": "Yes",
+      "preferredEngagementTypes": [
+        "Annual Strategic Sponsorship",
+        "Executive Roundtable Series",
+        "Podcast Thought Leadership"
+      ],
+      "professionalConductConsent": true,
+      "privacyConsent": true
+    }
+  ],
+  "contacts": [
+    {
+      "id": "contact-001",
+      "submittedAt": "2026-09-16T06:19:24.972Z",
+      "title": "Mr.",
+      "name": "Sandeep Khurana",
+      "email": "sandeep.k@enterprisepath.org",
+      "phone": "+91 97112 33445",
+      "message": "We would like to explore hosting an executive roundtable for BFSI CISOs at the upcoming Mumbai summit.",
+      "status": "Unread"
+    }
+  ],
+  "podcasts": [
+    {
+      "id": "podcast-1",
+      "title": "AI, Cybersecurity & Digital Trust",
+      "subtitle": "AI Changes Everything",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "duration": "48 mins",
+      "date": "August 2026",
+      "guests": [
+        {
+          "name": "Rajiv Nandwani",
+          "role": "Global Cyber Security Director",
+          "organization": "BCG"
+        },
+        {
+          "name": "Anush Tewari",
+          "role": "Chief Cybersecurity Advisor, India & South Asia",
+          "organization": "Microsoft India"
+        }
+      ],
+      "overview": "A comprehensive executive exploration of how artificial intelligence is altering both the threat landscape and cyber defensive posture across global enterprises."
+    },
+    {
+      "id": "podcast-2",
+      "title": "AI, Cyber Law & Data Protection",
+      "subtitle": "Regulatory Frameworks & Boardroom Accountability",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "youtubeId": "dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800&auto=format&fit=crop",
+      "duration": "52 mins",
+      "date": "September 2026",
+      "guests": [
+        {
+          "name": "Rajiv Nandwani",
+          "role": "Global Cyber Security Director",
+          "organization": "BCG"
+        },
+        {
+          "name": "(Dr.) Karnnika A Seth",
+          "role": "Cyber Lawyer",
+          "organization": "Supreme Court of India"
+        }
+      ],
+      "overview": "Delving into India's Digital Personal Data Protection (DPDP) Act, legal liability for corporate directors during breaches, and navigating sovereign AI governance."
+    }
+  ],
+  "events": [
+    {
+      "id": "upcoming-1",
+      "title": "National CXO Strategy Summit 2026",
+      "date": "14–15 November 2026",
+      "venue": "Grand Hyatt, Mumbai",
+      "tagline": "Architecting Sovereign Tech Stacks & Generative AI for India Inc.",
+      "type": "upcoming",
+      "attendeesCount": "200+ Confirmed CXOs",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+      "description": "India's premier annual strategic gathering for enterprise decision-makers shaping the digital roadmap across BFSI, Manufacturing, and Healthcare."
+    },
+    {
+      "id": "upcoming-2",
+      "title": "Digital CXOS CISO Cyber Defense Conclave",
+      "date": "19 December 2026",
+      "venue": "ITC Gardenia, Bengaluru",
+      "tagline": "Zero Trust, Quantum Preparedness, and Enterprise Resilience.",
+      "type": "upcoming",
+      "attendeesCount": "140+ Security Chiefs",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop",
+      "description": "Deep-dive closed door interactive simulation pods examining automated adversarial AI attacks and board-level risk orchestration."
+    },
+    {
+      "id": "upcoming-3",
+      "title": "Digital CXOS AI & Sovereign Tech Conclave 2027",
+      "date": "23–24 January 2027",
+      "venue": "HICC Novotel, Hyderabad",
+      "tagline": "Frontier Foundation Models, Digital Public Infrastructure & Cloud Sovereignty.",
+      "type": "upcoming",
+      "attendeesCount": "180+ Enterprise CXOs",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop",
+      "description": "Examining practical production deployments of Generative AI, private enterprise LLMs, and India's sovereign compute ecosystem."
+    },
+    {
+      "id": "past-1",
+      "title": "Digital CXOS Founders' Impact Day",
+      "date": "18 April 2026",
+      "venue": "New Delhi, India",
+      "tagline": "Empowering Lives, Building Futures.",
+      "type": "past",
+      "videoType": "youtube",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop",
+      "attendeesCount": "120+ CXO Leaders",
+      "description": "An extraordinary gathering of visionary founders, CIOs, and CDOs dedicated to empowering the next generation of digital leadership and establishing grassroots social impact."
+    },
+    {
+      "id": "past-2",
+      "title": "Digital CXOS Horizon 2026",
+      "date": "30–31 January 2026 (Fri–Sat)",
+      "venue": "Resort Country Club, Manesar, Gurugram",
+      "tagline": "Leadership Conversations Beyond the Boardroom... Thoughtful Experiences for Spouses.",
+      "type": "past",
+      "videoType": "mp4",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop",
+      "attendeesCount": "85 CXOs & Families",
+      "description": "A signature residential technology leadership conclave bringing together enterprise CXOs and their spouses for high-impact strategic discussions paired with curated wellness experiences."
+    },
+    {
+      "id": "past-3",
+      "title": "Digital CXOS Cyber Resilience & Enterprise Governance Summit",
+      "date": "12 December 2025",
+      "venue": "ITC Maurya, New Delhi",
+      "tagline": "Securing Critical Infrastructure & Cross-Sector AI Defense.",
+      "type": "past",
+      "videoType": "youtube",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=800&auto=format&fit=crop",
+      "attendeesCount": "150+ CISOs & CTOs",
+      "description": "High-trust boardroom dialogues examining cyber sovereign defenses, systemic incident management, and DPDP compliance."
+    }
+  ]
+}

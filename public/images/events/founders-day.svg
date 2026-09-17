@@ -1,0 +1,20 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#070D1F"/>
+  <circle cx="400" cy="225" r="300" fill="url(#bgGlow)" opacity="0.4"/>
+  
+  <rect x="250" y="110" width="300" height="230" rx="16" fill="#0A1435" stroke="#E6CA65" stroke-width="1.5" stroke-opacity="0.4"/>
+  
+  <circle cx="400" cy="180" r="36" fill="#12234E" stroke="#E6CA65" stroke-width="1.5"/>
+  <text x="400" y="185" fill="#FFF7DF" font-size="14" font-family="serif" font-weight="bold" text-anchor="middle">CXOS</text>
+  
+  <text x="400" y="245" fill="#FFF2BD" font-size="18" font-family="serif" font-weight="bold" text-anchor="middle" letter-spacing="1">FOUNDERS' IMPACT DAY</text>
+  <text x="400" y="275" fill="#94A3B8" font-size="12" font-family="sans-serif" text-anchor="middle">Empowering Lives, Building Futures</text>
+  <text x="400" y="305" fill="#10B981" font-size="11" font-family="sans-serif" text-anchor="middle">18 April 2026 • New Delhi, India</text>
+
+  <defs>
+    <radialGradient id="bgGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 225) rotate(90) scale(225 400)">
+      <stop stop-color="#065F46"/>
+      <stop offset="1" stop-color="#070D1F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
