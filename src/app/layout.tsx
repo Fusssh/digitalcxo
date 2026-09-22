@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
-import { Open_Sans, Bebas_Neue, Cinzel } from "next/font/google";
+import { Archivo, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
-const openSans = Open_Sans({
+const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
-const cinzel = Cinzel({
+const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
@@ -65,8 +58,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${openSans.variable} ${bebasNeue.variable} ${cinzel.variable} scroll-smooth dark`}>
-      <body className="min-h-screen flex flex-col bg-[#060B18] text-slate-100 font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
+    <html lang="en" data-scroll-behavior="smooth" className={`${archivo.variable} ${sourceSerif.variable} scroll-smooth`}>
+      <body className="min-h-screen flex flex-col bg-[#181818] text-neutral-100 font-sans antialiased selection:bg-[#C9A227] selection:text-neutral-950">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

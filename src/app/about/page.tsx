@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { PageHero } from "@/components/layout/PageHero";
-import { ValuesPillars } from "@/components/home/ValuesPillars";
+import { OngoingPlatformSection } from "@/components/home/OngoingPlatformSection";
 import { leadershipTeam } from "@/lib/data/teamData";
-import { Shield, ArrowRight, Award, Layers } from "lucide-react";
+import { Shield, Award } from "lucide-react";
 
 export const metadata = {
   title: "About Us — Digital CXOS | Purpose, Mission & Leadership",
@@ -12,7 +13,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#060B18]">
+    <div className="min-h-screen bg-[#181818] text-white">
       {/* Page Hero */}
       <PageHero
         title="About Digital CXOS"
@@ -23,21 +24,21 @@ export default function AboutPage() {
         ]}
       />
 
-      {/* Main Narrative Section */}
-      <section className="py-20 relative overflow-hidden">
+      {/* Main Narrative Section (LIGHT CREAM) */}
+      <section className="py-20 md:py-28 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-8 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-semibold uppercase tracking-wider">
-                <Shield className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#C9A227]/15 border border-[#C9A227]/40 text-[#1A1A1A] text-xs font-bold uppercase tracking-wider">
+                <Shield className="w-3.5 h-3.5 text-[#C9A227]" />
                 <span>Our Founding Legacy</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif heading-gold">
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1A1A1A] tracking-tight">
                 Decades of Executive Transformation
               </h2>
 
-              <div className="space-y-5 text-sm sm:text-base text-slate-300 leading-relaxed text-justify">
+              <div className="space-y-4 text-base text-[#333333] leading-relaxed text-justify sm:text-left">
                 <p>
                   Digital CXOS Private Limited is founded by accomplished leaders with decades of CXO and executive leadership experience across globally renowned, transformation-driven enterprises. The team has successfully led complex initiatives spanning Financial services, ITES, HealthTech, Aerospace, Defense, Enterprise consulting and other critical sectors.
                 </p>
@@ -54,33 +55,33 @@ export default function AboutPage() {
 
             {/* Right Column Metric Callout */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="rounded-2xl glass-panel-gold p-8 border border-amber-400/30 space-y-6">
+              <div className="bg-[#FDFAF3] p-8 rounded-sm border border-[#EAE4D6] shadow-xl space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center">
-                    <Award className="w-6 h-6 text-amber-300" />
+                  <div className="w-12 h-12 rounded bg-[#C9A227]/20 border border-[#C9A227]/40 flex items-center justify-center">
+                    <Award className="w-6 h-6 text-[#C9A227]" />
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                    <p className="text-xs uppercase tracking-wider text-[#666666] font-bold">
                       Institutional Trust
                     </p>
-                    <p className="text-lg font-bold font-serif text-slate-100">
+                    <p className="text-lg font-bold font-serif text-[#1A1A1A]">
                       Sovereign Impact
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-4 pt-2">
-                  <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5">
-                    <span className="text-2xl font-bold font-serif text-amber-300">100%</span>
-                    <p className="text-xs text-slate-300 mt-0.5">Vetted CXO Membership</p>
+                <div className="space-y-3 pt-2">
+                  <div className="p-4 rounded-sm bg-white border border-[#EAE4D6]">
+                    <span className="text-2xl font-bold font-serif text-[#C9A227]">100%</span>
+                    <p className="text-xs text-[#555555] mt-0.5">Vetted CXO Membership</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5">
-                    <span className="text-2xl font-bold font-serif text-emerald-400">4 Metro Hubs</span>
-                    <p className="text-xs text-slate-300 mt-0.5">Delhi NCR, Mumbai, Bangalore, Chennai</p>
+                  <div className="p-4 rounded-sm bg-white border border-[#EAE4D6]">
+                    <span className="text-2xl font-bold font-serif text-[#1A1A1A]">4 Metro Hubs</span>
+                    <p className="text-xs text-[#555555] mt-0.5">Delhi NCR, Mumbai, Bangalore, Chennai</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-slate-900/60 border border-white/5">
-                    <span className="text-2xl font-bold font-serif text-sky-400">6 Key Sectors</span>
-                    <p className="text-xs text-slate-300 mt-0.5">BFSI, IT, Manufacturing, Telecom, Consulting, AI</p>
+                  <div className="p-4 rounded-sm bg-white border border-[#EAE4D6]">
+                    <span className="text-2xl font-bold font-serif text-[#2B5C8F]">6 Key Sectors</span>
+                    <p className="text-xs text-[#555555] mt-0.5">BFSI, IT, Manufacturing, Telecom, Consulting, AI</p>
                   </div>
                 </div>
               </div>
@@ -89,71 +90,65 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission, Vision & Core Values Section */}
-      <ValuesPillars />
+      {/* Mission, Vision & Core Values Section (DARK) */}
+      <div id="values">
+        <OngoingPlatformSection />
+      </div>
 
-      {/* Leadership Team Section */}
-      <section className="py-24 bg-gradient-to-b from-[#050914] to-[#060B18] relative overflow-hidden border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest font-bold text-amber-300">
+      {/* Leadership Team Section (LIGHT CREAM) */}
+      <section id="leadership" className="py-24 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="text-xs uppercase tracking-widest font-bold text-[#C9A227]">
               Executive Guidance
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif heading-gold mt-2">
-              Meet Our Leadership Team
+            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#1A1A1A]">
+              Meet Our Leadership Team &amp; Advisors
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-[#444444] leading-relaxed max-w-2xl mx-auto">
               Behind every successful vision is a team of leaders who inspire growth, innovation and trust. Meet the minds shaping the future of digital transformation at Digital CXOS.
             </p>
-            <div className="mt-4 mx-auto w-20 h-0.5 rounded-full bg-gradient-to-r from-[#FF9933] via-white/80 to-[#138808]" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {leadershipTeam.map((member) => (
               <Link
                 key={member.slug}
                 href={`/team/${member.slug}`}
-                className="group relative rounded-2xl glass-panel p-6 border border-white/10 hover:border-amber-400/50 hover:bg-[#0A1433] transition-all duration-300 flex flex-col justify-between hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transform hover:-translate-y-1"
+                className="group block bg-[#FDFAF3] rounded-sm overflow-hidden border border-[#EAE4D6] shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#12234F] to-[#0A122B] border border-amber-400/30 flex items-center justify-center text-amber-300 font-serif font-bold text-lg shadow-inner group-hover:scale-105 transition-transform">
-                      {member.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-900">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-center grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-neutral-800 text-[#C9A227] font-serif text-3xl font-bold">
+                      {member.name.split(" ").map((n) => n[0]).join("")}
                     </div>
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-white/10">
-                      Leadership
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-bold font-serif text-slate-100 group-hover:text-amber-300 transition-colors">
-                    {member.name}
-                  </h3>
-                  <p className="text-xs text-amber-400/90 font-medium mt-1">
-                    {member.role}
-                  </p>
-
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {member.sectors.map((sec, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5"
-                      >
-                        {sec}
-                      </span>
-                    ))}
-                  </div>
-
-                  <p className="text-xs text-slate-400 mt-3 line-clamp-3 leading-relaxed">
-                    {member.bio}
-                  </p>
+                  )}
+                  <div className="absolute top-0 right-0 w-0 h-0 border-t-[28px] border-r-[28px] border-t-transparent border-r-[#C9A227]/60" />
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-amber-300 group-hover:text-amber-200">
-                  <span>Click to view profile.</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                <div className="p-6 space-y-2.5">
+                  <h3 className="text-lg font-serif font-bold text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors">
+                    {member.name}
+                  </h3>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#C9A227]">
+                    {member.role}
+                  </p>
+                  <p className="text-xs text-[#666666] line-clamp-3 leading-relaxed">
+                    {member.bio}
+                  </p>
+
+                  <div className="mt-4 pt-3 border-t border-[#EAE4D6] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#1A1A1A] group-hover:text-[#C9A227]">
+                    <span>View Profile</span>
+                    <span className="text-[#C9A227] text-base group-hover:translate-x-1 transition-transform">›</span>
+                  </div>
                 </div>
               </Link>
             ))}

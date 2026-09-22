@@ -2,100 +2,80 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { leadershipTeam } from "@/lib/data/teamData";
-import { ArrowRight, UserCheck } from "lucide-react";
 
 export function TeamTeaser() {
   return (
-    <section className="py-24 bg-[#060B18] relative overflow-hidden border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-widest font-bold text-amber-300">
-            Enterprise Leadership
+    <section className="py-20 md:py-28 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* Section Header */}
+        <div className="max-w-3xl space-y-3">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227] block">
+            Executive Stewardship
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-serif heading-gold mt-2">
-            Meet Our Leadership Team
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#1A1A1A] tracking-tight leading-[1.2]">
+            Guided by Accomplished Enterprise Leaders
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            Behind every successful vision is a team of leaders who inspire growth, innovation and trust. Meet the minds shaping the future of digital transformation at Digital CXOS.
+          <p className="text-base text-[#444444]">
+            Decades of cross-industry CXO experience across globally renowned, transformation-driven enterprises.
           </p>
-          <div className="mt-4 mx-auto w-20 h-0.5 rounded-full bg-gradient-to-r from-[#FF9933] via-white/80 to-[#138808]" />
         </div>
 
-        {/* 6 Leadership Team Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 6 Leadership Photo Cards with Hover Tint & Cream Caption Box (Pattern 8) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {leadershipTeam.map((member) => (
             <Link
               key={member.slug}
               href={`/team/${member.slug}`}
-              className="group relative rounded-2xl glass-panel p-6 border border-white/10 hover:border-amber-400/50 hover:bg-[#0A1433] transition-all duration-300 flex flex-col justify-between hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transform hover:-translate-y-1"
+              className="group block bg-[#FDFAF3] rounded-sm overflow-hidden border border-[#EAE4D6] shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              <div>
-                {/* Avatar / Monogram */}
-                <div className="flex items-center justify-between mb-4">
-                  {member.image ? (
-                    <div className="relative w-14 h-14 rounded-2xl overflow-hidden border border-amber-400/30 group-hover:scale-105 transition-transform shadow-[0_0_15px_rgba(255,153,51,0.2)]">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#12234F] to-[#0A122B] border border-amber-400/30 flex items-center justify-center text-amber-300 font-serif font-bold text-lg shadow-inner group-hover:scale-105 transition-transform">
-                      {member.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
-                  )}
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-white/10">
-                    Leader
-                  </span>
-                </div>
-
-                {/* Name and Role */}
-                <h3 className="text-lg font-bold font-serif text-slate-100 group-hover:text-amber-300 transition-colors">
-                  {member.name}
-                </h3>
-                <p className="text-xs text-amber-400/90 font-medium mt-1">
-                  {member.role}
-                </p>
-
-                {/* Sectors badges */}
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {member.sectors.slice(0, 2).map((sec, idx) => (
-                    <span
-                      key={idx}
-                      className="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5"
-                    >
-                      {sec}
-                    </span>
-                  ))}
-                </div>
-
-                <p className="text-xs text-slate-400 mt-3 line-clamp-2 leading-relaxed">
-                  {member.bio}
-                </p>
+              {/* Duotone Photo with Hover Tint Lift */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-900">
+                {member.image ? (
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-center grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-neutral-800 text-[#C9A227] font-serif text-3xl font-bold">
+                    {member.name.split(" ").map((n) => n[0]).join("")}
+                  </div>
+                )}
+                {/* Subtle gold brand corner accent */}
+                <div className="absolute top-0 right-0 w-0 h-0 border-t-[28px] border-r-[28px] border-t-transparent border-r-[#C9A227]/60" />
               </div>
 
-              {/* Card Footer: Verbatim "Click to view profile." */}
-              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-amber-300 group-hover:text-amber-200">
-                <span>Click to view profile.</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              {/* Cream Caption Box */}
+              <div className="p-6 space-y-2.5">
+                <h3 className="text-lg font-serif font-bold text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors">
+                  {member.name}
+                </h3>
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#C9A227]">
+                  {member.role}
+                </p>
+                <p className="text-xs text-[#666666] line-clamp-2 leading-relaxed">
+                  {member.bio}
+                </p>
+
+                {/* Card Link Action with Gold Chevron */}
+                <div className="pt-3 border-t border-[#EAE4D6] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#1A1A1A] group-hover:text-[#C9A227]">
+                  <span>View Executive Profile</span>
+                  <span className="text-[#C9A227] text-base group-hover:translate-x-1 transition-transform">›</span>
+                </div>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* View All Team Link */}
-        <div className="mt-12 text-center">
+        {/* Explore All Profiles Link */}
+        <div className="pt-4 text-center">
           <Link
-            href="/about"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-900 text-slate-200 hover:text-amber-300 border border-white/10 hover:border-amber-400/40 transition-all"
+            href="/about#leadership"
+            className="inline-flex items-center text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1A1A1A] hover:text-[#C9A227] transition-colors chevron-link"
           >
-            <UserCheck className="w-4 h-4 text-emerald-400" />
-            <span>Explore All Executive Profiles & Advisors</span>
+            Explore Complete Leadership Credo
           </Link>
         </div>
       </div>

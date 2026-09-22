@@ -1,42 +1,51 @@
 @import "tailwindcss";
 
+@theme {
+  --font-serif: var(--font-serif), Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-sans: var(--font-sans), Archivo, system-ui, -apple-system, sans-serif;
+  
+  --color-exec-dark: #181818;
+  --color-exec-charcoal: #222222;
+  --color-exec-cream: #F7F3EA;
+  --color-exec-cream-card: #FDFAF3;
+  --color-exec-gold: #C9A227;
+  --color-exec-gold-light: #D4AF37;
+  --color-exec-blue: #2B5C8F;
+}
+
 @layer base {
   :root {
-    --bg-primary: #060B18;
-    --bg-secondary: #0A1226;
-    --bg-card: rgba(13, 23, 49, 0.7);
-    --bg-card-hover: rgba(20, 35, 75, 0.85);
+    --bg-dark: #181818;
+    --bg-charcoal: #222222;
+    --bg-cream: #F7F3EA;
+    --bg-cream-card: #FDFAF3;
     
-    --gold-primary: #E6CA65;
-    --gold-light: #F7ECD2;
-    --gold-dark: #C9A83E;
+    --gold-primary: #C9A227;
+    --gold-light: #D4AF37;
+    --accent-blue: #2B5C8F;
     
+    /* Sovereign Indian Tricolour Accents */
     --saffron: #FF9933;
-    --emerald: #10B981;
+    --tricolour-white: #FFFFFF;
     --tricolour-green: #138808;
     
-    /* Client Official Color Palette */
-    --color-mission: #FF5A00;
-    --color-vision: #FFFFFF;
-    --color-values: #138808;
-    
-    --text-primary: #F8FAFC;
-    --text-muted: #94A3B8;
-    --text-subtle: #64748B;
-    
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-gold: rgba(230, 202, 101, 0.25);
-  }
-
-  * {
-    border-color: var(--border-subtle);
+    --text-dark: #1A1A1A;
+    --text-light: #F8FAFC;
+    --text-muted-dark: #555555;
+    --text-muted-light: #A3A3A3;
   }
 
   body {
-    background-color: #060B18;
+    background-color: #181818;
     color: #F8FAFC;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-serif-headline {
+    font-family: var(--font-serif), Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
   }
 }
 
@@ -46,75 +55,78 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #060B18;
+  background: #181818;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #333333;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #C9A227;
 }
 
-/* Tricolour Accent Line */
+/* Indian Tricolour Mini Dots Device */
+.tricolour-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tricolour-dots span:nth-child(1) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #FF9933;
+}
+.tricolour-dots span:nth-child(2) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+}
+.tricolour-dots span:nth-child(3) {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #138808;
+}
+
+/* Subtle Tricolour Accent Line */
 .tricolour-bar {
   background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%, #138808 100%);
   height: 2px;
 }
 
-.tricolour-glow {
-  box-shadow: 0 0 15px rgba(255, 153, 51, 0.3), 0 0 15px rgba(19, 136, 8, 0.3);
+/* Duotone / Monochrome Photo Tint Utility */
+.img-duotone {
+  filter: grayscale(100%) contrast(1.1) brightness(0.9);
+  transition: filter 0.5s ease, transform 0.5s ease;
 }
 
-/* Glassmorphism Cards */
-.glass-panel {
-  background: rgba(11, 20, 44, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.img-duotone:hover, .group:hover .img-duotone {
+  filter: grayscale(20%) contrast(1.05) brightness(1);
 }
 
-.glass-panel-gold {
-  background: rgba(14, 24, 53, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(230, 202, 101, 0.22);
+/* Exec Club Card Left Borders */
+.border-l-gold-bar {
+  border-left: 4px solid #C9A227;
 }
 
-/* Gold Gradient Heading */
-.heading-gold {
-  color: #F3E8C8;
-  background: linear-gradient(135deg, #FFF6DD 0%, #E6CA65 50%, #C9A83E 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.border-l-blue-bar {
+  border-left: 4px solid #2B5C8F;
 }
 
-.heading-silver {
-  color: #F8FAFC;
-  background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Chevron Link Arrow */
+.chevron-link::after {
+  content: " ›";
+  color: #C9A227;
+  font-weight: bold;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+  display: inline-block;
 }
 
-/* Executive Accent Glow */
-.executive-radial {
-  background: radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.25) 0%, rgba(6, 11, 24, 0) 70%);
-}
-
-.executive-grid {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-/* Typography mappings for Client-Requested Fonts */
-.font-bebas, .font-heading {
-  font-family: var(--font-heading), var(--font-serif), sans-serif;
-  letter-spacing: 0.05em;
-}
-
-.font-body, .font-sans {
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+.chevron-link:hover::after {
+  transform: translateX(3px);
 }
 
