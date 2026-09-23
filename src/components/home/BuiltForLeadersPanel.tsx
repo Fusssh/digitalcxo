@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function BuiltForLeadersPanel() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-[#181818]">
+    <section className="relative py-12 md:py-16 overflow-hidden bg-[#181818] border-t border-neutral-800/80 select-none">
       {/* Full-width dark / duotone photo backdrop (Screenshot 4) */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -16,9 +16,14 @@ export function BuiltForLeadersPanel() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#181818]/90 via-[#181818]/50 to-[#181818]/95 z-10" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 space-y-12">
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-20 space-y-8">
         {/* Serif White Headline Sitting Directly Over Photo */}
-        <div className="text-center max-w-3xl mx-auto">
+        <div className="text-center max-w-4xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
+            <span className="w-8 h-[1.5px] bg-[#C9A227]" />
+            <span>Executive Vetting &amp; Sectors</span>
+            <span className="w-8 h-[1.5px] bg-[#C9A227]" />
+          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white tracking-tight leading-[1.2]">
             Built for Leaders Who Shape Decisions — and the People Behind Them
           </h2>

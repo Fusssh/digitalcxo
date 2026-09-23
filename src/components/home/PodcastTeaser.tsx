@@ -14,7 +14,7 @@ export function PodcastTeaser() {
               <Mic className="w-3.5 h-3.5" />
               <span>Thought Leadership Media</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif heading-gold">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-serif heading-gold uppercase tracking-wider">
               Our Latest Podcast Series
             </h2>
             <p className="mt-3 text-sm sm:text-base text-slate-300">
@@ -31,18 +31,18 @@ export function PodcastTeaser() {
           </Link>
         </div>
 
-        {/* Podcast Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {initialPodcastsData.map((pod) => (
-            <VideoCard
-              key={pod.id}
-              title={pod.title}
-              subtitle={pod.subtitle}
-              youtubeId={pod.youtubeId}
-              youtubeUrl={pod.youtubeUrl}
-              thumbnailUrl={pod.thumbnailUrl}
-              guests={pod.guests}
-            />
+        {/* Podcast Cards (Limited to 2 for homepage teaser) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {initialPodcastsData.slice(0, 2).map((pod) => (
+            <div key={pod.id} className="relative w-full aspect-video rounded-sm overflow-hidden bg-black shadow-2xl border border-white/5 group hover:border-amber-400/50 transition-colors">
+              <iframe
+                src={`https://www.youtube.com/embed/${pod.youtubeId}?rel=0`}
+                title={pod.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full border-0"
+              />
+            </div>
           ))}
         </div>
       </div>

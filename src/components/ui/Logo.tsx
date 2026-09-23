@@ -11,13 +11,13 @@ interface LogoProps {
 }
 
 export function Logo({ className, showTagline = true, size = "md", theme = "dark" }: LogoProps) {
-  const crestSize = size === "sm" ? 42 : size === "lg" ? 64 : 50;
+  const crestSize = size === "sm" ? 46 : size === "lg" ? 72 : 58;
 
   return (
     <Link
       href="/"
       className={cn(
-        "flex items-center gap-3.5 group focus:outline-none transition-transform duration-200 hover:scale-[1.02]",
+        "flex items-center gap-3.5 sm:gap-4 group focus:outline-none transition-transform duration-200",
         className
       )}
       aria-label="Digital CXOS - Leadership Beyond Boundaries"
@@ -39,7 +39,7 @@ export function Logo({ className, showTagline = true, size = "md", theme = "dark
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              "text-lg sm:text-xl font-bold tracking-wider font-serif transition-colors",
+              "text-xl sm:text-2xl font-bold tracking-wider font-serif transition-colors",
               theme === "light" ? "text-neutral-900 group-hover:text-[#C9A227]" : "text-white group-hover:text-[#D4AF37]"
             )}
           >
@@ -55,7 +55,7 @@ export function Logo({ className, showTagline = true, size = "md", theme = "dark
         {showTagline && (
           <span
             className={cn(
-              "text-[9px] uppercase tracking-[0.22em] font-medium whitespace-nowrap",
+              "text-[10px] sm:text-[10.5px] uppercase tracking-[0.22em] font-medium whitespace-nowrap",
               theme === "light" ? "text-neutral-600" : "text-neutral-300"
             )}
           >

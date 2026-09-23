@@ -85,55 +85,66 @@ export default function InitiativesPage() {
         </div>
       </div>
 
-      {/* 12 Initiatives Grid with Exec Club Left Border Pattern */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* 12 Initiatives Grid with Asymmetrical Design */}
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-8 pb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
           {filteredInitiatives.map((item, index) => {
             const Icon = iconMap[item.iconName] || Sparkles;
-            const isGold = index % 2 === 0;
+            const isCream = index % 2 === 0;
 
             return (
               <div
                 key={item.id}
                 className={cn(
-                  "bg-[#202020] p-7 rounded-sm border border-neutral-800 transition-all duration-300 flex flex-col justify-between group hover:border-neutral-700 hover:shadow-xl",
-                  isGold ? "border-l-4 border-l-[#C9A227]" : "border-l-4 border-l-[#2B5C8F]"
+                  "p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl hover:shadow-2xl group cursor-pointer",
+                  isCream
+                    ? "bg-[#F7F3EA] text-[#1A1A1A] border-none rounded-tl-[60px] rounded-br-[60px] rounded-tr-xl rounded-bl-xl"
+                    : "bg-[#1E1E1E] text-white border border-neutral-800 rounded-tr-[60px] rounded-bl-[60px] rounded-tl-xl rounded-br-xl"
                 )}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="w-10 h-10 rounded bg-neutral-900 border border-neutral-800 flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-[#C9A227]" />
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black/5 border border-black/10 group-hover:scale-110 transition-transform duration-300">
+                      <Icon className={cn("w-6 h-6", isCream ? "text-[#C9A227]" : "text-[#C9A227]")} />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#C9A227] px-2.5 py-0.5 rounded bg-neutral-900 border border-neutral-800">
+                    <span className={cn(
+                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border",
+                      isCream ? "text-[#1A1A1A] border-[#1A1A1A]/20 bg-black/5" : "text-neutral-400 border-neutral-700 bg-neutral-900"
+                    )}>
                       #{item.id}
                     </span>
                   </div>
 
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-2 block">
+                  <span className={cn(
+                    "text-[10px] font-bold uppercase tracking-wider mb-2 block",
+                    isCream ? "text-[#C9A227]" : "text-[#C9A227]"
+                  )}>
                     {item.category}
                   </span>
 
-                  <h3 className="text-lg font-bold font-serif text-white group-hover:text-[#C9A227] transition-colors leading-snug mb-3">
+                  <h3 className="text-xl sm:text-2xl font-bold font-serif mb-4 leading-tight group-hover:text-[#C9A227] transition-colors">
                     {item.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed text-justify sm:text-left">
+                  <p className={cn("text-sm leading-relaxed mb-8 text-justify sm:text-left", isCream ? "text-neutral-700" : "text-neutral-400")}>
                     {item.description}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
+                <div className={cn("pt-5 border-t flex items-center justify-between", isCream ? "border-neutral-300" : "border-neutral-800")}>
+                  <div className={cn("flex items-center gap-1.5 text-[11px]", isCream ? "text-neutral-600" : "text-neutral-500")}>
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#C9A227]" />
                     <span>Active Program</span>
                   </div>
                   <Link
                     href="/membership2"
-                    className="text-xs font-bold uppercase tracking-wider text-[#C9A227] hover:text-[#D4AF37] flex items-center gap-1 group/btn"
+                    className={cn(
+                      "text-xs font-bold uppercase tracking-widest flex items-center gap-1 group/btn",
+                      isCream ? "text-[#1A1A1A]" : "text-white"
+                    )}
                   >
-                    <span>Participate</span>
-                    <span className="font-bold">›</span>
+                    <span className="group-hover/btn:text-[#C9A227] transition-colors">Join</span>
+                    <span className="font-bold text-[#C9A227] group-hover/btn:translate-x-1 transition-transform">›</span>
                   </Link>
                 </div>
               </div>

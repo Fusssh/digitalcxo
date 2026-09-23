@@ -25,7 +25,7 @@ export default function AboutPage() {
       />
 
       {/* Main Narrative Section (LIGHT CREAM) */}
-      <section className="py-20 md:py-28 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6]">
+      <section className="py-12 md:py-16 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-8 space-y-6">
@@ -95,63 +95,71 @@ export default function AboutPage() {
         <OngoingPlatformSection />
       </div>
 
-      {/* Leadership Team Section (LIGHT CREAM) */}
-      <section id="leadership" className="py-24 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <span className="text-xs uppercase tracking-widest font-bold text-[#C9A227]">
-              Executive Guidance
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#1A1A1A]">
-              Meet Our Leadership Team &amp; Advisors
-            </h2>
-            <p className="text-sm sm:text-base text-[#444444] leading-relaxed max-w-2xl mx-auto">
-              Behind every successful vision is a team of leaders who inspire growth, innovation and trust. Meet the minds shaping the future of digital transformation at Digital CXOS.
-            </p>
+      {/* Leadership Team Section (Reference Image Design) */}
+      <section id="leadership" className="py-16 md:py-24 bg-[#F9F9F8] text-[#1A1A1A] border-t border-[#EAE4D6]">
+        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 space-y-12">
+          {/* Top Split Section Header */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+            <div className="lg:col-span-7 space-y-3">
+              <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
+                Executive Guidance [{leadershipTeam.length.toString().padStart(2, "0")}]
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-sans font-bold text-neutral-900 tracking-tight leading-[1.12]">
+                Meet Our Leadership Team &amp; Advisors
+              </h2>
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-neutral-600 text-sm sm:text-base md:text-[17px] leading-relaxed font-normal">
+                Behind every successful vision is a team of leaders who inspire growth, innovation and trust. Meet the minds shaping the future of digital transformation at Digital CXOS.
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {leadershipTeam.map((member) => (
-              <Link
-                key={member.slug}
-                href={`/team/${member.slug}`}
-                className="group block bg-[#FDFAF3] rounded-sm overflow-hidden border border-[#EAE4D6] shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-900">
-                  {member.image ? (
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover object-center grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-neutral-800 text-[#C9A227] font-serif text-3xl font-bold">
-                      {member.name.split(" ").map((n) => n[0]).join("")}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {leadershipTeam.map((member) => {
+              const firstName = member.name.split(" ")[0];
+              return (
+                <Link
+                  key={member.slug}
+                  href={`/team/${member.slug}`}
+                  className="group block bg-white rounded-2xl md:rounded-3xl p-3.5 sm:p-4 border border-neutral-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1.5"
+                >
+                  <div>
+                    <div className="relative aspect-square w-full rounded-xl md:rounded-2xl overflow-hidden bg-neutral-900 mb-4">
+                      {member.image ? (
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-cover object-center grayscale contrast-125 brightness-95 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-neutral-800 text-[#C9A227] font-serif text-3xl font-bold">
+                          {member.name.split(" ").map((n) => n[0]).join("")}
+                        </div>
+                      )}
                     </div>
-                  )}
-                  <div className="absolute top-0 right-0 w-0 h-0 border-t-[28px] border-r-[28px] border-t-transparent border-r-[#C9A227]/60" />
-                </div>
 
-                <div className="p-6 space-y-2.5">
-                  <h3 className="text-lg font-serif font-bold text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors">
-                    {member.name}
-                  </h3>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[#C9A227]">
-                    {member.role}
-                  </p>
-                  <p className="text-xs text-[#666666] line-clamp-3 leading-relaxed">
-                    {member.bio}
-                  </p>
-
-                  <div className="mt-4 pt-3 border-t border-[#EAE4D6] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#1A1A1A] group-hover:text-[#C9A227]">
-                    <span>View Profile</span>
-                    <span className="text-[#C9A227] text-base group-hover:translate-x-1 transition-transform">›</span>
+                    <div className="px-1 space-y-1">
+                      <span className="text-xs font-medium text-neutral-500 block line-clamp-1">
+                        {member.role}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 group-hover:text-[#C9A227] transition-colors leading-tight">
+                        {member.name}
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+
+                  <div className="mt-5 pt-1">
+                    <div className="w-full py-2.5 px-4 rounded-full bg-neutral-950 group-hover:bg-[#C9A227] text-white group-hover:text-neutral-950 font-sans text-xs font-semibold tracking-wide transition-all duration-300 flex items-center justify-center gap-2 shadow-md">
+                      <span className="w-2 h-2 rounded-full bg-[#C9A227] group-hover:bg-neutral-950 transition-colors" />
+                      <span>Talk With {firstName}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

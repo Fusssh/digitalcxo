@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail } from "lucide-react";
+import { Mail, ArrowRight, ShieldCheck, Users, MapPin, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const HERO_BACKGROUND_IMAGES = [
@@ -42,7 +42,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[92vh] flex flex-col justify-between pt-36 pb-16 md:pt-44 md:pb-20 overflow-hidden bg-[#181818] select-none">
+    <section className="relative min-h-[85vh] flex items-center pt-28 pb-12 md:pt-36 md:pb-16 overflow-hidden bg-[#181818] select-none">
       {/* Full-bleed executive monochrome / duotone background cycling within dark layer */}
       <div className="absolute inset-0 z-0">
         {HERO_BACKGROUND_IMAGES.map((img, idx) => (
@@ -59,74 +59,78 @@ export function HeroSection() {
               fill
               priority={idx === 0}
               sizes="100vw"
-              className="object-cover object-center brightness-[0.25] contrast-[1.15] grayscale"
+              className="object-cover object-center"
             />
           </div>
         ))}
 
-        {/* Retained executive gradient vignette dark layer */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#141414]/90 via-[#181818]/60 to-[#181818] z-10" />
+        {/* Subtle dark overlay for text readability without losing image color */}
+        <div className="absolute inset-0 bg-black/50 z-10" />
       </div>
 
-      {/* Main Hero Typography */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center my-auto space-y-7">
-        {/* Eyebrow Label with Indian Tricolour Dots */}
-        <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-xs font-semibold tracking-wider uppercase text-neutral-200 shadow-xl backdrop-blur-md">
-          <span className="text-[#C9A227]">CXO Leadership Platform</span>
-          <span className="text-neutral-500">•</span>
-          <span className="flex items-center gap-1.5">
-            <span>Shaping India&apos;s Digital Economy</span>
-            <span className="tricolour-dots ml-1">
-              <span />
-              <span />
-              <span />
-            </span>
-          </span>
-        </div>
+      {/* Main Full-Width Executive Layout (Eliminating empty left & right sides) */}
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-20 my-auto">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
+          {/* Centered Content: Authoritative Leadership Narrative & CTAs */}
+          <div className="space-y-6 text-center flex flex-col items-center">
+            {/* Eyebrow Label with Indian Tricolour Dots */}
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-xs font-semibold tracking-wider uppercase text-neutral-200 shadow-xl backdrop-blur-md">
+              <span className="text-[#C9A227]">CXO Leadership Platform</span>
+              <span className="text-neutral-500">•</span>
+              <span className="flex items-center gap-1.5">
+                <span>Shaping India&apos;s Digital Economy</span>
+                <span className="tricolour-dots ml-1">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </span>
+            </div>
 
-        {/* Serif Headline (Exec Club style large Palatino/Source Serif) */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white tracking-tight leading-[1.18] max-w-4xl mx-auto">
-          More Than a Network — <span className="italic text-[#F3E8C8]">A Strategic Movement</span>
-        </h1>
+            {/* Serif Headline */}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white tracking-tight leading-[1.16]">
+              More Than a Network — <br className="hidden sm:block" /><span className="italic text-[#F3E8C8]">A Strategic Movement</span>
+            </h1>
 
-        {/* Verbatim Digital CXOS Description Copy */}
-        <p className="text-base sm:text-lg text-neutral-200 leading-relaxed font-normal max-w-3xl mx-auto text-justify sm:text-center">
-          Welcome to a purpose-driven platform where CIOs, CISOs, CTOs, CDOs and senior IT leaders unite to exchange insights, ignite innovation and address the industry&apos;s most critical challenges. Founded by accomplished CXOs, this is more than just a network. It is a trusted, high-impact community shaping India&apos;s digital future. Built by experienced leaders for the country&apos;s most visionary enterprise decision-makers, this initiative brings together those who lead transformation, secure critical infrastructure and create lasting impact at scale. We invite boardroom influencers, digital trailblazers and national change-makers to be part of this strategic movement. A collective redefining enterprise leadership for India&apos;s next digital chapter.
-        </p>
+            {/* Verbatim Digital CXOS Description Copy */}
+            <p className="text-sm sm:text-base md:text-[17px] text-neutral-200 leading-relaxed font-normal max-w-4xl mx-auto">
+              Welcome to a purpose-driven platform where CIOs, CISOs, CTOs, CDOs and senior IT leaders unite to exchange insights, ignite innovation and address the industry&apos;s most critical challenges. Founded by accomplished CXOs, this is more than just a network. It is a trusted, high-impact community shaping India&apos;s digital future. Built by experienced leaders for the country&apos;s most visionary enterprise decision-makers, this initiative brings together those who lead transformation, secure critical infrastructure and create lasting impact at scale. We invite boardroom influencers, digital trailblazers and national change-makers to be part of this strategic movement. A collective redefining enterprise leadership for India&apos;s next digital chapter.
+            </p>
 
-        {/* Subtle slide indicator dots */}
-        <div className="flex items-center justify-center gap-2 pt-2">
-          {HERO_BACKGROUND_IMAGES.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentImageIndex(idx)}
-              aria-label={`Switch to hero background ${idx + 1}`}
-              className={cn(
-                "h-1 rounded-full transition-all duration-500",
-                idx === currentImageIndex ? "w-8 bg-[#C9A227]" : "w-2 bg-neutral-600/60 hover:bg-neutral-500"
-              )}
-            />
-          ))}
-        </div>
-      </div>
+            {/* Executive Dual Action Buttons */}
+            <div className="pt-2 flex flex-wrap justify-center items-center gap-4">
+              <Link
+                href="/membership2"
+                className="px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 flex items-center gap-2"
+              >
+                <span>Explore CXO Membership</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/partnership2"
+                className="px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider border border-[#EAE4D6]/70 hover:border-[#C9A227] text-white hover:text-[#C9A227] bg-black/40 backdrop-blur-sm transition-all duration-200"
+              >
+                Strategic Partnerships
+              </Link>
+            </div>
 
-      {/* Pattern 1 CTA Card: Single Cream-Boxed Card at Hero Bottom (Exact Exec Club Screenshot Pattern) */}
-      <div className="relative z-20 max-w-md mx-auto w-full px-4 pt-4">
-        <Link
-          href="/membership2"
-          className="group block bg-[#F7F3EA] text-[#1A1A1A] border-2 border-[#E2DAC8] hover:border-[#C9A227] rounded-sm p-5 shadow-2xl transition-all duration-300 transform hover:-translate-y-1 text-center"
-        >
-          <div className="space-y-1.5">
-            <h3 className="text-lg font-bold font-serif text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors">
-              Explore Membership
-            </h3>
-            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#555555] group-hover:text-[#1A1A1A]">
-              <Mail className="w-3.5 h-3.5 text-[#C9A227]" />
-              <span>Email: contact@digitalcxos.com</span>
-              <span className="text-[#C9A227] font-bold">›</span>
+            {/* Trust Badges Bar */}
+            <div className="pt-2 flex flex-wrap justify-center items-center gap-6 text-xs text-neutral-400 font-medium">
+              <span className="flex items-center gap-2">
+                <span className="text-[#C9A227] font-bold">✓</span>
+                <span>100% Peer Vetted</span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-[#C9A227] font-bold">✓</span>
+                <span>Chatham House Rule</span>
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-[#C9A227] font-bold">✓</span>
+                <span>Non-Commercial Exchange</span>
+              </span>
             </div>
           </div>
-        </Link>
+        </div>
       </div>
     </section>
   );

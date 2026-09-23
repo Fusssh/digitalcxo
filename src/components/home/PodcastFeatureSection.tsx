@@ -5,17 +5,18 @@ import { Play, ExternalLink } from "lucide-react";
 
 export function PodcastFeatureSection() {
   return (
-    <section className="py-20 md:py-28 bg-[#181818] text-white border-t border-neutral-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section className="py-12 md:py-16 bg-[#181818] text-white border-t border-neutral-800 select-none">
+      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 space-y-8">
         {/* Section Header */}
-        <div className="max-w-3xl space-y-3">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227] block">
-            Executive Dialogue &amp; Media
-          </span>
+        <div className="max-w-4xl space-y-3">
+          <div className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
+            <span className="w-8 h-[1.5px] bg-[#C9A227]" />
+            <span>Executive Dialogue &amp; Media</span>
+          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white tracking-tight leading-[1.2]">
             Voices of Digital Transformation
           </h2>
-          <p className="text-base text-neutral-300">
+          <p className="text-base sm:text-lg text-neutral-300 leading-relaxed">
             C-suite insights on AI disruption, sovereign cyber defense, data privacy, and executive resilience.
           </p>
         </div>
