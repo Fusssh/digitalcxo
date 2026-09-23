@@ -7,7 +7,7 @@ export function BuiltForLeadersPanel() {
       {/* Full-width dark / duotone photo backdrop (Screenshot 4) */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=85&w=2000&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=85&w=2000&auto=format&fit=crop"
           alt="Executive technology leaders in collaboration"
           fill
           sizes="100vw"
