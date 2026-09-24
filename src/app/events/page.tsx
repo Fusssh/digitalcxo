@@ -49,11 +49,11 @@ function EventsContent() {
       {/* Modern Luxury Tabs Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
-          <div className="inline-flex p-1.5 rounded-2xl bg-[#0A132C]/90 border border-white/10 backdrop-blur-md shadow-inner">
+          <div className="inline-flex flex-col sm:flex-row w-full sm:w-auto p-1.5 rounded-2xl bg-[#0A132C]/90 border border-white/10 backdrop-blur-md shadow-inner gap-1">
             <button
               onClick={() => setActiveTab("upcoming")}
               className={cn(
-                "px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer",
+                "px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto",
                 activeTab === "upcoming"
                   ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)]"
                   : "text-slate-300 hover:text-white hover:bg-white/5"
@@ -72,7 +72,7 @@ function EventsContent() {
             <button
               onClick={() => setActiveTab("past")}
               className={cn(
-                "px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer",
+                "px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto",
                 activeTab === "past"
                   ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold shadow-[0_0_20px_rgba(245,158,11,0.4)]"
                   : "text-slate-300 hover:text-white hover:bg-white/5"

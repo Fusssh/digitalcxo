@@ -24,7 +24,7 @@ export function OngoingPlatformSection() {
         <div className="text-center max-w-4xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
             <span className="w-8 h-[1.5px] bg-[#C9A227]" />
-            <span>Institutional Pillars &amp; Purpose</span>
+            <span>Mission, Vision &amp; Core Values</span>
             <span className="w-8 h-[1.5px] bg-[#C9A227]" />
           </div>
 

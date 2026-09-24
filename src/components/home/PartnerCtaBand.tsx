@@ -58,17 +58,17 @@ export function PartnerCtaBand() {
             </div>
 
             {/* Dual CTAs */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
               <Link
                 href="/partnership2"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 text-center"
               >
                 <span>Explore Partnership Tracks</span>
                 <span className="font-bold text-base">›</span>
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-transparent hover:bg-neutral-800 text-white border border-neutral-700 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-transparent hover:bg-neutral-800 text-white border border-neutral-700 transition-colors text-center"
               >
                 <span>Schedule Executive Briefing</span>
                 <ArrowRight className="w-4 h-4 text-[#C9A227]" />
@@ -79,48 +79,48 @@ export function PartnerCtaBand() {
           {/* Right Column: Strategic Engagement Pathways Card (5 cols) */}
           <div className="lg:col-span-5 bg-[#1C1C1C]/90 backdrop-blur-md rounded-sm p-6 sm:p-7 border border-[#C9A227]/30 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C9A227]">
-                <Handshake className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#C9A227]">
+                <Handshake className="w-5 h-5" />
                 <span>Engagement Pathways</span>
               </div>
-              <span className="text-[10px] text-neutral-400 font-semibold uppercase tracking-wider">
+              <span className="text-xs text-neutral-400 font-semibold uppercase tracking-wider">
                 Invitation Only
               </span>
             </div>
 
-            <div className="space-y-3.5 text-xs sm:text-sm text-neutral-300">
-              <div className="p-3 rounded bg-neutral-900/60 border border-neutral-800/80 space-y-1">
-                <h4 className="font-bold text-white text-xs uppercase tracking-wide flex items-center justify-between">
+            <div className="space-y-4 text-sm sm:text-base text-neutral-300">
+              <div className="p-4 rounded bg-neutral-900/60 border border-neutral-800/80 space-y-2">
+                <h4 className="font-bold text-white text-sm uppercase tracking-wide flex items-center justify-between">
                   <span>1. Boardroom Roundtables</span>
                   <span className="text-[#C9A227]">Closed Door</span>
                 </h4>
-                <p className="text-neutral-400 text-xs leading-relaxed">
+                <p className="text-neutral-400 text-sm leading-relaxed">
                   Host closed-door, Chatham House discussions with 20+ verified enterprise technology leaders.
                 </p>
               </div>
 
-              <div className="p-3 rounded bg-neutral-900/60 border border-neutral-800/80 space-y-1">
-                <h4 className="font-bold text-white text-xs uppercase tracking-wide flex items-center justify-between">
+              <div className="p-4 rounded bg-neutral-900/60 border border-neutral-800/80 space-y-2">
+                <h4 className="font-bold text-white text-sm uppercase tracking-wide flex items-center justify-between">
                   <span>2. Joint Research &amp; Playbooks</span>
                   <span className="text-[#C9A227]">Co-Authored</span>
                 </h4>
-                <p className="text-neutral-400 text-xs leading-relaxed">
+                <p className="text-neutral-400 text-sm leading-relaxed">
                   Publish authoritative benchmarks on AI governance, DPDP compliance, and sovereign infrastructure.
                 </p>
               </div>
 
-              <div className="p-3 rounded bg-neutral-900/60 border border-neutral-800/80 space-y-1">
-                <h4 className="font-bold text-white text-xs uppercase tracking-wide flex items-center justify-between">
+              <div className="p-4 rounded bg-neutral-900/60 border border-neutral-800/80 space-y-2">
+                <h4 className="font-bold text-white text-sm uppercase tracking-wide flex items-center justify-between">
                   <span>3. Conclave Keynotes</span>
                   <span className="text-[#C9A227]">High Visibility</span>
                 </h4>
-                <p className="text-neutral-400 text-xs leading-relaxed">
+                <p className="text-neutral-400 text-sm leading-relaxed">
                   Lead keynote masterclasses at annual leadership summits across Delhi-NCR, Bengaluru, and Mumbai.
                 </p>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-neutral-800 flex items-center justify-between text-[11px] text-neutral-400">
+            <div className="pt-3 border-t border-neutral-800 flex items-center justify-between text-xs text-neutral-400">
               <span>National CXO Network</span>
               <span className="text-[#C9A227] font-semibold">100% Peer Vetted</span>
             </div>

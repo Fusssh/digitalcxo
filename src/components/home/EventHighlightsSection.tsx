@@ -2,49 +2,41 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { Film, MapPin, Users, ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { Film, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface EventHighlight {
   id: string;
   videoUrl: string;
+  posterUrl: string;
   tag: string;
-  title: string;
-  location: string;
   edition: string;
-  summary: string;
-  attendees: string;
+  title: string;
 }
 
 const defaultHighlights: EventHighlight[] = [
   {
     id: "eh-1",
-    videoUrl: "https://www.digitalcxos.com/wp-content/uploads/2026/04/video2-1.png",
+    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    posterUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
     tag: "Flagship Conclave",
-    title: "Digital CXOS National Conclave — The Sovereign AI Era",
-    location: "Mumbai",
     edition: "2026 Annual Conclave",
-    summary: "Visionary keynotes and closed-door debates exploring enterprise AI sovereignty, data governance, and Boardroom IT strategy.",
-    attendees: "120+ Enterprise Leaders"
+    title: "Digital CXOS National Conclave — The Sovereign AI Era"
   },
   {
     id: "eh-2",
-    videoUrl: "https://www.digitalcxos.com/wp-content/uploads/2026/04/video1.png",
+    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    posterUrl: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop",
     tag: "Security Summit",
-    title: "Enterprise Cyber Sovereign Defense & Crisis Simulation",
-    location: "Bengaluru",
     edition: "Cyber Defense Conclave",
-    summary: "Real-time ransomware simulation drills and crisis management protocols conducted under the strict Chatham House Rule.",
-    attendees: "90+ Security Leaders"
+    title: "Enterprise Cyber Sovereign Defense & Crisis Simulation"
   },
   {
     id: "eh-3",
-    videoUrl: "https://www.digitalcxos.com/wp-content/uploads/2026/08/cxos3.png",
+    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    posterUrl: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=1200&auto=format&fit=crop",
     tag: "Boardroom Roundtable",
-    title: "Digital Transformation & DPDP Boardroom Accord",
-    location: "New Delhi",
     edition: "Executive Summit",
-    summary: "High-trust peer dialogues uniting enterprise technology architects to address regulatory compliance and next-gen infrastructure.",
-    attendees: "75+ Enterprise CXOs"
+    title: "Digital Transformation & DPDP Boardroom Accord"
   }
 ];
 
@@ -87,9 +79,9 @@ export function EventHighlightsSection() {
         className="pointer-events-none absolute -top-32 left-1/4 w-[600px] h-[350px] rounded-full bg-[#C9A227]/5 blur-[120px]"
       />
 
-      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-12">
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-10">
         {/* Split Header Architecture */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2 border-b border-neutral-800">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 border-b border-neutral-800">
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
               <Film className="w-3.5 h-3.5" />
@@ -109,13 +101,13 @@ export function EventHighlightsSection() {
           <div className="flex items-center gap-4 self-start lg:self-end">
             <Link
               href="/events?tab=past"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 shrink-0"
             >
               <span>View All Conclave Archives</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
-            {/* Slider navigation controls (for future-proof scrolling when 3+ videos exist) */}
+            {/* Slider navigation controls */}
             <div className="hidden sm:flex items-center gap-2">
               <button
                 type="button"
@@ -139,7 +131,7 @@ export function EventHighlightsSection() {
           </div>
         </div>
 
-        {/* Video Cards Grid / Carousel */}
+        {/* Video Cards Grid / Carousel — ONLY Video Frames */}
         <div className="relative">
           <div
             ref={scrollRef}
@@ -148,74 +140,29 @@ export function EventHighlightsSection() {
             {defaultHighlights.map((item) => (
               <div
                 key={item.id}
-                className="group bg-[#1E1E1E] rounded-xl overflow-hidden border border-neutral-800 hover:border-[#C9A227]/70 shadow-2xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 snap-start min-w-[290px]"
+                className="group relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 hover:-translate-y-1 snap-start min-w-[290px]"
               >
-                {/* 16:9 Video Player Container */}
-                <div className="relative w-full aspect-video bg-black overflow-hidden border-b border-neutral-800">
-                  {/* Top-Left Category Badge */}
-                  <div className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded bg-[#181818]/90 backdrop-blur-md border border-white/10 text-[#C9A227] text-[10px] font-bold uppercase tracking-wider shadow-md pointer-events-none">
-                    {item.tag}
-                  </div>
-
-                  {/* Top-Right Edition Tag */}
-                  <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-white/10 text-neutral-300 text-[10px] font-mono shadow-md pointer-events-none">
-                    {item.edition}
-                  </div>
-
-                  {/* Native HTML5 Video Element preserving user's exact required URL */}
-                  <video
-                    src={item.videoUrl}
-                    controls
-                    preload="metadata"
-                    playsInline
-                    className="w-full h-full object-contain"
-                  >
-                    Your browser does not support the video tag.
-                  </video>
+                {/* Top-Left Category Badge */}
+                <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded bg-black/75 backdrop-blur-md border border-white/10 text-[#C9A227] text-[10px] font-bold uppercase tracking-wider shadow-md pointer-events-none">
+                  {item.tag}
                 </div>
 
-                {/* Content Metadata Frame */}
-                <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-4">
-                  <div className="space-y-3">
-                    {/* Location & Attendance Metadata Bar */}
-                    <div className="flex items-center gap-4 text-xs text-neutral-400">
-                      <span className="inline-flex items-center gap-1.5 text-[#C9A227] font-semibold">
-                        <MapPin className="w-3.5 h-3.5" />
-                        <span>{item.location}</span>
-                      </span>
-                      <span className="w-1 h-1 rounded-full bg-neutral-600" />
-                      <span className="inline-flex items-center gap-1.5">
-                        <Users className="w-3.5 h-3.5 text-neutral-400" />
-                        <span>{item.attendees}</span>
-                      </span>
-                    </div>
-
-                    {/* Conclave Title */}
-                    <h3 className="text-lg sm:text-xl font-serif font-bold text-white group-hover:text-[#C9A227] transition-colors leading-snug line-clamp-2">
-                      {item.title}
-                    </h3>
-
-                    {/* Synopsis */}
-                    <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed line-clamp-2">
-                      {item.summary}
-                    </p>
-                  </div>
-
-                  {/* Card Action Footer */}
-                  <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
-                    <Link
-                      href="/events?tab=past"
-                      className="text-xs font-bold uppercase tracking-wider text-[#C9A227] group-hover:text-[#D4AF37] transition-colors inline-flex items-center gap-2"
-                    >
-                      <span>Watch Full Conclave Coverage</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-
-                    <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">
-                      Recorded
-                    </span>
-                  </div>
+                {/* Top-Right Edition Tag */}
+                <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded bg-black/75 backdrop-blur-md border border-white/10 text-neutral-300 text-[10px] font-mono shadow-md pointer-events-none">
+                  {item.edition}
                 </div>
+
+                {/* Video Element */}
+                <video
+                  src={item.videoUrl}
+                  poster={item.posterUrl}
+                  controls
+                  preload="metadata"
+                  playsInline
+                  className="w-full h-full object-cover"
+                >
+                  Your browser does not support the video tag.
+                </video>
               </div>
             ))}
           </div>
@@ -224,3 +171,4 @@ export function EventHighlightsSection() {
     </section>
   );
 }
+

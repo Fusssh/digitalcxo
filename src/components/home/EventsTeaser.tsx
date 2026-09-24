@@ -1,54 +1,49 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, HeartHandshake, Sparkles } from "lucide-react";
 
 interface SocialInitiative {
   id: string;
-  number: string;
   tag: string;
-  commitment: string;
   title: string;
   description: string;
   image: string;
-  impactHighlight: string;
+  link: string;
 }
 
 const socialInitiatives: SocialInitiative[] = [
   {
     id: "si-1",
-    number: "01",
-    tag: "Executive Vitality & Mind",
-    commitment: "Annual Residential Retreat",
-    title: "CXO Wellness Retreats",
+    tag: "Executive Vitality",
+    title: "CXO WELLNESS RETREATS",
     description:
-      "Hosting immersive wellness experiences focused on rejuvenation, relaxation and stress management to support sustainable leadership vitality and decision clarity.",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
-    impactHighlight: "Peer Restoration & Mindfulness"
+      "Hosting immersive wellness experiences focused on rejuvenation, relaxation and stress management to support leadership vitality.",
+    image:
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200&auto=format&fit=crop",
+    link: "/initiatives"
   },
   {
     id: "si-2",
-    number: "02",
-    tag: "Preventive Healthcare",
-    commitment: "Quarterly Diagnostic Camps",
-    title: "Health Awareness & Screening Camps",
+    tag: "Preventive Care",
+    title: "HEALTH AWARENESS & SCREENING CAMPS",
     description:
-      "Organizing accessible health check-ups and diagnostic awareness programs to promote early preventive care across the CXO executive fraternity and surrounding communities.",
-    image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop",
-    impactHighlight: "Early Diagnostics & Preventive Camps"
+      "Organizing accessible health check-ups and awareness programs to promote preventive care within the CXO community and beyond.",
+    image:
+      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1200&auto=format&fit=crop",
+    link: "/initiatives"
   },
   {
     id: "si-3",
-    number: "03",
     tag: "Philanthropic Pledge",
-    commitment: "3% Annual Profit Pledge",
-    title: "Founders' Personal Giving Commitment",
+    title: "FOUNDERS' PERSONAL GIVING COMMITMENT",
     description:
-      "Our founders personally pledge 3% of annual profits to fund meaningful social causes, tech literacy for underprivileged students, and grassroot community development.",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop",
-    impactHighlight: "Direct Institutional Giving"
+      "Our founders personally pledge 3% of their annual profits to support meaningful social causes and contribute to community development.",
+    image:
+      "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=1200&auto=format&fit=crop",
+    link: "/initiatives"
   }
 ];
 
@@ -85,17 +80,17 @@ export function EventsTeaser() {
 
   return (
     <section className="py-16 md:py-24 bg-[#F7F3EA] text-[#1A1A1A] relative overflow-hidden select-none border-t border-[#EAE4D6]">
-      {/* Subtle decorative background accent */}
+      {/* Subtle warm decorative glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-24 right-0 w-96 h-96 rounded-full bg-[#EAE4D6]/40 blur-3xl"
       />
 
-      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-12">
-        {/* Split Header Architecture */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2 border-b border-[#EAE4D6]/80">
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-10">
+        {/* Modern Split Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 border-b border-[#EAE4D6]/80">
           <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAE4D6] border border-[#DDD5C4] text-[#8C6D1F] text-xs font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAE4D6] border border-[#DDD5C4] text-[#8C6D1F] text-xs font-bold uppercase tracking-widest shadow-sm">
               <HeartHandshake className="w-3.5 h-3.5 text-[#C9A227]" />
               <span>Philanthropy &amp; Community Stewardship</span>
             </div>
@@ -105,7 +100,7 @@ export function EventsTeaser() {
             </h2>
 
             <p className="text-base sm:text-lg text-[#555555] max-w-2xl leading-relaxed font-normal">
-              Beyond boardroom strategy and technological transformation, our leadership fraternity is dedicated to executive vitality, preventive community health, and structured philanthropic giving.
+              Beyond boardroom strategy and technological transformation, our leadership fraternity is dedicated to executive vitality, preventive health diagnostics, and structured philanthropic giving.
             </p>
           </div>
 
@@ -113,13 +108,13 @@ export function EventsTeaser() {
           <div className="flex items-center gap-4 self-start lg:self-end">
             <Link
               href="/initiatives"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1A1A1A] hover:bg-[#C9A227] text-white hover:text-neutral-950 transition-all duration-300 shadow-md hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1A1A1A] hover:bg-[#C9A227] text-white hover:text-neutral-950 transition-all duration-300 shadow-md hover:scale-105 shrink-0"
             >
               <span>Explore Social Impact</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
-            {/* Slider navigation controls (active when scrolling is available) */}
+            {/* Slider navigation controls */}
             <div className="hidden sm:flex items-center gap-2">
               <button
                 type="button"
@@ -143,79 +138,57 @@ export function EventsTeaser() {
           </div>
         </div>
 
-        {/* 3-Pillar Executive Impact Cards */}
+        {/* 3 Modern Full-Image Cards with Floating White Overlay Pill */}
         <div className="relative">
           <div
             ref={scrollRef}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
           >
-            {socialInitiatives.map((item) => (
-              <div
+            {socialInitiatives.map((item, idx) => (
+              <Link
                 key={item.id}
-                className="group bg-[#FDFAF3] rounded-xl overflow-hidden border border-[#EAE4D6] hover:border-[#C9A227] shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 snap-start min-w-[280px]"
+                href={item.link}
+                className="group relative block aspect-[16/11] sm:aspect-[16/10] min-h-[300px] md:min-h-[340px] w-full rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl border border-[#EAE4D6] hover:border-[#C9A227] transition-all duration-500 snap-start bg-neutral-900"
               >
-                {/* Top Media Frame */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-900">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover object-center grayscale contrast-125 brightness-95 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity" />
+                {/* Full-bleed Photo Background */}
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                />
 
-                  {/* Top-Left Category Tag */}
-                  <div className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-[#181818]/90 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
-                    {item.tag}
-                  </div>
+                {/* Dark Vignette Overlay for Depth & Contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/30 to-black/40 group-hover:from-black/50 transition-colors duration-500" />
 
-                  {/* Top-Right Number Badge */}
-                  <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-[#C9A227] text-neutral-950 text-xs font-bold font-mono flex items-center justify-center shadow-lg">
-                    {item.number}
-                  </div>
-
-                  {/* Bottom Image Bar: Commitment Highlight */}
-                  <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-white text-xs font-semibold drop-shadow-md">
-                    <span className="flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-[#C9A227]" />
-                      <span>{item.commitment}</span>
-                    </span>
-                  </div>
+                {/* Top Corner Number Badge */}
+                <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
+                  0{idx + 1} • {item.tag}
                 </div>
 
-                {/* Content Body */}
-                <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-4">
-                  <div className="space-y-3">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#C9A227] block">
-                      {item.impactHighlight}
+                {/* Center Floating White Capsule Pill */}
+                <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 z-10">
+                  <div className="bg-white/95 backdrop-blur-md rounded-[28px] sm:rounded-[36px] px-6 py-6 sm:px-7 sm:py-7 max-w-[90%] sm:max-w-[86%] text-center shadow-2xl border border-white/80 group-hover:scale-[1.02] group-hover:shadow-[0_20px_45px_rgba(0,0,0,0.3)] transition-all duration-300">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A227] block mb-1.5 font-mono">
+                      Social Initiative
                     </span>
 
-                    <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors leading-snug">
+                    <h3 className="font-extrabold text-sm sm:text-base md:text-lg text-[#111111] uppercase tracking-wide mb-2 leading-snug group-hover:text-[#8C6D1F] transition-colors">
                       {item.title}
                     </h3>
 
-                    <p className="text-sm text-[#555555] leading-relaxed line-clamp-3">
+                    <p className="text-xs sm:text-[13px] text-neutral-600 leading-relaxed font-normal">
                       {item.description}
                     </p>
-                  </div>
 
-                  {/* Action Link Footer */}
-                  <div className="pt-4 border-t border-[#EAE4D6] flex items-center justify-between">
-                    <Link
-                      href="/initiatives"
-                      className="text-xs font-bold uppercase tracking-wider text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors inline-flex items-center gap-2"
-                    >
+                    <div className="mt-3.5 pt-3 border-t border-neutral-100 flex items-center justify-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors">
                       <span>Learn More &amp; Participate</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#C9A227] group-hover:translate-x-1 transition-transform" />
-                    </Link>
-
-                    <span className="text-[11px] font-mono text-neutral-400">
-                      Digital CXOS Social
-                    </span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -223,3 +196,5 @@ export function EventsTeaser() {
     </section>
   );
 }
+
+

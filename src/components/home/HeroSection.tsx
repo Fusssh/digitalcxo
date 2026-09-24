@@ -98,33 +98,33 @@ export function HeroSection() {
             </p>
 
             {/* Executive Dual Action Buttons */}
-            <div className="pt-2 flex flex-wrap justify-center items-center gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
               <Link
                 href="/membership2"
-                className="px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 flex items-center gap-2"
+                className="w-full sm:w-auto px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 flex items-center justify-center gap-2"
               >
                 <span>Explore CXO Membership</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/partnership2"
-                className="px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider border border-[#EAE4D6]/70 hover:border-[#C9A227] text-white hover:text-[#C9A227] bg-black/40 backdrop-blur-sm transition-all duration-200"
+                className="w-full sm:w-auto px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider border border-[#EAE4D6]/70 hover:border-[#C9A227] text-white hover:text-[#C9A227] bg-black/40 backdrop-blur-sm transition-all duration-200 text-center"
               >
                 Strategic Partnerships
               </Link>
             </div>
 
             {/* Trust Badges Bar */}
-            <div className="pt-2 flex flex-wrap justify-center items-center gap-6 text-xs text-neutral-400 font-medium">
-              <span className="flex items-center gap-2">
+            <div className="pt-2 flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-xs text-neutral-300 font-medium">
+              <span className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-[#C9A227] font-bold">✓</span>
                 <span>100% Peer Vetted</span>
               </span>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-[#C9A227] font-bold">✓</span>
                 <span>Chatham House Rule</span>
               </span>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5 sm:gap-2">
                 <span className="text-[#C9A227] font-bold">✓</span>
                 <span>Non-Commercial Exchange</span>
               </span>

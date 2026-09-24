@@ -76,7 +76,7 @@ export default function ChaptersPage() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                <div className="pt-4 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <Link
                     href={`/chapters/${chapter.id}`}
                     className="text-xs font-bold uppercase tracking-wider text-amber-300 group-hover:text-amber-200 flex items-center gap-1.5 transition-colors"
@@ -87,7 +87,7 @@ export default function ChaptersPage() {
 
                   <Link
                     href="/membership2"
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-emerald-600 text-white transition-colors"
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-emerald-600 text-white transition-colors text-center"
                   >
                     Apply in {chapter.name.split(" ")[0]}
                   </Link>

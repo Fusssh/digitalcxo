@@ -206,7 +206,7 @@ export default function ContactPage() {
                         <option value="Mrs.">Mrs.</option>
                         <option value="Dr.">Dr.</option>
                       </select>
-                      {errors.title && <p className="text-rose-400 text-[11px] mt-1">{errors.title.message}</p>}
+                      {errors.title && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.title.message}</p>}
                     </div>
 
                     <div className="sm:col-span-8">
@@ -219,7 +219,7 @@ export default function ContactPage() {
                         placeholder="Enter your full name"
                         className={cn("input-exec", errors.name && "input-exec-error")}
                       />
-                      {errors.name && <p className="text-rose-400 text-[11px] mt-1">{errors.name.message}</p>}
+                      {errors.name && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.name.message}</p>}
                     </div>
                   </div>
 
@@ -235,7 +235,7 @@ export default function ContactPage() {
                         placeholder="name@organization.com"
                         className={cn("input-exec", errors.email && "input-exec-error")}
                       />
-                      {errors.email && <p className="text-rose-400 text-[11px] mt-1">{errors.email.message}</p>}
+                      {errors.email && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.email.message}</p>}
                     </div>
 
                     <div>
@@ -248,7 +248,7 @@ export default function ContactPage() {
                         placeholder="+91 98765 43210"
                         className={cn("input-exec", errors.phone && "input-exec-error")}
                       />
-                      {errors.phone && <p className="text-rose-400 text-[11px] mt-1">{errors.phone.message}</p>}
+                      {errors.phone && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.phone.message}</p>}
                     </div>
                   </div>
 
@@ -259,7 +259,7 @@ export default function ContactPage() {
                         Inquiry Details <span className="text-rose-400">*</span>
                       </label>
                       <span className={cn(
-                        "text-[11px]",
+                        "text-xs",
                         charCount > 500 ? "text-rose-400 font-bold" : "text-neutral-400"
                       )}>
                         {charCount} / 500 characters
@@ -277,23 +277,23 @@ export default function ContactPage() {
                       )}
                     />
 
-                    <p className="text-[11px] text-[#C9A227]/80 mt-1.5 leading-relaxed italic">
+                    <p className="text-xs sm:text-sm text-[#C9A227]/90 mt-1.5 leading-relaxed">
                       (Please do not enter sensitive financial or confidential credentials such as PAN, Aadhar, or Account numbers.)
                     </p>
 
-                    {errors.message && <p className="text-rose-400 text-[11px] mt-1">{errors.message.message}</p>}
+                    {errors.message && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.message.message}</p>}
                   </div>
 
                   {/* Security Verification Indicator */}
-                  <div className="p-3.5 rounded-xl bg-neutral-900/60 border border-neutral-800 flex items-center justify-between text-xs">
+                  <div className="p-3.5 rounded-xl bg-neutral-900/60 border border-neutral-800 flex items-center justify-between text-xs sm:text-sm">
                     <div className="flex items-center gap-2.5 text-neutral-300">
                       <ShieldCheck className="w-5 h-5 text-[#C9A227]" />
                       <div>
-                        <span className="font-semibold block text-white">Cloudflare Turnstile Protected</span>
-                        <span className="text-[10px] text-neutral-400">Automated spam &amp; bot mitigation active</span>
+                        <span className="font-semibold block text-white">Enterprise Security Verification</span>
+                        <span className="text-xs text-neutral-400">Automated spam &amp; bot mitigation active</span>
                       </div>
                     </div>
-                    <span className="text-[10px] px-2.5 py-1 rounded bg-[#C9A227]/15 text-[#C9A227] border border-[#C9A227]/30 font-semibold">
+                    <span className="text-xs px-2.5 py-1 rounded bg-[#C9A227]/15 text-[#C9A227] border border-[#C9A227]/30 font-semibold">
                       Secured
                     </span>
                   </div>
@@ -303,7 +303,7 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto px-10 py-4 rounded-lg font-bold text-xs sm:text-sm tracking-wider uppercase bg-gradient-to-r from-[#C9A227] via-[#D4AF37] to-[#C9A227] hover:brightness-110 text-neutral-950 shadow-[0_4px_20px_rgba(201,162,39,0.35)] hover:shadow-[0_4px_28px_rgba(201,162,39,0.55)] transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50"
+                      className="w-full sm:w-auto px-10 py-4 rounded-lg font-bold text-sm sm:text-base tracking-wider uppercase bg-gradient-to-r from-[#C9A227] via-[#D4AF37] to-[#C9A227] hover:brightness-110 text-neutral-950 shadow-[0_4px_20px_rgba(201,162,39,0.35)] hover:shadow-[0_4px_28px_rgba(201,162,39,0.55)] transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <>

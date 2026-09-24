@@ -155,91 +155,91 @@ export default function CxoMembershipPage() {
             <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
               {/* Card 1: Vetting Protocol */}
               <div className="bg-[#1C1C1C] rounded-2xl p-6 sm:p-8 border border-neutral-800 shadow-xl space-y-6">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#111111] border border-neutral-700/80 text-[11px] font-semibold tracking-wider uppercase text-[#C9A227]">
-                    <Sparkles className="w-3.5 h-3.5" />
+                <div className="space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111] border border-neutral-700/80 text-xs sm:text-sm font-semibold tracking-wider uppercase text-[#C9A227]">
+                    <Sparkles className="w-4 h-4" />
                     <span>Intentionally Selective</span>
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-white">
+                  <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">
                     Executive Membership Protocol
                   </h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
+                  <p className="text-base text-neutral-300 leading-relaxed">
                     Reserved exclusively for CIOs, CISOs, CTOs, CDOs, and enterprise technology decision-makers driving national transformation.
                   </p>
                 </div>
 
-                <div className="border-t border-neutral-800 pt-5 space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">
+                <div className="border-t border-neutral-800 pt-6 space-y-5">
+                  <h4 className="text-base font-bold uppercase tracking-widest text-[#C9A227]">
                     3-Stage Vetting Lifecycle
                   </h4>
 
-                  <div className="space-y-3.5 text-xs text-neutral-300">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="space-y-5 text-neutral-200">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
                         1
                       </div>
                       <div>
-                        <p className="font-semibold text-white">Confidential Profile Intake</p>
-                        <p className="text-neutral-400 text-[11px]">Submission of credentials, leadership scope, and strategic interests.</p>
+                        <p className="font-bold text-white text-base sm:text-lg">Confidential Profile Intake</p>
+                        <p className="text-neutral-300 text-sm sm:text-base mt-1 leading-relaxed">Submission of credentials, leadership scope, and strategic interests.</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
                         2
                       </div>
                       <div>
-                        <p className="font-semibold text-white">Secretariat Peer Verification</p>
-                        <p className="text-neutral-400 text-[11px]">Advisory Board verification against enterprise leadership criteria.</p>
+                        <p className="font-bold text-white text-base sm:text-lg">Secretariat Peer Verification</p>
+                        <p className="text-neutral-300 text-sm sm:text-base mt-1 leading-relaxed">Advisory Board verification against enterprise leadership criteria.</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
                         3
                       </div>
                       <div>
-                        <p className="font-semibold text-white">Induction &amp; Chapter Access</p>
-                        <p className="text-neutral-400 text-[11px]">Welcome briefing, private roundtable access, and conclave credentials.</p>
+                        <p className="font-bold text-white text-base sm:text-lg">Induction &amp; Chapter Access</p>
+                        <p className="text-neutral-300 text-sm sm:text-base mt-1 leading-relaxed">Welcome briefing, private roundtable access, and conclave credentials.</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Key Privileges */}
-                <div className="border-t border-neutral-800 pt-5 space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">
+                <div className="border-t border-neutral-800 pt-6 space-y-4">
+                  <h4 className="text-base font-bold uppercase tracking-widest text-[#C9A227]">
                     Member Privileges
                   </h4>
-                  <ul className="space-y-2 text-xs text-neutral-300">
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#C9A227] font-bold">›</span>
+                  <ul className="space-y-3.5 text-sm sm:text-base text-neutral-200">
+                    <li className="flex items-center gap-3">
+                      <span className="text-[#C9A227] font-bold text-lg">›</span>
                       <span>Chatham House Rule Closed-Door Roundtables</span>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#C9A227] font-bold">›</span>
+                    <li className="flex items-center gap-3">
+                      <span className="text-[#C9A227] font-bold text-lg">›</span>
                       <span>Horizon Annual Residential Leadership Conclave</span>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#C9A227] font-bold">›</span>
+                    <li className="flex items-center gap-3">
+                      <span className="text-[#C9A227] font-bold text-lg">›</span>
                       <span>Boardroom Crisis &amp; Cyber Simulation Labs</span>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#C9A227] font-bold">›</span>
+                    <li className="flex items-center gap-3">
+                      <span className="text-[#C9A227] font-bold text-lg">›</span>
                       <span>Confidential CXO Peer Advisory Circles</span>
                     </li>
                   </ul>
                 </div>
 
                 {/* Direct Secretariat Contact */}
-                <div className="border-t border-neutral-800 pt-4 flex items-center gap-2.5 text-xs text-neutral-400">
-                  <Mail className="w-4 h-4 text-[#C9A227]" />
-                  <span>Secretariat: <strong className="text-neutral-200">contact@digitalcxos.com</strong></span>
+                <div className="border-t border-neutral-800 pt-5 flex items-center gap-3 text-base text-neutral-300">
+                  <Mail className="w-5 h-5 text-[#C9A227] shrink-0" />
+                  <span>Secretariat: <strong className="text-neutral-100 font-semibold">contact@digitalcxos.com</strong></span>
                 </div>
               </div>
 
               {/* Card 2: DPDP Privacy Pledge */}
-              <div className="bg-[#181818] rounded-xl p-5 border border-neutral-800 flex items-start gap-3 text-xs text-neutral-400">
+              <div className="bg-[#181818] rounded-xl p-5 border border-neutral-800 flex items-start gap-3.5 text-sm sm:text-base text-neutral-300">
                 <Lock className="w-5 h-5 text-[#C9A227] shrink-0 mt-0.5" />
                 <p className="leading-relaxed">
                   Strict non-commercial exchange. Information submitted is handled with utmost discretion under India&apos;s DPDP Act standards.
@@ -253,20 +253,20 @@ export default function CxoMembershipPage() {
                 {/* Form Header */}
                 <div className="border-b border-neutral-800 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div>
-                    <h2 className="text-2xl font-serif font-bold text-white">
+                    <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
                       CXO Application Form
                     </h2>
-                    <p className="text-xs text-neutral-400 mt-1">
+                    <p className="text-sm text-neutral-300 mt-1">
                       Please provide your official enterprise details for committee verification.
                     </p>
                   </div>
-                  <span className="text-xs text-[#C9A227] font-semibold bg-[#C9A227]/10 px-3 py-1 rounded border border-[#C9A227]/20 self-start sm:self-auto">
+                  <span className="text-sm text-[#C9A227] font-semibold bg-[#C9A227]/10 px-3.5 py-1 rounded border border-[#C9A227]/20 self-start sm:self-auto">
                     * Required Fields
                   </span>
                 </div>
 
                 {serverError && (
-                  <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-600/40 text-rose-200 text-xs flex items-center gap-3">
+                  <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-600/40 text-rose-200 text-sm flex items-center gap-3">
                     <AlertCircle className="w-5 h-5 shrink-0 text-rose-400" />
                     <span>{serverError}</span>
                   </div>
@@ -276,10 +276,10 @@ export default function CxoMembershipPage() {
                   {/* SECTION 1: Personal & Executive Identity */}
                   <div className="space-y-5">
                     <div className="flex items-center gap-2.5 pb-2 border-b border-neutral-800">
-                      <span className="text-xs font-bold text-[#C9A227] bg-[#C9A227]/10 px-2 py-0.5 rounded">
+                      <span className="text-sm font-bold text-[#C9A227] bg-[#C9A227]/10 px-2.5 py-1 rounded">
                         01
                       </span>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+                      <h3 className="text-base font-bold uppercase tracking-wider text-white">
                         Executive Identity &amp; Direct Access
                       </h3>
                     </div>
@@ -378,10 +378,10 @@ export default function CxoMembershipPage() {
                   {/* SECTION 2: Enterprise & Boardroom Credentials */}
                   <div className="space-y-5">
                     <div className="flex items-center gap-2.5 pb-2 border-b border-neutral-800">
-                      <span className="text-xs font-bold text-[#C9A227] bg-[#C9A227]/10 px-2 py-0.5 rounded">
+                      <span className="text-sm font-bold text-[#C9A227] bg-[#C9A227]/10 px-2.5 py-1 rounded">
                         02
                       </span>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+                      <h3 className="text-base font-bold uppercase tracking-wider text-white">
                         Enterprise &amp; Governance Credentials
                       </h3>
                     </div>
@@ -398,7 +398,7 @@ export default function CxoMembershipPage() {
                           placeholder="Enter your enterprise name"
                           className={cn("input-exec", errors.organization && "input-exec-error")}
                         />
-                        {errors.organization && <p className="text-rose-400 text-[11px] mt-1">{errors.organization.message}</p>}
+                        {errors.organization && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.organization.message}</p>}
                       </div>
 
                       {/* Designation */}
@@ -412,7 +412,7 @@ export default function CxoMembershipPage() {
                           placeholder="e.g. Chief Information Officer, CISO, CTO"
                           className={cn("input-exec", errors.designation && "input-exec-error")}
                         />
-                        {errors.designation && <p className="text-rose-400 text-[11px] mt-1">{errors.designation.message}</p>}
+                        {errors.designation && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.designation.message}</p>}
                       </div>
                     </div>
 
@@ -428,7 +428,7 @@ export default function CxoMembershipPage() {
                           placeholder="https://linkedin.com/in/profile or NA"
                           className={cn("input-exec", errors.linkedin && "input-exec-error")}
                         />
-                        {errors.linkedin && <p className="text-rose-400 text-[11px] mt-1">{errors.linkedin.message}</p>}
+                        {errors.linkedin && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.linkedin.message}</p>}
                       </div>
 
                       {/* Organization Website */}
@@ -485,10 +485,10 @@ export default function CxoMembershipPage() {
                   {/* SECTION 3: Chapter & Geographic Alignment */}
                   <div className="space-y-5">
                     <div className="flex items-center gap-2.5 pb-2 border-b border-neutral-800">
-                      <span className="text-xs font-bold text-[#C9A227] bg-[#C9A227]/10 px-2 py-0.5 rounded">
+                      <span className="text-sm font-bold text-[#C9A227] bg-[#C9A227]/10 px-2.5 py-1 rounded">
                         03
                       </span>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+                      <h3 className="text-base font-bold uppercase tracking-wider text-white">
                         Chapter &amp; Regional Alignment
                       </h3>
                     </div>
@@ -510,7 +510,7 @@ export default function CxoMembershipPage() {
                             </option>
                           ))}
                         </select>
-                        {errors.country && <p className="text-rose-400 text-[11px] mt-1">{errors.country.message}</p>}
+                        {errors.country && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.country.message}</p>}
                       </div>
 
                       {/* State */}
@@ -532,7 +532,7 @@ export default function CxoMembershipPage() {
                             </option>
                           ))}
                         </select>
-                        {errors.state && <p className="text-rose-400 text-[11px] mt-1">{errors.state.message}</p>}
+                        {errors.state && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.state.message}</p>}
                       </div>
 
                       {/* City */}
@@ -554,7 +554,7 @@ export default function CxoMembershipPage() {
                             </option>
                           ))}
                         </select>
-                        {errors.city && <p className="text-rose-400 text-[11px] mt-1">{errors.city.message}</p>}
+                        {errors.city && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.city.message}</p>}
                       </div>
                     </div>
                   </div>
@@ -562,10 +562,10 @@ export default function CxoMembershipPage() {
                   {/* SECTION 4: Strategic Interests & Contribution */}
                   <div className="space-y-5">
                     <div className="flex items-center gap-2.5 pb-2 border-b border-neutral-800">
-                      <span className="text-xs font-bold text-[#C9A227] bg-[#C9A227]/10 px-2 py-0.5 rounded">
+                      <span className="text-sm font-bold text-[#C9A227] bg-[#C9A227]/10 px-2.5 py-1 rounded">
                         04
                       </span>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+                      <h3 className="text-base font-bold uppercase tracking-wider text-white">
                         Strategic Focus &amp; Peer Contribution
                       </h3>
                     </div>
@@ -602,7 +602,7 @@ export default function CxoMembershipPage() {
                           <option value="Energy, Oil & Utilities">Energy, Oil &amp; Utilities</option>
                           <option value="Other Enterprise Sector">Other Enterprise Sector</option>
                         </select>
-                        {errors.industry && <p className="text-rose-400 text-[11px] mt-1">{errors.industry.message}</p>}
+                        {errors.industry && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.industry.message}</p>}
                       </div>
 
                       {/* Strategic Areas of Interest */}
@@ -616,7 +616,7 @@ export default function CxoMembershipPage() {
                           placeholder="e.g. AI Governance, Cyber Defense, Cloud Sovereignty"
                           className={cn("input-exec", errors.strategicInterests && "input-exec-error")}
                         />
-                        {errors.strategicInterests && <p className="text-rose-400 text-[11px] mt-1">{errors.strategicInterests.message}</p>}
+                        {errors.strategicInterests && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.strategicInterests.message}</p>}
                       </div>
                     </div>
 
@@ -632,7 +632,7 @@ export default function CxoMembershipPage() {
                           placeholder="e.g. Peer Mentorship, Roundtables, AI Labs"
                           className={cn("input-exec", errors.contributeVia && "input-exec-error")}
                         />
-                        {errors.contributeVia && <p className="text-rose-400 text-[11px] mt-1">{errors.contributeVia.message}</p>}
+                        {errors.contributeVia && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.contributeVia.message}</p>}
                       </div>
 
                       {/* Preferred Mode of Engagement */}
@@ -656,7 +656,7 @@ export default function CxoMembershipPage() {
                           </option>
                         </select>
                         {errors.preferredModeOfEngagement && (
-                          <p className="text-rose-400 text-[11px] mt-1">
+                          <p className="text-rose-400 text-xs sm:text-sm mt-1">
                             {errors.preferredModeOfEngagement.message}
                           </p>
                         )}
@@ -692,7 +692,7 @@ export default function CxoMembershipPage() {
                           <option value="Other">Other</option>
                         </select>
                         {errors.howDidYouHear && (
-                          <p className="text-rose-400 text-[11px] mt-1">{errors.howDidYouHear.message}</p>
+                          <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.howDidYouHear.message}</p>
                         )}
                       </div>
 
@@ -721,12 +721,12 @@ export default function CxoMembershipPage() {
                         {...register("termsConsent")}
                         className="mt-1 w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-[#C9A227] accent-[#C9A227] focus:ring-[#C9A227] shrink-0"
                       />
-                      <span className="text-xs text-neutral-300 group-hover:text-white leading-relaxed">
+                      <span className="text-sm sm:text-base text-neutral-300 group-hover:text-white leading-relaxed">
                         I have read and agree to the <a href="/terms" target="_blank" className="text-[#C9A227] underline">Terms and Conditions</a> &amp; <a href="/privacy-policy" target="_blank" className="text-[#C9A227] underline">Privacy Policy</a>.
                       </span>
                     </label>
                     {errors.termsConsent && (
-                      <p className="text-rose-400 text-[11px] pl-8">{errors.termsConsent.message}</p>
+                      <p className="text-rose-400 text-xs sm:text-sm pl-8">{errors.termsConsent.message}</p>
                     )}
 
                     <label className="flex items-start gap-3.5 cursor-pointer group p-3 rounded-lg hover:bg-neutral-800/40 transition-colors">
@@ -735,12 +735,12 @@ export default function CxoMembershipPage() {
                         {...register("accuracyConsent")}
                         className="mt-1 w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-[#C9A227] accent-[#C9A227] focus:ring-[#C9A227] shrink-0"
                       />
-                      <span className="text-xs text-neutral-300 group-hover:text-white leading-relaxed">
+                      <span className="text-sm sm:text-base text-neutral-300 group-hover:text-white leading-relaxed">
                         I confirm that the information provided is accurate and consent to its use for committee vetting in accordance with the Digital CXOS Governance Policy.
                       </span>
                     </label>
                     {errors.accuracyConsent && (
-                      <p className="text-rose-400 text-[11px] pl-8">{errors.accuracyConsent.message}</p>
+                      <p className="text-rose-400 text-xs sm:text-sm pl-8">{errors.accuracyConsent.message}</p>
                     )}
                   </div>
 
@@ -749,7 +749,7 @@ export default function CxoMembershipPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto px-10 py-4 rounded-lg font-bold text-xs sm:text-sm tracking-wider uppercase bg-gradient-to-r from-[#C9A227] via-[#D4AF37] to-[#C9A227] hover:brightness-110 text-neutral-950 shadow-[0_4px_20px_rgba(201,162,39,0.35)] hover:shadow-[0_4px_28px_rgba(201,162,39,0.55)] transition-all flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
+                      className="w-full sm:w-auto px-10 py-4 rounded-lg font-bold text-sm sm:text-base tracking-wider uppercase bg-gradient-to-r from-[#C9A227] via-[#D4AF37] to-[#C9A227] hover:brightness-110 text-neutral-950 shadow-[0_4px_20px_rgba(201,162,39,0.35)] hover:shadow-[0_4px_28px_rgba(201,162,39,0.55)] transition-all flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>

@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#060B18]">
+    <div className="min-h-screen bg-[#181818] text-white">
       <PageHero
         title="Terms and Conditions"
         subtitle="Governing principles for high-trust executive peer engagement within the Digital CXOS leadership fraternity."
@@ -19,36 +19,121 @@ export default function TermsPage() {
         ]}
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-slate-300 space-y-8 text-sm leading-relaxed">
-        <div className="rounded-2xl glass-panel p-8 border border-white/10 space-y-4">
-          <div className="flex items-center gap-2 text-amber-300 font-serif text-lg font-bold">
-            <Scale className="w-5 h-5 text-amber-400" />
-            <span>1. Platform Membership &amp; Eligibility</span>
-          </div>
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-16 text-neutral-300 space-y-12 text-[16px] leading-relaxed">
+        
+        {/* Introduction */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-serif font-bold text-white tracking-tight">Introduction</h2>
           <p>
-            Membership in Digital CXOS is strictly by invitation or verified application, restricted to Chief Information Officers (CIOs), Chief Information Security Officers (CISOs), Chief Technology Officers (CTOs), Chief Digital Officers (CDOs), and enterprise technology leaders. Digital CXOS Private Limited reserves the discretionary right to review and accept or decline membership applications to protect the strategic integrity of the forum.
+            Your engagement with Digital CXOS, whether through form submissions or event involvement, implies acceptance of the terms and conditions stated below:
           </p>
-        </div>
+        </section>
 
-        <div className="rounded-2xl glass-panel p-8 border border-white/10 space-y-4">
-          <div className="flex items-center gap-2 text-amber-300 font-serif text-lg font-bold">
-            <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <span>2. Code of Professional Conduct &amp; Confidentiality</span>
+        {/* Core Commitments */}
+        <section className="space-y-8 border-t border-neutral-800 pt-8">
+          
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Accuracy of Information</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-neutral-400">
+              <li>Details provided in the partnership or membership forms must be accurate and complete</li>
+              <li>Verification will be done through OTP, which will be sent to the provided email address.</li>
+            </ul>
           </div>
-          <p>
-            All closed-door sessions, crisis simulation labs, and executive roundtables operate under the Chatham House Rule: participants are free to use the information received, but neither the identity nor the affiliation of the speaker(s), nor that of any other participant, may be revealed. Members agree to engage professionally, ethically, and without unsolicited commercial solicitation.
-          </p>
-        </div>
 
-        <div className="rounded-2xl glass-panel p-8 border border-white/10 space-y-4">
-          <div className="flex items-center gap-2 text-amber-300 font-serif text-lg font-bold">
-            <Award className="w-5 h-5 text-sky-400" />
-            <span>3. Partner Engagement Guidelines</span>
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Membership Commitments</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-neutral-400">
+              <li>Agreement to Confidentiality &amp; Code of Conduct is non-negotiable</li>
+              <li>Consent for membership is confirmed through verified emails</li>
+            </ul>
           </div>
-          <p>
-            Authorized technology partners, sponsors, and vendors collaborating with the CXO fraternity agree to respect the educational, thought-leadership nature of community engagements. Any breach of high-trust ethics or unauthorized data mining will result in immediate termination of partnership privileges.
-          </p>
-        </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Partnership &amp; Sponsorship Commitments</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-neutral-400">
+              <li>Agreement to Engagement Guidelines &amp; Ethical Conduct is mandatory</li>
+              <li>Consent to be contacted will be recorded</li>
+            </ul>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Data Retention Obligations</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-neutral-400">
+              <li>Your data will be kept as long as it is required to maintain an active membership and partnership.</li>
+              <li>Withdrawal of membership/partnership will lead to data deletion, unless in cases where there are legal obligations.</li>
+            </ul>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Consent for Communication</h2>
+            <p className="text-neutral-400">
+              By providing us with your contact details, you are offering us your consent to receive newsletters, updates and event-related information
+            </p>
+          </div>
+
+        </section>
+
+        {/* Restrictions & Obligations */}
+        <section className="space-y-8 border-t border-neutral-800 pt-8">
+          
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Restrictions</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-neutral-400">
+              <li>Services are strictly intended for adults (18 years or older).</li>
+              <li>Digital CXOS strictly restricts the misuse of its platform, forms, or community engagements.</li>
+            </ul>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Obligations of the User:</h2>
+            <p className="text-neutral-400">Users must refrain from:</p>
+            <ul className="list-disc pl-5 space-y-1.5 text-neutral-400">
+              <li>Partaking in any activities that disrupt the efficiency of the Site</li>
+              <li>Making efforts to gain unauthorised access to any part of the Site</li>
+              <li>Using the Site for legally questionable purposes</li>
+            </ul>
+          </div>
+
+        </section>
+
+        {/* Additional Policies */}
+        <section className="space-y-8 border-t border-neutral-800 pt-8">
+          
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Privacy Policy:</h2>
+            <p className="text-neutral-400">
+              Please go through our Privacy Policy to gain a clear understanding of our practices. By accessing this Site, you are giving us your consent to process information as per the Privacy Policy.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Term Modification:</h2>
+            <p className="text-neutral-400">
+              Please note that we reserve the right to modify the Terms and Conditions at any time. You will be notified of such a change. By continuing to use the Site after the changes, you show your acceptance of the changes.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xl font-serif font-bold text-white">Governing Law:</h2>
+            <p className="text-neutral-400">
+              These Terms and Conditions have been curated as per the guidelines of the Indian Legal System. Any dispute regarding these Terms and Conditions is subject to the jurisdiction of the courts in Noida, India.
+            </p>
+          </div>
+
+        </section>
+
+        {/* Contact Us */}
+        <section className="space-y-4 border-t border-neutral-800 pt-8 pb-16">
+          <h2 className="text-2xl font-serif font-bold text-white tracking-tight">Contact:</h2>
+          <p>For any dispute or query regarding the Terms and Conditions, contact:</p>
+          <p>For questions, concerns, or requests regarding this Privacy Policy, please contact us:</p>
+          <div className="bg-white/5 p-6 rounded-lg border border-white/10 space-y-2 text-neutral-300">
+            <p><strong className="text-white">Email:</strong> <a href="mailto:contact@digitalcxos.com" className="text-[#C9A227] hover:underline">contact@digitalcxos.com</a></p>
+            <p><strong className="text-white">Website:</strong> <a href="https://www.digitalcxos.com/" className="text-[#C9A227] hover:underline" target="_blank" rel="noreferrer">www.digitalcxos.com</a></p>
+            <p><strong className="text-white">Address:</strong> Embassy Galaxy Business Park Tower-B, 1st Floor, A-44 &amp; 45, Sushil Marg, Sector 62, Noida – 201 309, Uttar Pradesh, India</p>
+          </div>
+        </section>
+
       </div>
     </div>
   );
