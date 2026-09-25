@@ -95,8 +95,6 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  if (pathname?.startsWith("/admin")) return null;
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -107,6 +105,8 @@ export function Header() {
     setMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [pathname]);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   const handleMouseEnter = (id: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
