@@ -14,7 +14,7 @@ interface SocialInitiative {
   link: string;
 }
 
-const socialInitiatives: SocialInitiative[] = [
+const defaultSocialInitiatives: SocialInitiative[] = [
   {
     id: "si-1",
     tag: "Executive Vitality",
@@ -48,9 +48,21 @@ const socialInitiatives: SocialInitiative[] = [
 ];
 
 export function EventsTeaser() {
+  const [socialList, setSocialList] = useState<SocialInitiative[]>(defaultSocialInitiatives);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/social-initiatives")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.socialInitiatives && Array.isArray(data.socialInitiatives) && data.socialInitiatives.length > 0) {
+          setSocialList(data.socialInitiatives);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
@@ -144,7 +156,7 @@ export function EventsTeaser() {
             ref={scrollRef}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
           >
-            {socialInitiatives.map((item, idx) => (
+            {socialList.map((item, idx) => (
               <Link
                 key={item.id}
                 href={item.link}

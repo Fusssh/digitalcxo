@@ -41,9 +41,21 @@ const defaultHighlights: EventHighlight[] = [
 ];
 
 export function EventHighlightsSection() {
+  const [highlights, setHighlights] = useState<EventHighlight[]>(defaultHighlights);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/event-highlights")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.eventHighlights && Array.isArray(data.eventHighlights) && data.eventHighlights.length > 0) {
+          setHighlights(data.eventHighlights);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
@@ -62,7 +74,7 @@ export function EventHighlightsSection() {
       el.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
     };
-  }, []);
+  }, [highlights]);
 
   const scrollByAmount = (direction: 1 | -1) => {
     const el = scrollRef.current;
@@ -137,7 +149,7 @@ export function EventHighlightsSection() {
             ref={scrollRef}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
           >
-            {defaultHighlights.map((item) => (
+            {highlights.map((item) => (
               <div
                 key={item.id}
                 className="group relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 hover:-translate-y-1 snap-start min-w-[290px]"

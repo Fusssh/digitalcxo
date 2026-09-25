@@ -1,12 +1,30 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { initiativesData } from "@/lib/data/initiativesData";
+import { InitiativeItem } from "@/types";
 import { ArrowRight, Sparkles, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function InitiativesTeaser() {
+  const [initiatives, setInitiatives] = useState<InitiativeItem[]>(initiativesData);
+
+  useEffect(() => {
+    fetch("/api/admin/initiatives")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.initiatives && Array.isArray(data.initiatives) && data.initiatives.length > 0) {
+          setInitiatives(data.initiatives);
+        }
+      })
+      .catch(() => {
+        // Fallback to static data
+      });
+  }, []);
+
   // Take 8 representative initiatives for the 4x2 grid
-  const teaserList = initiativesData.slice(0, 8);
+  const teaserList = initiatives.slice(0, 8);
 
   return (
     <section className="py-20 md:py-28 bg-[#181818] text-white relative overflow-hidden border-t border-neutral-800 select-none">
@@ -15,7 +33,7 @@ export function InitiativesTeaser() {
           <div className="max-w-3xl space-y-4">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Enrichment & Contribution</span>
+              <span>Enrichment &amp; Contribution</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-bold font-serif text-white tracking-tight leading-[1.15]">
               Strategic Initiatives &amp; Enterprise Pods
@@ -29,7 +47,7 @@ export function InitiativesTeaser() {
             href="/initiatives"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 shrink-0"
           >
-            <span>View All 12 Initiatives</span>
+            <span>View All {initiatives.length} Initiatives</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

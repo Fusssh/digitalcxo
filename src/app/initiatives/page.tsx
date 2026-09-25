@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { initiativesData } from "@/lib/data/initiativesData";
+import { InitiativeItem } from "@/types";
 import { 
   Users, 
   Compass, 
@@ -46,12 +47,24 @@ const categories = [
 ] as const;
 
 export default function InitiativesPage() {
+  const [initiatives, setInitiatives] = useState<InitiativeItem[]>(initiativesData);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  useEffect(() => {
+    fetch("/api/admin/initiatives")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.initiatives && Array.isArray(data.initiatives) && data.initiatives.length > 0) {
+          setInitiatives(data.initiatives);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredInitiatives =
     activeCategory === "All"
-      ? initiativesData
-      : initiativesData.filter((i) => i.category === activeCategory);
+      ? initiatives
+      : initiatives.filter((i) => i.category === activeCategory);
 
   return (
     <div className="min-h-screen bg-[#181818] text-white">

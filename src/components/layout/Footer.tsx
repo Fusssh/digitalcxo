@@ -1,9 +1,15 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
 import { MapPin, Mail, Globe, User, Shield, ArrowRight, ShieldCheck, Award } from "lucide-react";
 
 export function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
     <footer className="relative bg-[#0E0E0E] text-neutral-300 border-t border-neutral-800 pt-16 pb-12 overflow-hidden select-none">
       {/* Sovereign Indian Tricolour Accent Line */}

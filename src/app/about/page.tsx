@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PageHero } from "@/components/layout/PageHero";
 import { OngoingPlatformSection } from "@/components/home/OngoingPlatformSection";
-import { leadershipTeam } from "@/lib/data/teamData";
+import { db } from "@/lib/store";
 import { Shield, Award } from "lucide-react";
 
 export const metadata = {
@@ -12,6 +12,7 @@ export const metadata = {
 };
 
 export default function AboutPage() {
+  const team = db.getTeamMembers();
   return (
     <div className="min-h-screen bg-[#181818] text-white">
       {/* Page Hero */}
@@ -102,7 +103,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
             <div className="lg:col-span-7 space-y-3">
               <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
-                Executive Guidance [{leadershipTeam.length.toString().padStart(2, "0")}]
+                Executive Guidance [{team.length.toString().padStart(2, "0")}]
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-sans font-bold text-neutral-900 tracking-tight leading-[1.12]">
                 Meet Our Leadership Team &amp; Advisors
@@ -116,7 +117,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8">
-            {leadershipTeam.map((member) => {
+            {team.map((member) => {
               const firstName = member.name.split(" ")[0];
               return (
                 <Link

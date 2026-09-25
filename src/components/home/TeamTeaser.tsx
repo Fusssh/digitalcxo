@@ -5,11 +5,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { leadershipTeam } from "@/lib/data/teamData";
+import { TeamMember } from "@/types";
 
 export function TeamTeaser() {
+  const [team, setTeam] = useState<TeamMember[]>(leadershipTeam);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/leadership")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.teamMembers && Array.isArray(data.teamMembers) && data.teamMembers.length > 0) {
+          setTeam(data.teamMembers);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
@@ -28,7 +41,7 @@ export function TeamTeaser() {
       el.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
     };
-  }, []);
+  }, [team]);
 
   const scrollByCard = (direction: 1 | -1) => {
     const el = scrollRef.current;
@@ -56,7 +69,7 @@ export function TeamTeaser() {
           {/* Left Column: Eyebrow + Main Title */}
           <div className="lg:col-span-7 space-y-3">
             <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
-              Our Team [{leadershipTeam.length.toString().padStart(2, "0")}]
+              Our Team [{team.length.toString().padStart(2, "0")}]
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-sans font-bold text-neutral-900 tracking-tight leading-[1.12]">
               The People Behind Digital CXOS
@@ -100,7 +113,7 @@ export function TeamTeaser() {
             ref={scrollRef}
             className="flex lg:grid lg:grid-cols-5 gap-4 lg:gap-5 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-smooth pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
-            {leadershipTeam.map((member) => {
+            {team.map((member) => {
               const firstName = member.name.split(" ")[0];
               return (
                 <Link

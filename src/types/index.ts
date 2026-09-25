@@ -1,4 +1,5 @@
 export interface TeamMember {
+  id?: string;
   name: string;
   role: string;
   slug: string;
@@ -8,14 +9,54 @@ export interface TeamMember {
   image?: string;
   experience?: string;
   quote?: string;
+  featured?: boolean;
 }
 
 export interface InitiativeItem {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
-  category: "Mentorship" | "Governance & Policy" | "Innovation & Labs" | "Community & Outreach";
+  category: "Mentorship" | "Governance & Policy" | "Innovation & Labs" | "Community & Outreach" | string;
   iconName: string;
+}
+
+export interface SocialInitiative {
+  id: string;
+  tag: string;
+  title: string;
+  description: string;
+  image: string;
+  link: string;
+  date?: string;
+}
+
+export interface EventHighlight {
+  id: string;
+  videoUrl: string;
+  posterUrl: string;
+  tag: string;
+  edition: string;
+  title: string;
+  duration?: string;
+}
+
+export interface PartnerItem {
+  id: string;
+  name: string;
+  tier: "Strategic Partner" | "Technology Partner" | "Knowledge Partner" | "Media Partner" | string;
+  logoUrl: string;
+  websiteUrl: string;
+  status: "Active" | "Pending" | "Inactive";
+  description?: string;
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: "Super Admin" | "Content Director" | "Community Lead";
+  avatar?: string;
+  token?: string;
 }
 
 export interface EventItem {

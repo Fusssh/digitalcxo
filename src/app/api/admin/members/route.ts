@@ -36,3 +36,25 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Failed to update member status" }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    const type = searchParams.get("type"); // "cxo" or "partner"
+
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    if (type === "partner") {
+      db.deletePartnerMember(id);
+    } else {
+      db.deleteCxoMember(id);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete member" }, { status: 500 });
+  }
+}

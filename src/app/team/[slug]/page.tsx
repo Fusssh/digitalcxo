@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/layout/PageHero";
 import { leadershipTeam, getTeamMemberBySlug } from "@/lib/data/teamData";
+import { db } from "@/lib/store";
 import { 
   ArrowLeft, 
   ExternalLink, 
@@ -19,15 +20,25 @@ interface TeamProfileProps {
   }>;
 }
 
+function findMember(slug: string) {
+  try {
+    const list = db.getTeamMembers();
+    const found = list.find((m) => m.slug === slug);
+    if (found) return found;
+  } catch {}
+  return getTeamMemberBySlug(slug);
+}
+
 export async function generateStaticParams() {
-  return leadershipTeam.map((member) => ({
+  const list = db.getTeamMembers();
+  return list.map((member) => ({
     slug: member.slug,
   }));
 }
 
 export async function generateMetadata({ params }: TeamProfileProps) {
   const { slug } = await params;
-  const member = getTeamMemberBySlug(slug);
+  const member = findMember(slug);
   if (!member) {
     return { title: "Leader Not Found — Digital CXOS" };
   }
@@ -39,7 +50,7 @@ export async function generateMetadata({ params }: TeamProfileProps) {
 
 export default async function TeamMemberPage({ params }: TeamProfileProps) {
   const { slug } = await params;
-  const member = getTeamMemberBySlug(slug);
+  const member = findMember(slug);
 
   if (!member) {
     notFound();
