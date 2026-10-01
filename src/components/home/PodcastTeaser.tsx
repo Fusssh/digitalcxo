@@ -52,27 +52,27 @@ export function PodcastTeaser() {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-[#181818] text-white relative overflow-hidden border-t border-neutral-800 select-none">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#181818] text-white relative overflow-hidden border-t border-neutral-800 select-none">
       {/* Background ambient gold gradient glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-32 right-1/4 w-[500px] h-[350px] rounded-full bg-[#C9A227]/5 blur-[120px]"
       />
 
-      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-10">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 relative z-10 space-y-8 sm:space-y-10">
         {/* Split Header Architecture */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 border-b border-neutral-800">
-          <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 sm:pb-6 border-b border-neutral-800">
+          <div className="max-w-3xl space-y-3 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
               <Mic className="w-3.5 h-3.5 text-[#C9A227]" />
               <span>Thought Leadership Media</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white tracking-tight leading-[1.2]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.2]">
               Our Latest Podcast Series
             </h2>
 
-            <p className="text-base sm:text-lg text-neutral-300 leading-relaxed font-normal max-w-2xl">
+            <p className="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed font-normal max-w-2xl">
               C-suite dialogues on AI disruption, cyber sovereign defense, DPDP regulations, and boardroom strategy with global thought leaders.
             </p>
           </div>
@@ -81,14 +81,14 @@ export function PodcastTeaser() {
           <div className="flex items-center gap-4 self-start lg:self-end">
             <Link
               href="/podcast"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 shrink-0"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 shrink-0"
             >
               <span>Listen &amp; Watch Full Series</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
             {/* Carousel Navigation Arrows */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 hidden md:flex">
               <button
                 type="button"
                 onClick={() => scrollByAmount(-1)}
@@ -115,7 +115,7 @@ export function PodcastTeaser() {
         <div className="relative">
           <div
             ref={scrollRef}
-            className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+            className="flex gap-4 sm:gap-6 lg:gap-8 overflow-x-auto pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
           >
             {podcasts.map((pod) => {
               const ytId =
@@ -126,9 +126,9 @@ export function PodcastTeaser() {
               return (
                 <div
                   key={pod.id}
-                  className="w-[85vw] sm:w-[540px] md:w-[600px] lg:w-[640px] shrink-0 snap-start"
+                  className="w-[85vw] sm:w-[420px] md:w-[480px] lg:w-[520px] shrink-0 snap-start"
                 >
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 group">
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 group">
                     {/* Top-Left Category Tag */}
                     <div className="absolute top-3.5 left-3.5 z-20 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/15 text-[#C9A227] text-[10px] font-bold uppercase tracking-wider shadow-md pointer-events-none">
                       {pod.subtitle || "Executive Series"}

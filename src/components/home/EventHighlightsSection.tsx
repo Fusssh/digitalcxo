@@ -84,27 +84,27 @@ export function EventHighlightsSection() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#181818] text-white relative overflow-hidden select-none border-t border-neutral-800">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#181818] text-white relative overflow-hidden select-none border-t border-neutral-800">
       {/* Background ambient gold gradient glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-32 left-1/4 w-[600px] h-[350px] rounded-full bg-[#C9A227]/5 blur-[120px]"
       />
 
-      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-10">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 relative z-10 space-y-8 sm:space-y-10">
         {/* Split Header Architecture */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 border-b border-neutral-800">
-          <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 sm:pb-6 border-b border-neutral-800">
+          <div className="max-w-3xl space-y-3 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
               <Film className="w-3.5 h-3.5" />
               <span>Conclave Media &amp; Video Highlights</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white tracking-tight leading-[1.2]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.2]">
               Event Highlights &amp; Past Summits
             </h2>
 
-            <p className="text-base sm:text-lg text-neutral-300 leading-relaxed font-normal max-w-2xl">
+            <p className="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed font-normal max-w-2xl">
               Relive keynotes, high-stakes boardroom debates, and closed-door leadership sessions uniting India&apos;s top enterprise CXOs.
             </p>
           </div>
@@ -113,7 +113,7 @@ export function EventHighlightsSection() {
           <div className="flex items-center gap-4 self-start lg:self-end">
             <Link
               href="/events?tab=past"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 shrink-0"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 transition-all duration-200 shadow-xl hover:scale-105 shrink-0"
             >
               <span>View All Conclave Archives</span>
               <ArrowRight className="w-4 h-4" />

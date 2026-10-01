@@ -2,7 +2,7 @@
 
 @theme {
   --font-serif: var(--font-serif), Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  --font-sans: var(--font-sans), Archivo, system-ui, -apple-system, sans-serif;
+  --font-sans: Roboto, var(--font-sans), sans-serif;
   
   --color-exec-dark: #181818;
   --color-exec-charcoal: #222222;
@@ -30,7 +30,7 @@
     --tricolour-green: #138808;
     
     --text-dark: #1A1A1A;
-    --text-light: #F8FAFC;
+    --text-light: #ccc;
     --text-muted-dark: #555555;
     --text-muted-light: #A3A3A3;
   }
@@ -43,8 +43,10 @@
 
   body {
     background-color: #181818;
-    color: #F8FAFC;
-    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    color: #ccc;
+    font-family: Roboto, var(--font-sans), sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;

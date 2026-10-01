@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
-import { MapPin, Mail, Globe, User, Shield, ArrowRight, ShieldCheck, Award } from "lucide-react";
+import { Mail, Globe, User, Shield, ArrowRight, ShieldCheck, Award } from "lucide-react";
 
 export function Footer() {
   const pathname = usePathname();
@@ -58,15 +58,6 @@ export function Footer() {
             </p>
 
             <div className="space-y-3 text-xs sm:text-sm text-neutral-300 pt-1">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[#C9A227] shrink-0 mt-1" />
-                <p className="leading-relaxed">
-                  <strong className="text-white">National Registered Secretariat:</strong><br />
-                  Embassy Galaxy Business Park, Tower-B, 1st Floor,<br />
-                  A-44 &amp; 45, Sushil Marg, Sector 62, Noida, NCR – 201309
-                </p>
-              </div>
-
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#C9A227] shrink-0" />
                 <a href="mailto:contact@digitalcxos.com" className="hover:text-[#C9A227] transition-colors text-neutral-200 font-medium">
@@ -179,14 +170,14 @@ export function Footer() {
               <span>Governance</span>
             </h4>
             <ul className="space-y-2.5 text-sm text-neutral-300">
-              <li className="flex items-center gap-1.5 text-xs text-[#C9A227] font-semibold">
+              {/* <li className="flex items-center gap-1.5 text-xs text-[#C9A227] font-semibold">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Chatham House Code</span>
               </li>
               <li className="flex items-center gap-1.5 text-xs text-[#C9A227] font-semibold">
                 <Award className="w-3.5 h-3.5" />
                 <span>DPDP 2023 Compliant</span>
-              </li>
+              </li> */}
               <li className="pt-1">
                 <Link href="/privacy-policy" className="hover:text-[#C9A227] transition-colors">
                   Privacy Policy

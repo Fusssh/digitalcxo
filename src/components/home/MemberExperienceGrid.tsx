@@ -38,8 +38,8 @@ const EXPERIENCE_CARDS: ExperienceCard[] = [
 
 export function MemberExperienceGrid() {
   return (
-    <section className="py-12 md:py-16 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6] select-none">
-      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F7F3EA] text-[#1A1A1A] border-t border-[#EAE4D6] select-none">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* Left Column: Tall Duotone Photo Running Alongside */}
           <div className="lg:col-span-5 order-2 lg:order-1">
@@ -56,35 +56,36 @@ export function MemberExperienceGrid() {
 
           {/* Right Column: Title & 4 Cards with Left Border Accents */}
           <div className="lg:col-span-7 order-1 lg:order-2 space-y-6">
-            <div className="space-y-3">
-              <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227] block">
-                Purpose-Driven Value
-              </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#1A1A1A] tracking-tight leading-[1.2]">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="inline-flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
+                <span className="w-6 sm:w-8 h-[1.5px] bg-[#C9A227]" />
+                <span>Purpose-Driven Value</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-[#1A1A1A] tracking-tight leading-[1.2]">
                 What Members Experience
               </h2>
-              <p className="text-base sm:text-lg text-[#444444] max-w-2xl leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-[#555555] max-w-2xl leading-relaxed font-normal">
                 Integrated peer connection, sovereign knowledge exchange, and leadership development designed to support CXOs over time.
               </p>
             </div>
 
             {/* Grid of 4 Cream Cards with Alternating Left-Border Accents */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {EXPERIENCE_CARDS.map((card, idx) => (
                 <Link
                   key={idx}
                   href={card.href}
-                  className={`group block bg-[#FDFAF3] p-6 sm:p-7 rounded-sm shadow-md hover:shadow-2xl border border-[#EAE4D6] transition-all duration-300 transform hover:-translate-y-1 ${
+                  className={`group block bg-[#FDFAF3] p-5 sm:p-6 md:p-7 rounded-sm shadow-md hover:shadow-2xl border border-[#EAE4D6] transition-all duration-300 transform hover:-translate-y-1 ${
                     card.borderColor === "gold" ? "border-l-4 border-l-[#C9A227]" : "border-l-4 border-l-[#2B5C8F]"
                   }`}
                 >
-                  <h3 className="text-base sm:text-lg font-bold font-sans text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors flex items-start justify-between gap-2">
+                  <h3 className="text-base sm:text-lg md:text-xl font-serif font-bold text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors flex items-start justify-between gap-2 leading-snug">
                     <span>{card.title}</span>
                     <span className="text-[#C9A227] font-bold text-xl leading-none shrink-0 group-hover:translate-x-1 transition-transform">
                       ›
                     </span>
                   </h3>
-                  <p className="mt-3 text-sm sm:text-base text-[#444444] leading-relaxed">
+                  <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm md:text-[15px] text-[#555555] leading-relaxed">
                     {card.description}
                   </p>
                 </Link>
@@ -95,7 +96,7 @@ export function MemberExperienceGrid() {
             <div className="pt-2">
               <Link
                 href="/initiatives"
-                className="inline-flex items-center text-sm sm:text-base font-bold uppercase tracking-wider text-[#1A1A1A] hover:text-[#C9A227] transition-colors chevron-link"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider text-[#1A1A1A] hover:text-[#C9A227] transition-colors chevron-link"
               >
                 Explore All 12 Strategic Initiatives
               </Link>

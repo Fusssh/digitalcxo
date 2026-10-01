@@ -61,7 +61,7 @@ export function EventsTeaser() {
           setSocialList(data.socialInitiatives);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const updateScrollState = () => {
@@ -91,27 +91,27 @@ export function EventsTeaser() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#F7F3EA] text-[#1A1A1A] relative overflow-hidden select-none border-t border-[#EAE4D6]">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F7F3EA] text-[#1A1A1A] relative overflow-hidden select-none border-t border-[#EAE4D6]">
       {/* Subtle warm decorative glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-24 right-0 w-96 h-96 rounded-full bg-[#EAE4D6]/40 blur-3xl"
       />
 
-      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10 space-y-10">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 relative z-10 space-y-8 sm:space-y-10">
         {/* Modern Split Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 border-b border-[#EAE4D6]/80">
-          <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAE4D6] border border-[#DDD5C4] text-[#8C6D1F] text-xs font-bold uppercase tracking-widest shadow-sm">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 sm:pb-6 border-b border-[#EAE4D6]/80">
+          <div className="max-w-3xl space-y-3 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#EAE4D6] border border-[#DDD5C4] text-[#8C6D1F] text-xs font-bold uppercase tracking-widest shadow-sm">
               <HeartHandshake className="w-3.5 h-3.5 text-[#C9A227]" />
               <span>Philanthropy &amp; Community Stewardship</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#1A1A1A] tracking-tight leading-[1.2]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-[#1A1A1A] tracking-tight leading-[1.2]">
               Our Social Initiatives
             </h2>
 
-            <p className="text-base sm:text-lg text-[#555555] max-w-2xl leading-relaxed font-normal">
+            <p className="text-sm sm:text-base md:text-lg text-[#555555] max-w-2xl leading-relaxed font-normal">
               Beyond boardroom strategy and technological transformation, our leadership fraternity is dedicated to executive vitality, preventive health diagnostics, and structured philanthropic giving.
             </p>
           </div>
@@ -120,7 +120,7 @@ export function EventsTeaser() {
           <div className="flex items-center gap-4 self-start lg:self-end">
             <Link
               href="/initiatives"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1A1A1A] hover:bg-[#C9A227] text-white hover:text-neutral-950 transition-all duration-300 shadow-md hover:scale-105 shrink-0"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider bg-[#1A1A1A] hover:bg-[#C9A227] text-white hover:text-neutral-950 transition-all duration-300 shadow-md hover:scale-105 shrink-0"
             >
               <span>Explore Social Impact</span>
               <ArrowRight className="w-4 h-4" />
@@ -171,35 +171,7 @@ export function EventsTeaser() {
                   className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
                 />
 
-                {/* Dark Vignette Overlay for Depth & Contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/30 to-black/40 group-hover:from-black/50 transition-colors duration-500" />
 
-                {/* Top Corner Number Badge */}
-                <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider shadow-md">
-                  0{idx + 1} • {item.tag}
-                </div>
-
-                {/* Center Floating White Capsule Pill */}
-                <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 z-10">
-                  <div className="bg-white/95 backdrop-blur-md rounded-[28px] sm:rounded-[36px] px-6 py-6 sm:px-7 sm:py-7 max-w-[90%] sm:max-w-[86%] text-center shadow-2xl border border-white/80 group-hover:scale-[1.02] group-hover:shadow-[0_20px_45px_rgba(0,0,0,0.3)] transition-all duration-300">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A227] block mb-1.5 font-mono">
-                      Social Initiative
-                    </span>
-
-                    <h3 className="font-extrabold text-sm sm:text-base md:text-lg text-[#111111] uppercase tracking-wide mb-2 leading-snug group-hover:text-[#8C6D1F] transition-colors">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-xs sm:text-[13px] text-neutral-600 leading-relaxed font-normal">
-                      {item.description}
-                    </p>
-
-                    <div className="mt-3.5 pt-3 border-t border-neutral-100 flex items-center justify-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] group-hover:text-[#C9A227] transition-colors">
-                      <span>Learn More &amp; Participate</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </div>
               </Link>
             ))}
           </div>

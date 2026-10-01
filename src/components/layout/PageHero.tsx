@@ -26,7 +26,7 @@ export function PageHero({
   return (
     <div
       className={cn(
-        "relative pt-24 pb-10 md:pt-32 md:pb-14 overflow-hidden bg-[#181818] border-b border-neutral-800 text-white",
+        "relative pt-36 pb-10 sm:pt-40 md:pt-48 md:pb-16 overflow-hidden bg-[#181818] border-b border-neutral-800 text-white",
         className
       )}
     >

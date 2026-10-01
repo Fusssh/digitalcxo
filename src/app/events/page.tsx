@@ -61,12 +61,6 @@ function EventsContent() {
             >
               <Clock className={cn("w-4 h-4", activeTab === "upcoming" ? "text-slate-950" : "text-emerald-400")} />
               <span>Upcoming Conclaves</span>
-              <span className={cn(
-                "ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono",
-                activeTab === "upcoming" ? "bg-slate-950/30 text-slate-950" : "bg-white/10 text-slate-300"
-              )}>
-                {upcomingEvents.length}
-              </span>
             </button>
 
             <button
@@ -80,19 +74,10 @@ function EventsContent() {
             >
               <Film className={cn("w-4 h-4", activeTab === "past" ? "text-slate-950" : "text-amber-400")} />
               <span>Past Summits & Videos</span>
-              <span className={cn(
-                "ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono",
-                activeTab === "past" ? "bg-slate-950/30 text-slate-950" : "bg-white/10 text-slate-300"
-              )}>
-                {pastEvents.length}
-              </span>
             </button>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Curated for CIOs, CTOs, CISOs & Enterprise Leaders</span>
-          </div>
+
         </div>
       </div>
 

@@ -6,12 +6,37 @@ import { cn } from "@/lib/utils";
 interface LogoProps {
   className?: string;
   showTagline?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "nav";
   theme?: "dark" | "light";
 }
 
-export function Logo({ className, showTagline = true, size = "md", theme = "dark" }: LogoProps) {
-  const crestSize = size === "sm" ? 46 : size === "lg" ? 72 : 58;
+export function Logo({ className, size = "md" }: LogoProps) {
+  if (size === "nav") {
+    return (
+      <Link
+        href="/"
+        className={cn(
+          "relative z-30 flex items-center group focus:outline-none transition-transform duration-300 hover:scale-[1.03]",
+          className
+        )}
+        aria-label="Digital CXOS Official Logo"
+      >
+        {/* Authentic High-Resolution Sovereign Logo Medallion with prominent executive dimensions */}
+        <div className="relative shrink-0 flex items-center justify-center w-[92px] h-[92px] sm:w-[106px] sm:h-[106px] lg:w-[122px] lg:h-[122px] xl:w-[140px] xl:h-[140px]">
+          <Image
+            src="/assets/logo-256.png"
+            alt="Digital CXOS Official Logo Medallion"
+            width={150}
+            height={150}
+            priority
+            className="w-full h-full object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] select-none pointer-events-none"
+          />
+        </div>
+      </Link>
+    );
+  }
+
+  const crestSize = size === "sm" ? 52 : size === "lg" ? 80 : 66;
 
   return (
     <Link
@@ -20,7 +45,7 @@ export function Logo({ className, showTagline = true, size = "md", theme = "dark
         "flex items-center gap-3.5 sm:gap-4 group focus:outline-none transition-transform duration-200",
         className
       )}
-      aria-label="Digital CXOS - Leadership Beyond Boundaries"
+      aria-label="Digital CXOS"
     >
       {/* Authentic High-Resolution Sovereign Logo Medallion */}
       <div className="relative shrink-0 flex items-center justify-center">
@@ -33,37 +58,6 @@ export function Logo({ className, showTagline = true, size = "md", theme = "dark
           className="object-contain drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)] select-none pointer-events-none"
         />
       </div>
-
-      {/* Brand Name & Tagline with India theme indicator */}
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              "text-xl sm:text-2xl font-bold tracking-wider font-serif transition-colors",
-              theme === "light" ? "text-neutral-900 group-hover:text-[#C9A227]" : "text-white group-hover:text-[#D4AF37]"
-            )}
-          >
-            DIGITAL CXOS
-          </span>
-          {/* Subtle Sovereign Indian Tricolour Dots */}
-          <span className="tricolour-dots" title="India Enterprise Leadership Community">
-            <span />
-            <span />
-            <span />
-          </span>
-        </div>
-        {showTagline && (
-          <span
-            className={cn(
-              "text-[10px] sm:text-[10.5px] uppercase tracking-[0.22em] font-medium whitespace-nowrap",
-              theme === "light" ? "text-neutral-600" : "text-neutral-300"
-            )}
-          >
-            Leadership Beyond Boundaries
-          </span>
-        )}
-      </div>
     </Link>
   );
 }
-

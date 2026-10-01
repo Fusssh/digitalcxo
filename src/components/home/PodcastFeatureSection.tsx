@@ -5,18 +5,18 @@ import { Play, ExternalLink } from "lucide-react";
 
 export function PodcastFeatureSection() {
   return (
-    <section className="py-12 md:py-16 bg-[#181818] text-white border-t border-neutral-800 select-none">
-      <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 space-y-8">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#181818] text-white border-t border-neutral-800 select-none">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 space-y-8 sm:space-y-10">
         {/* Section Header */}
-        <div className="max-w-4xl space-y-3">
-          <div className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
-            <span className="w-8 h-[1.5px] bg-[#C9A227]" />
+        <div className="max-w-4xl space-y-3 sm:space-y-4">
+          <div className="inline-flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
+            <span className="w-6 sm:w-8 h-[1.5px] bg-[#C9A227]" />
             <span>Executive Dialogue &amp; Media</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white tracking-tight leading-[1.2]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.2]">
             Voices of Digital Transformation
           </h2>
-          <p className="text-base sm:text-lg text-neutral-300 leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-neutral-300 leading-relaxed font-normal">
             C-suite insights on AI disruption, sovereign cyber defense, data privacy, and executive resilience.
           </p>
         </div>

@@ -52,8 +52,8 @@ export function TeamTeaser() {
   };
 
   return (
-    <section className="relative z-10 py-16 md:py-24 bg-[#F9F9F8] text-[#1A1A1A] border-t border-[#EAE4D6] select-none overflow-hidden">
-      {/* Subtle dot-grid texture, top-left — decorative accent matching the reference */}
+    <section className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F9F9F8] text-[#1A1A1A] border-t border-[#EAE4D6] select-none overflow-hidden">
+      {/* Subtle dot-grid texture, top-left */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-8 left-6 sm:left-8 w-36 h-36 opacity-[0.35]"
@@ -63,33 +63,34 @@ export function TeamTeaser() {
         }}
       />
 
-      <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-10 xl:px-12 relative z-10 space-y-10">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 relative z-10 space-y-8 sm:space-y-10">
         {/* Top Split Section Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end pb-4 sm:pb-6 border-b border-[#EAE4D6]">
           {/* Left Column: Eyebrow + Main Title */}
-          <div className="lg:col-span-7 space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-widest text-neutral-500 block">
-              Our Team [{team.length.toString().padStart(2, "0")}]
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-sans font-bold text-neutral-900 tracking-tight leading-[1.12]">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C9A227]">
+              <span className="w-6 sm:w-8 h-[1.5px] bg-[#C9A227]" />
+              <span>Our Leadership [{team.length.toString().padStart(2, "0")}]</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-[#1A1A1A] tracking-tight leading-[1.2]">
               The People Behind Digital CXOS
             </h2>
           </div>
 
           {/* Right Column: Narrative Description + Slider Arrows */}
           <div className="lg:col-span-5 flex items-end justify-between gap-6">
-            <p className="text-neutral-600 text-sm sm:text-base md:text-[17px] leading-relaxed font-normal">
+            <p className="text-sm sm:text-base md:text-lg text-[#555555] leading-relaxed font-normal max-w-2xl">
               Our team is a blend of visionaries, enterprise strategists, and technology leaders dedicated to fostering high-trust peer collaboration. We come together with one shared goal: to guide India&apos;s digital future while ensuring every initiative exceeds expectations.
             </p>
 
-            {/* Nav arrows, desktop only — visually signal "there's more" */}
+            {/* Nav arrows, desktop only */}
             <div className="hidden lg:flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => scrollByCard(-1)}
                 disabled={!canScrollLeft}
                 aria-label="Previous team members"
-                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
+                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -98,7 +99,7 @@ export function TeamTeaser() {
                 onClick={() => scrollByCard(1)}
                 disabled={!canScrollRight}
                 aria-label="Next team members"
-                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
+                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -106,15 +107,13 @@ export function TeamTeaser() {
           </div>
         </div>
 
-        {/* Team Slider — smaller cards, kept inside the section's own padding
-            (no more full-bleed edge-to-edge), with real gutters between cards */}
+        {/* Team Slider — smaller cards, kept inside the section's own padding */}
         <div className="relative">
           <div
             ref={scrollRef}
             className="flex lg:grid lg:grid-cols-5 gap-4 lg:gap-5 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-smooth pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
             {team.map((member) => {
-              const firstName = member.name.split(" ")[0];
               return (
                 <Link
                   key={member.slug}
@@ -130,7 +129,7 @@ export function TeamTeaser() {
                         alt={member.name}
                         fill
                         sizes="(max-width: 640px) 52vw, (max-width: 1024px) 30vw, 15vw"
-                        className="object-cover object-center grayscale contrast-125 brightness-95 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                        className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-neutral-800 text-[#C9A227] font-serif text-2xl font-bold">
@@ -149,11 +148,10 @@ export function TeamTeaser() {
                     </h3>
                   </div>
 
-                  {/* Left-aligned pill CTA */}
                   <div className="px-0.5 pb-0.5">
                     <div className="inline-flex items-center gap-1.5 py-1.5 px-3.5 rounded-full bg-neutral-950 group-hover:bg-[#C9A227] text-white group-hover:text-neutral-950 font-sans text-[10.5px] sm:text-[11px] font-semibold tracking-wide transition-all duration-300">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227] group-hover:bg-neutral-950 transition-colors" />
-                      <span>Talk With {firstName}</span>
+                      <span>View Details</span>
                     </div>
                   </div>
                 </Link>
@@ -169,10 +167,9 @@ export function TeamTeaser() {
         <div className="pt-2 text-center">
           <Link
             href="/about#leadership"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-neutral-900 hover:text-[#C9A227] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider text-[#1A1A1A] hover:text-[#C9A227] transition-colors chevron-link"
           >
-            <span>Explore Complete Leadership Credo &amp; Board Advisory</span>
-            <span className="text-[#C9A227] text-base">›</span>
+            Explore Complete Leadership Credo &amp; Board Advisory
           </Link>
         </div>
       </div>

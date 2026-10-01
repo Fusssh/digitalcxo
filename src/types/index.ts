@@ -112,21 +112,21 @@ export interface CxoMemberSubmission {
   mobile: string;
   organization: string;
   designation: string;
-  country: string;
-  state: string;
   city: string;
+  industry: string;
   linkedin: string;
+  country?: string;
+  state?: string;
   organizationWebsite?: string;
   boardExperience?: string;
   leadershipExperience?: string;
-  contributeVia: string;
-  strategicInterests: string;
-  industry: string;
-  preferredModeOfEngagement: string;
-  howDidYouHear: string;
+  contributeVia?: string;
+  strategicInterests?: string;
+  preferredModeOfEngagement?: string;
+  howDidYouHear?: string;
   otherCxoNetworks?: string;
   termsConsent: boolean;
-  accuracyConsent: boolean;
+  accuracyConsent?: boolean;
 }
 
 export interface PartnerSubmission {

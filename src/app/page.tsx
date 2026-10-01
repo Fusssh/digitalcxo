@@ -25,7 +25,7 @@ export default function HomePage() {
       <PullQuoteBlock />
       <WhyDigitalCXOS />
       {/* 4. "Built for Leaders" (Pattern 4 — DUAL CREAM CARDS OVER DUOTONE BACKDROP): Dual offset cards */}
-      <BuiltForLeadersPanel />
+      {/* <BuiltForLeadersPanel /> */}
 
       {/* 5. Ongoing Leadership Platform (Pattern 5 — DARK): Centered serif headline, mission/vision/values */}
       <OngoingPlatformSection />
@@ -49,7 +49,7 @@ export default function HomePage() {
       {/* 10. Leadership Team Grid (Pattern 8 — LIGHT CREAM): 6 duotone cards with cream caption boxes */}
 
       {/* 11. Partner CTA Band (Pattern 10 — DARK): Oversized decorative corner chevrons, solid-gold CTA button */}
-      <PartnerCtaBand />
+      {/* <PartnerCtaBand /> */}
     </div>
   );
 }

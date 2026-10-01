@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, ContactFormData } from "@/lib/schemas/contactSchema";
 import { PageHero } from "@/components/layout/PageHero";
-import { MapPin, Mail, Send, CheckCircle, AlertCircle, ShieldCheck, Lock, Clock, Building2 } from "lucide-react";
+import { CheckCircle, AlertCircle, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function ContactPage() {
@@ -76,70 +76,8 @@ export default function ContactPage() {
         ]}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Registered Office & Direct Details */}
-          <aside className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-            <div className="bg-[#1C1C1C] rounded-2xl p-6 sm:p-8 border border-neutral-800 shadow-xl space-y-6">
-              <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#111111] border border-neutral-700/80 text-[11px] font-semibold tracking-wider uppercase text-[#C9A227]">
-                  <Building2 className="w-3.5 h-3.5" />
-                  <span>Executive Headquarters</span>
-                </div>
-                <h3 className="text-xl font-serif font-bold text-white">
-                  Registered Secretariat
-                </h3>
-              </div>
-
-              <div className="space-y-4 text-xs sm:text-sm text-neutral-300 leading-relaxed border-t border-neutral-800 pt-5">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-[#C9A227] shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold text-white">Digital CXOS Private Limited</p>
-                    <p className="text-neutral-400">Embassy Galaxy Business Park</p>
-                    <p className="text-neutral-400">Tower-B, 1st Floor, A-44 &amp; 45, Sushil Marg,</p>
-                    <p className="text-neutral-400">Sector 62, Noida – 201309, India</p>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-neutral-800/80 flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-[#C9A227] shrink-0" />
-                  <div>
-                    <p className="text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
-                      Official Secretariat
-                    </p>
-                    <a
-                      href="mailto:contact@digitalcxos.com"
-                      className="text-[#C9A227] hover:underline font-medium text-sm"
-                    >
-                      contact@digitalcxos.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-neutral-800/80 flex items-start gap-3">
-                  <Clock className="w-5 h-5 text-[#C9A227] shrink-0 mt-0.5" />
-                  <div className="text-xs text-neutral-400 space-y-1">
-                    <p className="font-semibold text-neutral-200">Office Hours &amp; Response SLA:</p>
-                    <p>Monday to Friday: 09:30 AM – 06:30 PM IST</p>
-                    <p>All executive inquiries receive a response within 24 to 48 business hours.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Privacy Guarantee Note */}
-            <div className="bg-[#181818] rounded-xl p-5 border border-neutral-800 flex items-start gap-3 text-xs text-neutral-400">
-              <Lock className="w-5 h-5 text-[#C9A227] shrink-0 mt-0.5" />
-              <p className="leading-relaxed">
-                Communications are handled in strict adherence to Digital CXOS confidentiality protocols and India&apos;s DPDP data privacy standards.
-              </p>
-            </div>
-          </aside>
-
-          {/* Right Column: Contact Form */}
-          <main className="lg:col-span-7">
-            <div className="bg-[#1C1C1C] rounded-2xl p-6 sm:p-10 border border-neutral-800 shadow-2xl">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
+        <div className="bg-[#1C1C1C] rounded-2xl p-6 sm:p-10 border border-neutral-800 shadow-2xl">
               {submittedSuccess ? (
                 <div className="text-center py-10 space-y-5">
                   <div className="w-16 h-16 mx-auto rounded-full bg-[#C9A227]/15 border border-[#C9A227]/40 flex items-center justify-center text-[#C9A227]">
@@ -327,8 +265,6 @@ export default function ContactPage() {
                 </form>
               )}
             </div>
-          </main>
-        </div>
       </div>
     </div>
   );

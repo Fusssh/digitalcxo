@@ -139,6 +139,15 @@ export const geoData: CountryData[] = [
         cities: ["Birmingham", "Coventry"]
       }
     ]
+  },
+  {
+    country: "Other / International",
+    states: [
+      {
+        state: "International Region",
+        cities: ["International City / Metro"]
+      }
+    ]
   }
 ];
 

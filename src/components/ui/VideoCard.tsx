@@ -71,7 +71,7 @@ export function VideoCard({
       )}
     >
       {/* Top Media Banner (16:9 Aspect Ratio) */}
-      <div className="relative aspect-video w-full bg-slate-950 overflow-hidden shrink-0 border-b border-white/5">
+      <div className="relative aspect-video w-full bg-slate-950 overflow-hidden shrink-0">
         {isPlaying ? (
           videoType === "mp4" && videoUrl ? (
             <video
@@ -153,8 +153,15 @@ export function VideoCard({
               </div>
             </div>
 
+            {/* Title Overlay */}
+            <div className="absolute bottom-10 left-3 right-3 z-10">
+              <h3 className="text-sm sm:text-base font-bold font-serif text-white leading-snug line-clamp-2 drop-shadow-md">
+                {title}
+              </h3>
+            </div>
+
             {/* Bottom Play Bar Affordance */}
-            <div className="absolute bottom-2.5 left-3 right-3 text-[11px] text-slate-300 font-medium flex items-center justify-between pointer-events-none">
+            <div className="absolute bottom-2.5 left-3 right-3 text-[11px] text-slate-300 font-medium flex items-center justify-between pointer-events-none z-10">
               <span className="flex items-center gap-1.5 text-amber-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Click to Watch
@@ -169,87 +176,7 @@ export function VideoCard({
         )}
       </div>
 
-      {/* Card Content (Equalized Heights) */}
-      <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-        <div className="space-y-2.5">
-          {/* Tagline */}
-          <div className="min-h-[1.25rem]">
-            {tagline ? (
-              <p className="text-[11px] uppercase tracking-wider font-bold text-amber-400/90 truncate">
-                {tagline}
-              </p>
-            ) : attendeesCount ? (
-              <p className="text-[11px] uppercase tracking-wider font-bold text-emerald-400/90 flex items-center gap-1">
-                <Users className="w-3 h-3 text-emerald-400" />
-                <span>{attendeesCount}</span>
-              </p>
-            ) : null}
-          </div>
 
-          {/* Title with synchronized line-clamp and min-height */}
-          <h3 className="text-lg font-bold font-serif text-slate-100 group-hover:text-amber-300 transition-colors leading-snug line-clamp-2 min-h-[3.25rem]">
-            {title}
-          </h3>
-
-          {/* Venue & Date Metadata Bar */}
-          <div className="space-y-1.5 pt-1 text-xs">
-            {date && (
-              <div className="flex items-center gap-2 text-slate-300">
-                <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="truncate">{date}</span>
-              </div>
-            )}
-            {venue && (
-              <div className="flex items-center gap-2 text-slate-400">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="truncate">{venue}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Description or Guests */}
-          {description && (
-            <p className="text-xs text-slate-400 leading-relaxed line-clamp-2 min-h-[2.5rem] pt-1">
-              {description}
-            </p>
-          )}
-
-          {/* Guests if any */}
-          {guests && guests.length > 0 && (
-            <div className="pt-2 border-t border-white/5 space-y-1.5">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-                Featured Speakers:
-              </span>
-              <div className="space-y-1">
-                {guests.slice(0, 2).map((g, idx) => (
-                  <div key={idx} className="text-xs truncate">
-                    <span className="font-semibold text-slate-200">{g.name}</span>
-                    <span className="text-slate-400"> — {g.role}, {g.organization}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Footer Action Bar (Strictly Pinned) */}
-        <div className="pt-4 border-t border-white/10 flex items-center justify-between mt-auto">
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-400">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Official Video</span>
-          </span>
-
-          <a
-            href={watchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-amber-400/20 text-amber-300 hover:text-amber-200 border border-white/10 hover:border-amber-400/40 transition-all group/btn"
-          >
-            <span>Watch on YouTube</span>
-            <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
-          </a>
-        </div>
-      </div>
     </div>
   );
 }

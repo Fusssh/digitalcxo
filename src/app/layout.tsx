@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Archivo, Source_Serif_4 } from "next/font/google";
+import { Roboto, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
-const archivo = Archivo({
+const roboto = Roboto({
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -58,8 +59,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${archivo.variable} ${sourceSerif.variable} scroll-smooth`}>
-      <body className="min-h-screen flex flex-col bg-[#181818] text-neutral-100 font-sans antialiased selection:bg-[#C9A227] selection:text-neutral-950">
+    <html lang="en" data-scroll-behavior="smooth" className={`${roboto.variable} ${sourceSerif.variable} scroll-smooth`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+      </head>
+      <body className="min-h-screen flex flex-col bg-[#181818] text-[#ccc] font-sans antialiased selection:bg-[#C9A227] selection:text-neutral-950">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

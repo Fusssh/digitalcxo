@@ -4,17 +4,17 @@ import { ArrowRight, Shield, Award, CheckCircle } from "lucide-react";
 
 export function AboutTeaser() {
   return (
-    <section className="py-24 bg-gradient-to-b from-[#060B18] to-[#080F24] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#181818] text-white relative overflow-hidden border-t border-neutral-800 select-none">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Narrative */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-wider">
-              <Shield className="w-3.5 h-3.5" />
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
+              <Shield className="w-3.5 h-3.5 text-[#C9A227]" />
               <span>Who We Are</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif heading-gold">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.2]">
               About Digital CXOS
             </h2>
 
