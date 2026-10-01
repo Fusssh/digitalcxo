@@ -129,10 +129,7 @@ export function PodcastTeaser() {
                   className="w-[85vw] sm:w-[420px] md:w-[480px] lg:w-[520px] shrink-0 snap-start"
                 >
                   <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 group">
-                    {/* Top-Left Category Tag */}
-                    <div className="absolute top-3.5 left-3.5 z-20 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/15 text-[#C9A227] text-[10px] font-bold uppercase tracking-wider shadow-md pointer-events-none">
-                      {pod.subtitle || "Executive Series"}
-                    </div>
+
 
                     <iframe
                       src={`https://www.youtube.com/embed/${ytId}?rel=0`}

@@ -203,7 +203,7 @@ export function Footer() {
               </p>
               <div className="flex items-center gap-2.5">
                 <a
-                  href="https://linkedin.com/company/digitalcxos"
+                  href="https://www.linkedin.com/company/digitalcxos"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Digital CXOS on LinkedIn"
@@ -214,7 +214,7 @@ export function Footer() {
                   </svg>
                 </a>
                 <a
-                  href="https://youtube.com/@digitalcxos"
+                  href="https://www.youtube.com/@digitalcxos"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Digital CXOS on YouTube"

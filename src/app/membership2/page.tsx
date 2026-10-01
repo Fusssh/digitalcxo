@@ -212,356 +212,240 @@ export default function CxoMembershipPage() {
             )}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-              {/* ROW 1: Title, First Name, Middle Name, Last Name */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-x-6 gap-y-8 items-end">
-                {/* Title */}
-                <div className="sm:col-span-2">
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Title
-                  </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 items-start">
+                {/* Title & First Name */}
+                <div className="grid grid-cols-[100px_1fr] gap-4">
+                  <div>
+                    <label className="label-exec">
+                      Title <span className="text-rose-400">*</span>
+                    </label>
                     <select
                       {...register("title")}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 [&>option]:bg-[#1A1D27] [&>option]:text-white"
+                      className={cn("input-exec w-full", errors.title && "input-exec-error")}
                     >
                       <option value="Mr.">Mr.</option>
                       <option value="Ms.">Ms.</option>
                       <option value="Mrs.">Mrs.</option>
                       <option value="Dr.">Dr.</option>
                     </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
+                    {errors.title && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.title.message}</p>}
                   </div>
-                  {errors.title && <p className="text-rose-400 text-xs mt-1">{errors.title.message}</p>}
-                </div>
-
-                {/* First Name */}
-                <div className="sm:col-span-4">
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>First Name
-                  </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
+                  <div>
+                    <label className="label-exec">
+                      First Name <span className="text-rose-400">*</span>
+                    </label>
                     <input
                       type="text"
                       {...register("firstName")}
-                      placeholder="First Name"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
+                      placeholder="Enter First Name"
+                      className={cn("input-exec w-full", errors.firstName && "input-exec-error")}
                     />
-                  </div>
-                  {errors.firstName && <p className="text-rose-400 text-xs mt-1">{errors.firstName.message}</p>}
-                </div>
-
-                {/* Middle Name */}
-                <div className="sm:col-span-3">
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    Middle Name
-                  </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("middleName")}
-                      placeholder="Middle Name"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
+                    {errors.firstName && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.firstName.message}</p>}
                   </div>
                 </div>
 
                 {/* Last Name */}
-                <div className="sm:col-span-3">
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Last Name
+                <div>
+                  <label className="label-exec">
+                    Last Name <span className="text-rose-400">*</span>
                   </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("lastName")}
-                      placeholder="Last Name"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                  {errors.lastName && <p className="text-rose-400 text-xs mt-1">{errors.lastName.message}</p>}
+                  <input
+                    type="text"
+                    {...register("lastName")}
+                    placeholder="Enter Last Name"
+                    className={cn("input-exec w-full", errors.lastName && "input-exec-error")}
+                  />
+                  {errors.lastName && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.lastName.message}</p>}
                 </div>
-              </div>
 
-              {/* ROW 2: Official Email, Mobile, Organization, Designation */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 items-end">
                 {/* Official Email */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Official Email
+                  <label className="label-exec">
+                    Official Email <span className="text-rose-400">*</span>
                   </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="email"
-                      {...register("officialEmail")}
-                      placeholder="name@enterprise.com"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                  {errors.officialEmail && <p className="text-rose-400 text-xs mt-1">{errors.officialEmail.message}</p>}
+                  <input
+                    type="email"
+                    {...register("officialEmail")}
+                    placeholder="name@enterprise.com"
+                    className={cn("input-exec w-full", errors.officialEmail && "input-exec-error")}
+                  />
+                  {errors.officialEmail && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.officialEmail.message}</p>}
                 </div>
 
-                {/* Mobile (WhatsApp preferred) */}
+                {/* Mobile */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Mobile (WhatsApp preferred)
+                  <label className="label-exec">
+                    Mobile (WhatsApp preferred) <span className="text-rose-400">*</span>
                   </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="tel"
-                      {...register("mobile")}
-                      placeholder="+91 98765 43210"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                  {errors.mobile && <p className="text-rose-400 text-xs mt-1">{errors.mobile.message}</p>}
+                  <input
+                    type="tel"
+                    {...register("mobile")}
+                    placeholder="+91 98765 43210"
+                    className={cn("input-exec w-full", errors.mobile && "input-exec-error")}
+                  />
+                  {errors.mobile && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.mobile.message}</p>}
                 </div>
 
                 {/* Organization */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Organization
+                  <label className="label-exec">
+                    Organization <span className="text-rose-400">*</span>
                   </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("organization")}
-                      placeholder="Organization Name"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                  {errors.organization && <p className="text-rose-400 text-xs mt-1">{errors.organization.message}</p>}
+                  <input
+                    type="text"
+                    {...register("organization")}
+                    placeholder="Organization Name"
+                    className={cn("input-exec w-full", errors.organization && "input-exec-error")}
+                  />
+                  {errors.organization && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.organization.message}</p>}
                 </div>
 
                 {/* Designation */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Designation
+                  <label className="label-exec">
+                    Designation <span className="text-rose-400">*</span>
                   </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("designation")}
-                      placeholder="e.g. CIO / CISO / CTO"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                  {errors.designation && <p className="text-rose-400 text-xs mt-1">{errors.designation.message}</p>}
+                  <input
+                    type="text"
+                    {...register("designation")}
+                    placeholder="e.g. CIO / CISO / CTO"
+                    className={cn("input-exec w-full", errors.designation && "input-exec-error")}
+                  />
+                  {errors.designation && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.designation.message}</p>}
                 </div>
-              </div>
 
-              {/* ROW 3: Choose Country, Choose State, Choose City */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8 items-end">
                 {/* Choose Country */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Choose Country
+                  <label className="label-exec">
+                    Country <span className="text-rose-400">*</span>
                   </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("country")}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">Select Country</option>
-                      {countries.map((c) => (
-                        <option key={c} value={c}>
-                          {c}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                  {errors.country && <p className="text-rose-400 text-xs mt-1">{errors.country.message}</p>}
+                  <select
+                    {...register("country")}
+                    className={cn("input-exec w-full", errors.country && "input-exec-error")}
+                  >
+                    <option value="">Select Country</option>
+                    {countries.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.country && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.country.message}</p>}
                 </div>
 
                 {/* Choose State */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Choose State
+                  <label className="label-exec">
+                    State <span className="text-rose-400">*</span>
                   </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("state")}
-                      disabled={!selectedCountry || states.length === 0}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 disabled:opacity-40 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">
-                        {!selectedCountry ? "Select country first" : "Select State"}
+                  <select
+                    {...register("state")}
+                    disabled={!selectedCountry || states.length === 0}
+                    className={cn("input-exec w-full", errors.state && "input-exec-error")}
+                  >
+                    <option value="">
+                      {!selectedCountry ? "Select country first" : "Select State"}
+                    </option>
+                    {states.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
                       </option>
-                      {states.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                  {errors.state && <p className="text-rose-400 text-xs mt-1">{errors.state.message}</p>}
+                    ))}
+                  </select>
+                  {errors.state && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.state.message}</p>}
                 </div>
 
                 {/* Choose City */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Choose City
+                  <label className="label-exec">
+                    City <span className="text-rose-400">*</span>
                   </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("city")}
-                      disabled={!selectedState || cities.length === 0}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 disabled:opacity-40 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">
-                        {!selectedState ? "Select state first" : "Select City"}
+                  <select
+                    {...register("city")}
+                    disabled={!selectedState || cities.length === 0}
+                    className={cn("input-exec w-full", errors.city && "input-exec-error")}
+                  >
+                    <option value="">
+                      {!selectedState ? "Select state first" : "Select City"}
+                    </option>
+                    {cities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
                       </option>
-                      {cities.map((city) => (
-                        <option key={city} value={city}>
-                          {city}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                  {errors.city && <p className="text-rose-400 text-xs mt-1">{errors.city.message}</p>}
-                </div>
-              </div>
-
-              {/* ROW 4: Linkedin, Organization Website, Board Interaction Experience */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8 items-end">
-                {/* Linkedin */}
-                <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Linkedin (or &apos;NA&apos;)
-                  </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("linkedin")}
-                      placeholder="https://linkedin.com/in/yourname or NA"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                  {errors.linkedin && <p className="text-rose-400 text-xs mt-1">{errors.linkedin.message}</p>}
-                </div>
-
-                {/* Organization Website */}
-                <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    Organization Website
-                  </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("organizationWebsite")}
-                      placeholder="https://company.com"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Board Interaction Experience */}
-                <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    Board Interaction Experience
-                  </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("boardExperience")}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">Select Board Experience</option>
-                      {BOARD_EXPERIENCE_OPTIONS.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                </div>
-              </div>
-
-              {/* ROW 5: Leadership Experience (Years) */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8 items-end">
-                <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    Leadership Experience (Years)
-                  </label>
-                  <div className="border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <input
-                      type="text"
-                      {...register("leadershipExperience")}
-                      placeholder="e.g. 15+ years"
-                      className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-neutral-500 pb-2 pt-1 outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* ROW 6: Would you like to contribute via, Strategic Areas of Interest, Industry */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8 items-end">
-                {/* Would you like to contribute via */}
-                <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Would you like to contribute via
-                  </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("contributeVia")}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">Select Contribution Track</option>
-                      {CONTRIBUTE_OPTIONS.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                  {errors.contributeVia && <p className="text-rose-400 text-xs mt-1">{errors.contributeVia.message}</p>}
-                </div>
-
-                {/* Strategic Areas of Interest */}
-                <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Strategic Areas of Interest
-                  </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("strategicInterests")}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">Select Focus Area</option>
-                      {FOCUS_AREAS.map((focus) => (
-                        <option key={focus} value={focus}>
-                          {focus}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                  {errors.strategicInterests && <p className="text-rose-400 text-xs mt-1">{errors.strategicInterests.message}</p>}
+                    ))}
+                  </select>
+                  {errors.city && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.city.message}</p>}
                 </div>
 
                 {/* Industry */}
                 <div>
-                  <label className="block text-xs sm:text-sm text-neutral-300 font-medium mb-1">
-                    <span className="text-[#FF6600] font-bold mr-1">*</span>Industry
+                  <label className="label-exec">
+                    Industry <span className="text-rose-400">*</span>
                   </label>
-                  <div className="relative border-b border-neutral-700/80 focus-within:border-[#C9A227] transition-colors">
-                    <select
-                      {...register("industry")}
-                      className="w-full bg-transparent text-sm sm:text-base text-white pb-2 pt-1 outline-none cursor-pointer appearance-none pr-6 [&>option]:bg-[#1A1D27] [&>option]:text-white"
-                    >
-                      <option value="">Select Industry</option>
-                      {INDUSTRY_OPTIONS.map((ind) => (
-                        <option key={ind} value={ind}>
-                          {ind}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-neutral-400 absolute right-0 bottom-2.5 pointer-events-none" />
-                  </div>
-                  {errors.industry && <p className="text-rose-400 text-xs mt-1">{errors.industry.message}</p>}
+                  <select
+                    {...register("industry")}
+                    className={cn("input-exec w-full", errors.industry && "input-exec-error")}
+                  >
+                    <option value="">Select Industry</option>
+                    {INDUSTRY_OPTIONS.map((ind) => (
+                      <option key={ind} value={ind}>
+                        {ind}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.industry && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.industry.message}</p>}
+                </div>
+
+                {/* Strategic Areas of Interest */}
+                <div>
+                  <label className="label-exec">
+                    Strategic Areas of Interest <span className="text-rose-400">*</span>
+                  </label>
+                  <select
+                    {...register("strategicInterests")}
+                    className={cn("input-exec w-full", errors.strategicInterests && "input-exec-error")}
+                  >
+                    <option value="">Select Focus Area</option>
+                    {FOCUS_AREAS.map((focus) => (
+                      <option key={focus} value={focus}>
+                        {focus}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.strategicInterests && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.strategicInterests.message}</p>}
+                </div>
+
+                {/* Would you like to contribute via */}
+                <div>
+                  <label className="label-exec">
+                    Contribute Via <span className="text-rose-400">*</span>
+                  </label>
+                  <select
+                    {...register("contributeVia")}
+                    className={cn("input-exec w-full", errors.contributeVia && "input-exec-error")}
+                  >
+                    <option value="">Select Contribution Track</option>
+                    {CONTRIBUTE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.contributeVia && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.contributeVia.message}</p>}
+                </div>
+
+                {/* Linkedin */}
+                <div className="md:col-span-2">
+                  <label className="label-exec">
+                    Linkedin (or &apos;NA&apos;) <span className="text-rose-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    {...register("linkedin")}
+                    placeholder="https://linkedin.com/in/yourname or NA"
+                    className={cn("input-exec w-full", errors.linkedin && "input-exec-error")}
+                  />
+                  {errors.linkedin && <p className="text-rose-400 text-xs sm:text-sm mt-1">{errors.linkedin.message}</p>}
                 </div>
               </div>
 

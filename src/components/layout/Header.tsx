@@ -41,24 +41,15 @@ const NAV_ITEMS: NavItem[] = [
     href: "/events",
     emphasis: true,
     children: [
-      { title: "Upcoming Conclaves & Events", href: "/events?tab=upcoming", description: "Flagship leadership conclaves and peer roundtables" },
-      { title: "Digital CXOS Founders' Impact Day", href: "/events", description: "18 April 2026 — Empowering Lives, Building Futures" },
-      { title: "Horizon 2026 Residential Conclave", href: "/events", description: "30–31 January 2026 — Resort Country Club, Manesar" },
-      { title: "Past Conclave Highlights", href: "/events?tab=past", description: "Insights and takeaways from past closed-door sessions" }
+      { title: "Upcoming Events", href: "/events?tab=upcoming" },
+      { title: "Past Events", href: "/events?tab=past" }
     ]
   },
   {
     id: "initiatives",
     title: "Initiatives",
     href: "/initiatives",
-    emphasis: true,
-    children: [
-      { title: "All 12 Strategic Initiatives", href: "/initiatives", description: "Explore the complete portfolio of purpose-driven programs" },
-      { title: "CXO Mentorship & Peer Learning Circles", href: "/initiatives", description: "Guiding emerging leaders through confidential pods" },
-      { title: "Strategic Workshops & AI Literacy", href: "/initiatives", description: "Actionable AI adoption and cybersecurity literacy" },
-      { title: "Crisis Simulation Labs", href: "/initiatives", description: "Boardroom simulations for cyberattacks and resilience" },
-      { title: "Cross-Industry Innovation Labs", href: "/initiatives", description: "Co-developing breakthrough industry solutions" }
-    ]
+    emphasis: true
   },
   {
     id: "about",
@@ -140,7 +131,12 @@ export function Header() {
           {/* Primary Action Group with Sovereign Indian Tricolour Underlines */}
           <nav className="flex items-center gap-6 xl:gap-8" aria-label="Primary Navigation">
             {emphasisItems.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href + "/")) ||
+                (item.children && item.children.some((c) => pathname.startsWith(c.href.split("?")[0])));
               const isOpen = activeDropdown === item.id;
+
               return (
                 <div
                   key={item.id}
@@ -149,12 +145,15 @@ export function Header() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <Link href={item.href} className="flex flex-col items-center leading-tight group focus:outline-none py-1">
-                    <span className="flex items-center gap-1 text-[15px] xl:text-base font-bold uppercase tracking-wide text-white group-hover:text-[#C9A227] transition-colors">
-                      {item.title}
+                    <span className="flex items-center gap-1 text-[15px] xl:text-base font-bold uppercase tracking-wide transition-colors">
+                      <span className={cn(isActive ? "text-[#C9A227]" : "text-white group-hover:text-[#C9A227] transition-colors")}>
+                        {item.title}
+                      </span>
                       {item.children && (
                         <ChevronDown
                           className={cn(
-                            "w-3.5 h-3.5 text-[#C9A227] transition-transform duration-200",
+                            "w-3.5 h-3.5 transition-transform duration-200",
+                            isActive ? "text-[#C9A227]" : "text-[#C9A227]/80 group-hover:text-[#C9A227]",
                             isOpen && "rotate-180"
                           )}
                         />
@@ -162,10 +161,13 @@ export function Header() {
                     </span>
 
                     {/* Sovereign Indian Tricolour accent bar */}
-                    <div className="w-full h-[2.5px] rounded-full overflow-hidden flex mt-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-1/3 bg-[#FF9933]" />
-                      <div className="w-1/3 bg-white" />
-                      <div className="w-1/3 bg-[#138808]" />
+                    <div className={cn(
+                      "w-full h-[2.5px] rounded-full overflow-hidden flex mt-1.5 transition-opacity duration-300",
+                      isActive ? "opacity-100" : "opacity-80 group-hover:opacity-100"
+                    )}>
+                      <div className="flex-1 h-full bg-[#FF9933]" />
+                      <div className="flex-1 h-full bg-white" />
+                      <div className="flex-1 h-full bg-[#138808]" />
                     </div>
                   </Link>
 
@@ -216,7 +218,7 @@ export function Header() {
             {plainItems.map((item) => {
               const isActive =
                 pathname === item.href ||
-                pathname.startsWith(item.href + "/") ||
+                (item.href !== "/" && pathname.startsWith(item.href + "/")) ||
                 (item.children && item.children.some((c) => pathname.startsWith(c.href.split("?")[0])));
               const isOpen = activeDropdown === item.id;
 
@@ -231,8 +233,10 @@ export function Header() {
                     href={item.href}
                     className="flex flex-col items-center leading-tight group focus:outline-none py-1"
                   >
-                    <span className="flex items-center gap-1 text-[15px] font-semibold text-neutral-200 group-hover:text-white transition-colors">
-                      <span className={cn(isActive && "text-[#C9A227]")}>{item.title}</span>
+                    <span className="flex items-center gap-1 text-[15px] font-semibold transition-colors">
+                      <span className={cn(isActive ? "text-[#C9A227]" : "text-neutral-200 group-hover:text-white transition-colors")}>
+                        {item.title}
+                      </span>
                       {item.children && (
                         <ChevronDown
                           className={cn(
@@ -246,11 +250,11 @@ export function Header() {
                     {/* Sovereign Indian Tricolour accent bar */}
                     <div className={cn(
                       "w-full h-[2.5px] rounded-full overflow-hidden flex mt-1.5 transition-opacity duration-300",
-                      isActive ? "opacity-100" : "opacity-70 group-hover:opacity-100"
+                      isActive ? "opacity-100" : "opacity-80 group-hover:opacity-100"
                     )}>
-                      <div className="w-1/3 bg-[#FF9933]" />
-                      <div className="w-1/3 bg-white" />
-                      <div className="w-1/3 bg-[#138808]" />
+                      <div className="flex-1 h-full bg-[#FF9933]" />
+                      <div className="flex-1 h-full bg-white" />
+                      <div className="flex-1 h-full bg-[#138808]" />
                     </div>
                   </Link>
 
@@ -324,18 +328,25 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="xl:hidden bg-[#181818] border-b border-neutral-800 px-5 pt-4 pb-7 max-h-[85vh] overflow-y-auto">
           <div className="space-y-4 pb-4 border-b border-neutral-800">
-            {NAV_ITEMS.map((item) => (
-              <div key={item.id} className="space-y-2">
-                <Link
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={cn(
-                    "inline-block text-base font-bold uppercase tracking-wider py-1",
-                    item.emphasis ? "text-[#C9A227]" : "text-white"
-                  )}
-                >
-                  {item.title}
-                </Link>
+            {NAV_ITEMS.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href + "/")) ||
+                (item.children && item.children.some((c) => pathname.startsWith(c.href.split("?")[0])));
+
+              return (
+                <div key={item.id} className="space-y-2">
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      "inline-flex items-center gap-2 text-base font-bold uppercase tracking-wider py-1 transition-colors",
+                      isActive ? "text-[#C9A227]" : "text-white"
+                    )}
+                  >
+                    <span>{item.title}</span>
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227]" />}
+                  </Link>
                 {item.children && (
                   <div className="pl-3.5 border-l-2 border-[#C9A227]/40 space-y-2 mt-1">
                     {item.children.map((child) => (
@@ -351,7 +362,8 @@ export function Header() {
                   </div>
                 )}
               </div>
-            ))}
+            );
+          })}
           </div>
 
           <div className="pt-5 flex flex-col gap-3">

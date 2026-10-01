@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { initiativesData } from "@/lib/data/initiativesData";
+import { EventsTeaser } from "@/components/home/EventsTeaser";
 import { InitiativeItem } from "@/types";
 import { 
   Users, 
@@ -99,7 +100,7 @@ export default function InitiativesPage() {
       </div>
 
       {/* 12 Initiatives Grid with Asymmetrical Design */}
-      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-8 pb-24">
+      <div className="max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 py-8 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
           {filteredInitiatives.map((item, index) => {
             const Icon = iconMap[item.iconName] || Sparkles;
@@ -109,19 +110,19 @@ export default function InitiativesPage() {
               <div
                 key={item.id}
                 className={cn(
-                  "p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl hover:shadow-2xl group cursor-pointer",
+                  "p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl hover:shadow-2xl group cursor-pointer",
                   isCream
-                    ? "bg-[#F7F3EA] text-[#1A1A1A] border-none rounded-tl-[60px] rounded-br-[60px] rounded-tr-xl rounded-bl-xl"
-                    : "bg-[#1E1E1E] text-white border border-neutral-800 rounded-tr-[60px] rounded-bl-[60px] rounded-tl-xl rounded-br-xl"
+                    ? "bg-[#F7F3EA] text-[#1A1A1A] border-none rounded-tl-[40px] rounded-br-[40px] rounded-tr-xl rounded-bl-xl"
+                    : "bg-[#1E1E1E] text-white border border-neutral-800 rounded-tr-[40px] rounded-bl-[40px] rounded-tl-xl rounded-br-xl"
                 )}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center bg-black/5 border border-black/10 group-hover:scale-110 transition-transform duration-300">
-                      <Icon className={cn("w-6 h-6", isCream ? "text-[#C9A227]" : "text-[#C9A227]")} />
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-black/5 border border-black/10 group-hover:scale-110 transition-transform duration-300">
+                      <Icon className={cn("w-5 h-5", isCream ? "text-[#C9A227]" : "text-[#C9A227]")} />
                     </div>
                     <span className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded border",
+                      "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
                       isCream ? "text-[#1A1A1A] border-[#1A1A1A]/20 bg-black/5" : "text-neutral-400 border-neutral-700 bg-neutral-900"
                     )}>
                       #{item.id}
@@ -129,23 +130,23 @@ export default function InitiativesPage() {
                   </div>
 
                   <span className={cn(
-                    "text-[10px] font-bold uppercase tracking-wider mb-2 block",
+                    "text-[9px] font-bold uppercase tracking-wider mb-2 block",
                     isCream ? "text-[#C9A227]" : "text-[#C9A227]"
                   )}>
                     {item.category}
                   </span>
 
-                  <h3 className="text-xl sm:text-2xl font-bold font-serif mb-4 leading-tight group-hover:text-[#C9A227] transition-colors">
+                  <h3 className="text-lg sm:text-xl font-bold font-serif mb-3 leading-tight group-hover:text-[#C9A227] transition-colors">
                     {item.title}
                   </h3>
 
-                  <p className={cn("text-sm leading-relaxed mb-8 text-justify sm:text-left", isCream ? "text-neutral-700" : "text-neutral-400")}>
+                  <p className={cn("text-xs sm:text-sm leading-relaxed mb-6 text-justify sm:text-left", isCream ? "text-neutral-700" : "text-neutral-400")}>
                     {item.description}
                   </p>
                 </div>
 
-                <div className={cn("pt-5 border-t flex items-center justify-between", isCream ? "border-neutral-300" : "border-neutral-800")}>
-                  <div className={cn("flex items-center gap-1.5 text-[11px]", isCream ? "text-neutral-600" : "text-neutral-500")}>
+                <div className={cn("pt-4 border-t flex items-center justify-between", isCream ? "border-neutral-300" : "border-neutral-800")}>
+                  <div className={cn("flex items-center gap-1.5 text-[10px]", isCream ? "text-neutral-600" : "text-neutral-500")}>
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#C9A227]" />
                     <span>Active Program</span>
                   </div>
@@ -164,28 +165,10 @@ export default function InitiativesPage() {
             );
           })}
         </div>
-
-        {/* Bottom Banner to Join */}
-        <div className="mt-16 p-8 sm:p-12 rounded-sm bg-[#141414] border border-[#C9A227]/40 text-center relative overflow-hidden shadow-2xl">
-          <div className="max-w-2xl mx-auto space-y-4 relative z-10">
-            <h3 className="text-2xl sm:text-3xl font-bold font-serif text-white">
-              Contribute to Our Initiatives
-            </h3>
-            <p className="text-sm text-neutral-300 leading-relaxed">
-              We invite enterprise leaders to mentor rising talent, lead crisis labs, and share sovereign insights on national panels.
-            </p>
-            <div className="pt-2">
-              <Link
-                href="/membership2"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded text-xs font-bold uppercase tracking-wider bg-[#C9A227] hover:bg-[#D4AF37] text-neutral-950 shadow-lg transition-all"
-              >
-                <span>Apply For CXO Membership</span>
-                <span className="font-bold">›</span>
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
+
+      {/* Our Social Initiatives Section */}
+      <EventsTeaser />
     </div>
   );
 }

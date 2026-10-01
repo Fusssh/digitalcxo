@@ -3,6 +3,7 @@ import { Roboto, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
 
 const roboto = Roboto({
   weight: ["400", "700"],
@@ -49,7 +50,13 @@ export const metadata: Metadata = {
       "A strategic movement redefining enterprise leadership for India's next digital chapter.",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/assets/logo-128.png", sizes: "128x128", type: "image/png" },
+      { url: "/assets/logo-256.png", sizes: "256x256", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/assets/logo-128.png",
+    apple: "/assets/logo-256.png",
   },
 };
 
@@ -61,6 +68,9 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${roboto.variable} ${sourceSerif.variable} scroll-smooth`}>
       <head>
+        <link rel="icon" type="image/png" sizes="128x128" href="/assets/logo-128.png" />
+        <link rel="icon" type="image/png" sizes="256x256" href="/assets/logo-256.png" />
+        <link rel="apple-touch-icon" href="/assets/logo-256.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
@@ -69,6 +79,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <ScrollToTop />
       </body>
     </html>
   );

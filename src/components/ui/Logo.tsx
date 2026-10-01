@@ -36,7 +36,7 @@ export function Logo({ className, size = "md" }: LogoProps) {
     );
   }
 
-  const crestSize = size === "sm" ? 52 : size === "lg" ? 80 : 66;
+  const crestSize = size === "sm" ? 52 : size === "lg" ? 120 : 90;
 
   return (
     <Link

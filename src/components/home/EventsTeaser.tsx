@@ -91,7 +91,7 @@ export function EventsTeaser() {
   };
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F7F3EA] text-[#1A1A1A] relative overflow-hidden select-none border-t border-[#EAE4D6]">
+    <section id="social-initiatives" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F7F3EA] text-[#1A1A1A] relative overflow-hidden select-none border-t border-[#EAE4D6]">
       {/* Subtle warm decorative glow */}
       <div
         aria-hidden="true"

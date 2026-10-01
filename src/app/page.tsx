@@ -28,20 +28,21 @@ export default function HomePage() {
       {/* <BuiltForLeadersPanel /> */}
 
       {/* 5. Ongoing Leadership Platform (Pattern 5 — DARK): Centered serif headline, mission/vision/values */}
-      <OngoingPlatformSection />
 
       {/* 6. "What Members Experience" (Pattern 6 — LIGHT CREAM): 4 cards with gold/blue left border + tall photo */}
-      <MemberExperienceGrid />
+      {/* <MemberExperienceGrid /> */}
 
       {/* 7. Enrichment & Social Initiatives */}
       <InitiativesTeaser />
+      <OngoingPlatformSection />
+
+      <EventsTeaser />
       <TeamTeaser />
 
       {/* 8. Event Highlights */}
 
       {/* 8.5. Video Event Highlights */}
       <EventHighlightsSection />
-      <EventsTeaser />
 
       {/* 9. Our latest Podcast Series */}
       <PodcastTeaser />
