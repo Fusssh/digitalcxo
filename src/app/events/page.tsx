@@ -16,17 +16,28 @@ function EventsContent() {
   const [eventsList, setEventsList] = useState<EventItem[]>(initialEventsData);
 
   useEffect(() => {
-    // Check if there are admin-added events from api
-    fetch("/api/admin/events")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.events && Array.isArray(data.events) && data.events.length > 0) {
-          setEventsList(data.events);
-        }
-      })
-      .catch(() => {
-        // fallback to initialEventsData
-      });
+    import("@/lib/apiClient").then(({ adminApi }) => {
+      adminApi.get<{ data: any[] }>("/public/events?limit=50")
+        .then((res) => {
+          if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+            const mappedEvents = res.data.map(evt => ({
+              id: evt._id,
+              title: evt.title,
+              date: evt.createdAt ? new Date(evt.createdAt).toLocaleDateString() : "TBD",
+              venue: evt.location || "TBD",
+              tagline: evt.description || "",
+              type: "upcoming", // All public active events default to upcoming for this layout unless we have a date check
+              thumbnailUrl: evt.coverImageUrl,
+              videoUrl: evt.videoUrl,
+              description: evt.description
+            })) as EventItem[];
+            setEventsList(mappedEvents);
+          }
+        })
+        .catch(() => {
+          // fallback to initialEventsData
+        });
+    });
   }, []);
 
   const upcomingEvents = eventsList.filter((e) => e.type === "upcoming");

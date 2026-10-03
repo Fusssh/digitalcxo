@@ -11,16 +11,28 @@ export default function PodcastPage() {
   const [podcasts, setPodcasts] = useState<PodcastEpisode[]>(initialPodcastsData);
 
   useEffect(() => {
-    fetch("/api/admin/podcasts")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.podcasts && Array.isArray(data.podcasts)) {
-          setPodcasts(data.podcasts);
-        }
-      })
-      .catch(() => {
-        // fallback to initialPodcastsData
-      });
+    import("@/lib/apiClient").then(({ adminApi }) => {
+      adminApi.get<{ data: any[] }>("/public/podcasts?limit=50")
+        .then((res) => {
+          if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+            const mappedPodcasts = res.data.map(p => ({
+              id: p._id,
+              title: p.title,
+              subtitle: p.host ? `Hosted by: ${p.host}` : "Digital CXOS Podcast",
+              youtubeUrl: p.podcastUrl,
+              youtubeId: p.youtubeId || p.podcastUrl || "",
+              thumbnailUrl: p.thumbnailUrl,
+              duration: p.duration,
+              overview: p.description,
+              guests: []
+            })) as unknown as PodcastEpisode[];
+            setPodcasts(mappedPodcasts);
+          }
+        })
+        .catch(() => {
+          // fallback to initialPodcastsData
+        });
+    });
   }, []);
 
   return (

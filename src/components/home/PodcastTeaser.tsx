@@ -13,16 +13,28 @@ export function PodcastTeaser() {
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
-    fetch("/api/admin/podcasts")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.podcasts && Array.isArray(data.podcasts) && data.podcasts.length > 0) {
-          setPodcasts(data.podcasts);
-        }
-      })
-      .catch(() => {
-        // fallback to initialPodcastsData
-      });
+    import("@/lib/apiClient").then(({ adminApi }) => {
+      adminApi.get<{ data: any[] }>("/public/podcasts?limit=12&featured=true")
+        .then((res) => {
+          if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+            const mappedPodcasts = res.data.map(p => ({
+              id: p._id,
+              title: p.title,
+              subtitle: p.host ? `Hosted by: ${p.host}` : "Digital CXOS Podcast",
+              youtubeUrl: p.podcastUrl,
+              youtubeId: p.youtubeId || p.podcastUrl || "",
+              thumbnailUrl: p.thumbnailUrl,
+              duration: p.duration,
+              overview: p.description,
+              guests: []
+            })) as unknown as PodcastEpisode[];
+            setPodcasts(mappedPodcasts);
+          }
+        })
+        .catch(() => {
+          // fallback to initialPodcastsData
+        });
+    });
   }, []);
 
   const updateScrollState = () => {

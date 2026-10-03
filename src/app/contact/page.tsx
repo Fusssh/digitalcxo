@@ -44,16 +44,14 @@ export default function ContactPage() {
     setServerError(null);
 
     try {
-      const res = await fetch("/api/submit-form", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "contact", ...data })
+      const { adminApi } = await import("@/lib/apiClient");
+      await adminApi.post("/contact", {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        message: data.message,
+        subject: data.title ? `${data.title} ${data.name} Inquiry` : "New Website Inquiry"
       });
-
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to send message. Please try again.");
-      }
 
       setSubmittedSuccess(true);
       reset();

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Users, 
+  User,
   Video, 
   Calendar, 
   MessageSquare, 
@@ -48,7 +49,8 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
-  LayoutDashboard
+  LayoutDashboard,
+  Loader2
 } from "lucide-react";
 import { 
   CxoMemberSubmission, 
@@ -64,6 +66,13 @@ import {
   AdminUser
 } from "@/types";
 import { cn, formatDate, extractYouTubeId } from "@/lib/utils";
+import AdminUsersManager from "@/components/admin/AdminUsersManager";
+import AuditLogsManager from "@/components/admin/AuditLogsManager";
+import AdminProfile from "@/components/admin/AdminProfile";
+import ContactManager from "@/components/admin/ContactManager";
+import AdminEventsManager from "@/components/admin/AdminEventsManager";
+import AdminLeadershipManager from "@/components/admin/AdminLeadershipManager";
+import AdminPodcastsManager from "@/components/admin/AdminPodcastsManager";
 
 // Category options for Enrichment & Contribution
 const INITIATIVE_CATEGORIES = [
@@ -97,18 +106,24 @@ export default function AdminDashboardPage() {
 
   // Auth state
   const [currentUser, setCurrentUser] = useState<AdminUser | null>(null);
-  const [authTab, setAuthTab] = useState<"signin" | "signup">("signin");
+  const [authTab, setAuthTab] = useState<"signin" | "signup" | "forgot" | "reset">("signin");
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
+  const [authConfirmPassword, setAuthConfirmPassword] = useState("");
+  const [resetToken, setResetToken] = useState("");
   const [authName, setAuthName] = useState("");
   const [authRole, setAuthRole] = useState<"Super Admin" | "Content Director" | "Community Lead">("Super Admin");
   const [authJustification, setAuthJustification] = useState("");
   const [authError, setAuthError] = useState("");
+  const [authSuccessMsg, setAuthSuccessMsg] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
 
   // Active navigation tab
   const [activeTab, setActiveTab] = useState<
     "overview" | 
+    "profile" |
+    "admins" |
+    "audit-logs" |
     "members" | 
     "forms" | 
     "initiatives" | 
@@ -319,31 +334,45 @@ export default function AdminDashboardPage() {
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError("");
+    setAuthSuccessMsg("");
     setAuthLoading(true);
 
     try {
-      const res = await fetch("/api/admin/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: authTab,
+      const { adminApi } = await import("@/lib/apiClient");
+      
+      if (authTab === "signin") {
+        const res = await adminApi.post<{ data: { token: string; admin: AdminUser } }>("/auth/login", {
           email: authEmail,
-          password: authPassword,
-          name: authName,
-          role: authRole,
-          justification: authJustification
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        setAuthError(data.error || "Authentication failed. Check credentials.");
+          password: authPassword
+        });
+        
+        // Save token and user
+        localStorage.setItem("digitalcxo_admin_token", res.data.token);
+        setCurrentUser(res.data.admin);
+        localStorage.setItem("digitalcxo_admin_user", JSON.stringify(res.data.admin));
+        
+      } else if (authTab === "forgot") {
+        await adminApi.post("/auth/forgot-password", { email: authEmail });
+        setAuthSuccessMsg("If an account exists with that email, a password reset link has been sent.");
+        
+      } else if (authTab === "reset") {
+        if (authPassword !== authConfirmPassword) {
+          throw new Error("Passwords do not match");
+        }
+        await adminApi.post("/auth/reset-password", {
+          token: resetToken,
+          newPassword: authPassword,
+          confirmPassword: authConfirmPassword
+        });
+        setAuthSuccessMsg("Password has been reset successfully. You may now login.");
+        setTimeout(() => setAuthTab("signin"), 3000);
+        
       } else {
-        setCurrentUser(data.user);
-        localStorage.setItem("digitalcxo_admin_user", JSON.stringify(data.user));
+        // Mock signup flow as original
+        setAuthError("Sign up requires approval by existing admins. (Mocked)");
       }
-    } catch (err) {
-      setAuthError("Network error contacting auth service.");
+    } catch (err: any) {
+      setAuthError(err.message || "Network error contacting auth service.");
     } finally {
       setAuthLoading(false);
     }
@@ -378,9 +407,17 @@ export default function AdminDashboardPage() {
     localStorage.setItem("digitalcxo_admin_user", JSON.stringify(user));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      const { adminApi } = await import("@/lib/apiClient");
+      const token = localStorage.getItem("digitalcxo_admin_token") || "DEMO_TOKEN";
+      await adminApi.post("/auth/logout", {}, { headers: { Authorization: `Bearer ${token}` } });
+    } catch (err) {
+      console.error("Logout error", err);
+    }
     setCurrentUser(null);
     localStorage.removeItem("digitalcxo_admin_user");
+    localStorage.removeItem("digitalcxo_admin_token");
   };
 
   // Save backend host URL
@@ -998,6 +1035,7 @@ export default function AdminDashboardPage() {
       group: "MAIN DASHBOARD",
       items: [
         { id: "overview", label: "Overview & Hub", icon: LayoutDashboard, count: null },
+        { id: "profile", label: "My Profile", icon: User, count: null },
         { id: "members", label: "Members Directory", icon: Users, count: cxoMembers.length, badge: pendingCxoCount > 0 ? `${pendingCxoCount} Pending` : null, badgeColor: "bg-amber-400 text-slate-950" },
         { id: "forms", label: "Form Submissions", icon: FileCheck, count: partnerMembers.length + contacts.length }
       ]
@@ -1018,6 +1056,8 @@ export default function AdminDashboardPage() {
     {
       group: "INTEGRATION & SETTINGS",
       items: [
+        { id: "admins", label: "Admin Users", icon: Shield, count: null },
+        { id: "audit-logs", label: "Audit Logs", icon: Clock, count: null },
         { id: "api-hub", label: "Backend API Host Config", icon: Globe, count: null, badge: "Host Ready", badgeColor: "bg-sky-500/20 text-sky-300 border border-sky-500/30" }
       ]
     }
@@ -1079,6 +1119,12 @@ export default function AdminDashboardPage() {
               <span>{authError}</span>
             </div>
           )}
+          {authSuccessMsg && (
+            <div className="p-3 rounded-xl bg-emerald-900/30 border border-emerald-500/40 text-emerald-200 text-xs flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>{authSuccessMsg}</span>
+            </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleAuthSubmit} className="space-y-4 text-xs">
@@ -1111,35 +1157,77 @@ export default function AdminDashboardPage() {
               </>
             )}
 
-            <div>
-              <label className="block text-slate-300 font-semibold mb-1">Official Executive Email</label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  required
-                  value={authEmail}
-                  onChange={(e) => setAuthEmail(e.target.value)}
-                  placeholder="admin@digitalcxos.org"
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                />
+            {(authTab === "signin" || authTab === "signup" || authTab === "forgot") && (
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Official Executive Email</label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="email"
+                    required
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    placeholder="admin@digitalcxos.org"
+                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
-            <div>
-              <label className="block text-slate-300 font-semibold mb-1">Security Credential / Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="password"
-                  required
-                  value={authPassword}
-                  onChange={(e) => setAuthPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                />
+            {authTab === "reset" && (
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Reset Token</label>
+                <div className="relative">
+                  <Shield className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    required
+                    value={resetToken}
+                    onChange={(e) => setResetToken(e.target.value)}
+                    placeholder="Paste token from email"
+                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
+                  />
+                </div>
               </div>
-            </div>
+            )}
+
+            {(authTab === "signin" || authTab === "signup" || authTab === "reset") && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    {authTab === "reset" ? "New Password" : "Security Credential / Password"}
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="password"
+                      required
+                      value={authPassword}
+                      onChange={(e) => setAuthPassword(e.target.value)}
+                      placeholder="••••••••••••"
+                      className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
+                    />
+                  </div>
+                </div>
+
+                {authTab === "reset" && (
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1">Confirm New Password</label>
+                    <div className="relative">
+                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="password"
+                        required
+                        value={authConfirmPassword}
+                        onChange={(e) => setAuthConfirmPassword(e.target.value)}
+                        placeholder="••••••••••••"
+                        className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {authTab === "signup" && (
               <div>
@@ -1154,17 +1242,51 @@ export default function AdminDashboardPage() {
               </div>
             )}
 
+            {authTab === "signin" && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => { setAuthTab("forgot"); setAuthError(""); setAuthSuccessMsg(""); }}
+                  className="text-xs text-[#C9A227] hover:underline"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+            )}
+            
+            {(authTab === "forgot" || authTab === "reset") && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => { setAuthTab("signin"); setAuthError(""); setAuthSuccessMsg(""); }}
+                  className="text-xs text-slate-400 hover:text-white"
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={authLoading}
               className="w-full py-3 rounded-xl font-bold uppercase tracking-wider text-xs bg-gradient-to-r from-[#C9A227] to-[#E5C058] hover:from-[#D4AF37] hover:to-[#F3CF65] text-slate-950 transition-all duration-200 shadow-xl flex items-center justify-center gap-2 cursor-pointer"
             >
               {authLoading ? (
-                <RefreshCw className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
               ) : authTab === "signin" ? (
                 <>
                   <LogIn className="w-4 h-4" />
                   <span>Authenticate Session</span>
+                </>
+              ) : authTab === "forgot" ? (
+                <>
+                  <Mail className="w-4 h-4" />
+                  <span>Send Reset Link</span>
+                </>
+              ) : authTab === "reset" ? (
+                <>
+                  <Lock className="w-4 h-4" />
+                  <span>Reset Password</span>
                 </>
               ) : (
                 <>
@@ -1825,6 +1947,13 @@ export default function AdminDashboardPage() {
           )}
 
           {/* ========================================================
+              MY PROFILE TAB
+          ======================================================== */}
+          {activeTab === "profile" && (
+            <AdminProfile />
+          )}
+
+          {/* ========================================================
               TAB 1: ENRICHMENT & CONTRIBUTION (Req 1)
           ======================================================== */}
           {activeTab === "initiatives" && (
@@ -1910,123 +2039,7 @@ export default function AdminDashboardPage() {
               TAB 2: MEET OUR LEADERSHIP TEAM (Req 2)
           ======================================================== */}
           {activeTab === "leadership" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 2</span>
-                    <span className="text-xs text-slate-400">• All Fields Editable</span>
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold text-white mt-1">
-                    Meet Our Leadership Team &amp; Advisors
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Full control of all fields: Name, Role, Slug, Bio, Sectors, LinkedIn, Photo Image URL, Experience, and Philosophy Quote.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleOpenAddLeader}
-                  className="px-5 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shrink-0 cursor-pointer"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add Leadership Member</span>
-                </button>
-              </div>
-
-              {/* Leadership Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {teamMembers.map((member) => (
-                  <div
-                    key={member.id || member.slug}
-                    className="rounded-3xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/60 overflow-hidden transition-all flex flex-col justify-between shadow-xl"
-                  >
-                    <div>
-                      {/* Portrait Photo */}
-                      <div className="relative aspect-[4/3] w-full bg-slate-900 overflow-hidden">
-                        <img
-                          src={member.image || "/assests/rohit-1.webp"}
-                          alt={member.name}
-                          className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "/assests/rohit-1.webp";
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#091228] via-transparent to-transparent" />
-                        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-bold text-[#C9A227]">
-                          {member.experience || "Executive"}
-                        </div>
-                      </div>
-
-                      {/* Member Details */}
-                      <div className="p-5 space-y-3">
-                        <div>
-                          <h3 className="text-lg font-serif font-bold text-white">
-                            {member.name}
-                          </h3>
-                          <p className="text-xs font-semibold text-[#C9A227] mt-0.5">
-                            {member.role}
-                          </p>
-                        </div>
-
-                        <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
-                          {member.bio}
-                        </p>
-
-                        {member.quote && (
-                          <p className="text-[11px] italic text-slate-300 border-l-2 border-[#C9A227] pl-2 line-clamp-2">
-                            &ldquo;{member.quote}&rdquo;
-                          </p>
-                        )}
-
-                        {/* Sectors Chips */}
-                        {member.sectors && member.sectors.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 pt-1">
-                            {member.sectors.map((sec, idx) => (
-                              <span
-                                key={idx}
-                                className="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-slate-300 border border-white/5"
-                              >
-                                {sec}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Actions Bar */}
-                    <div className="p-4 border-t border-white/5 bg-slate-900/50 flex items-center justify-between text-xs">
-                      <a
-                        href={member.linkedin || "#"}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[11px] font-semibold text-slate-400 hover:text-white flex items-center gap-1"
-                      >
-                        <span>LinkedIn</span>
-                        <ExternalLink className="w-3 h-3 text-[#C9A227]" />
-                      </a>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleOpenEditLeader(member)}
-                          className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                        >
-                          <Edit2 className="w-3 h-3 text-amber-300" />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteLeader(member.id || member.slug)}
-                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <AdminLeadershipManager />
           )}
 
           {/* ========================================================
@@ -2221,218 +2234,14 @@ export default function AdminDashboardPage() {
               TAB 5: PODCAST SERIES (Req 5 - YouTube URL & Auto-fetch)
           ======================================================== */}
           {activeTab === "podcasts" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 5</span>
-                    <span className="text-xs text-slate-400">• YouTube URL Auto-Fetch</span>
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold text-white mt-1">
-                    Our Latest Podcast Series
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Admin puts YouTube links and web automatically parses the video ID, generates embed preview, and renders thumbnails.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleOpenAddPodcast}
-                  className="px-5 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shrink-0 cursor-pointer"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add YouTube Podcast</span>
-                </button>
-              </div>
-
-              {/* Podcasts Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {podcasts.map((p) => {
-                  const youtubeId = p.youtubeId || extractYouTubeId(p.youtubeUrl);
-                  const thumb = p.thumbnailUrl || (youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : "/assests/rohit-1.webp");
-
-                  return (
-                    <div
-                      key={p.id}
-                      className="rounded-3xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/60 overflow-hidden transition-all flex flex-col justify-between shadow-xl group"
-                    >
-                      <div>
-                        {/* Thumbnail & YouTube Overlay */}
-                        <div 
-                          onClick={() => youtubeId && setPreviewYoutubeId(youtubeId)}
-                          className="relative aspect-video w-full bg-black overflow-hidden cursor-pointer"
-                        >
-                          <img
-                            src={thumb}
-                            alt={p.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                              <Play className="w-5 h-5 fill-current ml-0.5" />
-                            </div>
-                          </div>
-
-                          <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase text-sky-400">
-                            YouTube ID: {youtubeId || "Auto"}
-                          </div>
-
-                          <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 font-mono text-[10px] text-white">
-                            {p.duration || "45 mins"}
-                          </div>
-                        </div>
-
-                        <div className="p-5 space-y-3">
-                          <div>
-                            <p className="text-[10px] uppercase font-bold tracking-wider text-[#C9A227]">
-                              {p.subtitle}
-                            </p>
-                            <h3 className="text-base font-serif font-bold text-white group-hover:text-amber-300 transition-colors mt-0.5 line-clamp-2">
-                              {p.title}
-                            </h3>
-                          </div>
-
-                          {p.guests && p.guests.length > 0 && (
-                            <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 space-y-1 text-xs">
-                              <span className="text-[10px] uppercase font-bold text-slate-400 block">Featured Guests:</span>
-                              {p.guests.map((g, i) => (
-                                <p key={i} className="text-slate-200">
-                                  <strong>{g.name}</strong> • {g.role}, {g.organization}
-                                </p>
-                              ))}
-                            </div>
-                          )}
-
-                          <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                            {p.overview}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="p-4 border-t border-white/5 bg-slate-900/50 flex items-center justify-between text-xs">
-                        <button
-                          onClick={() => youtubeId && setPreviewYoutubeId(youtubeId)}
-                          className="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1 cursor-pointer"
-                        >
-                          <Play className="w-3.5 h-3.5" />
-                          <span>Watch Episode</span>
-                        </button>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => handleOpenEditPodcast(p)}
-                            className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                          >
-                            <Edit2 className="w-3 h-3 text-amber-300" />
-                            <span>Edit</span>
-                          </button>
-                          <button
-                            onClick={() => handleDeletePodcast(p.id)}
-                            className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 cursor-pointer"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <AdminPodcastsManager />
           )}
 
           {/* ========================================================
               TAB 6: EVENTS MANAGEMENT (Req 6)
           ======================================================== */}
           {activeTab === "events" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 6</span>
-                    <span className="text-xs text-slate-400">• Upcoming &amp; Past Conclaves</span>
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold text-white mt-1">
-                    Events &amp; Conclaves Management
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Create upcoming executive summits or record past closed-door roundtables with video highlights and agendas.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleOpenAddEvent}
-                  className="px-5 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shrink-0 cursor-pointer"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add New Event</span>
-                </button>
-              </div>
-
-              {/* Events Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {events.map((evt) => (
-                  <div
-                    key={evt.id}
-                    className="rounded-3xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/60 overflow-hidden transition-all flex flex-col justify-between shadow-xl group"
-                  >
-                    <div>
-                      {/* Event Banner */}
-                      <div className="relative aspect-[16/9] w-full bg-slate-900 overflow-hidden">
-                        <img
-                          src={evt.thumbnailUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop"}
-                          alt={evt.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#091228] via-black/20 to-black/30" />
-                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#C9A227]">
-                          {evt.type === "upcoming" ? "Upcoming Conclave" : "Past Summit"}
-                        </div>
-                        <div className="absolute bottom-3 left-3 text-xs font-bold text-white">
-                          {evt.date}
-                        </div>
-                      </div>
-
-                      <div className="p-5 space-y-2.5">
-                        <h3 className="text-base font-serif font-bold text-white group-hover:text-amber-300 transition-colors">
-                          {evt.title}
-                        </h3>
-                        <p className="text-xs font-semibold text-[#C9A227]">
-                          {evt.venue}
-                        </p>
-                        <p className="text-xs text-slate-300 line-clamp-2">
-                          {evt.tagline}
-                        </p>
-                        {evt.attendeesCount && (
-                          <p className="text-[11px] text-slate-400 font-mono">
-                            Confirmed: {evt.attendeesCount}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="p-4 border-t border-white/5 bg-slate-900/50 flex items-center justify-between text-xs">
-                      <span className="text-[10px] text-slate-400 font-mono">#{evt.id}</span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleOpenEditEvent(evt)}
-                          className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                        >
-                          <Edit2 className="w-3 h-3 text-amber-300" />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteEvent(evt.id)}
-                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <AdminEventsManager />
           )}
 
           {/* ========================================================
@@ -2630,98 +2439,7 @@ export default function AdminDashboardPage() {
               TAB 8: CONTACT US FORM LIST (Req 8)
           ======================================================== */}
           {activeTab === "contacts" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 8</span>
-                    <span className="text-xs text-slate-400">• Inquiries Management</span>
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold text-white mt-1">
-                    Contact Us Form Inquiries Inbox
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    View submitted executive inquiries, reply notes, and status management.
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="relative w-full sm:w-64">
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search by sender or message..."
-                      className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-200 focus:outline-none focus:border-[#C9A227]"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Inquiries Table */}
-              <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#091228] shadow-xl">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-[#050C1F] text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-white/10">
-                      <tr>
-                        <th className="px-4 py-3">Sender Name</th>
-                        <th className="px-4 py-3">Email &amp; Phone</th>
-                        <th className="px-4 py-3">Message Snippet</th>
-                        <th className="px-4 py-3">Date</th>
-                        <th className="px-4 py-3">Status</th>
-                        <th className="px-4 py-3 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                      {filteredContacts.map((c) => (
-                        <tr key={c.id} className="hover:bg-white/5 transition-colors">
-                          <td className="px-4 py-3.5 font-bold text-white">
-                            {c.title} {c.name}
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <p>{c.email}</p>
-                            <p className="text-slate-400 text-[11px]">{c.phone}</p>
-                          </td>
-                          <td className="px-4 py-3.5 max-w-xs truncate text-slate-300">
-                            {c.message}
-                          </td>
-                          <td className="px-4 py-3.5 text-slate-400 whitespace-nowrap">
-                            {formatDate(c.submittedAt)}
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <span className={cn(
-                              "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase",
-                              c.status === "Unread" ? "bg-teal-500/20 text-teal-300 border border-teal-500/30" :
-                              c.status === "Replied" ? "bg-sky-500/20 text-sky-300 border border-sky-500/30" :
-                              "bg-slate-800 text-slate-400"
-                            )}>
-                              {c.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5 text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => setSelectedContact(c)}
-                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold cursor-pointer"
-                              >
-                                Read &amp; Reply
-                              </button>
-                              <button
-                                onClick={() => handleUpdateContactStatus(c.id, c.status === "Archived" ? "Unread" : "Archived")}
-                                className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer"
-                              >
-                                {c.status === "Archived" ? "Unarchive" : "Archive"}
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            <ContactManager />
           )}
 
           {/* ========================================================
@@ -3006,6 +2724,20 @@ export default function AdminDashboardPage() {
                 </div>
               )}
             </div>
+          )}
+
+          {/* ========================================================
+              ADMIN USERS TAB
+          ======================================================== */}
+          {activeTab === "admins" && (
+            <AdminUsersManager />
+          )}
+
+          {/* ========================================================
+              AUDIT LOGS TAB
+          ======================================================== */}
+          {activeTab === "audit-logs" && (
+            <AuditLogsManager />
           )}
 
           {/* ========================================================

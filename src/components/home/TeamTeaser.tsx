@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { createPortal } from "react-dom";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { leadershipTeam } from "@/lib/data/teamData";
 import { TeamMember } from "@/types";
 
@@ -12,16 +12,39 @@ export function TeamTeaser() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    fetch("/api/admin/leadership")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.teamMembers && Array.isArray(data.teamMembers) && data.teamMembers.length > 0) {
-          setTeam(data.teamMembers);
-        }
-      })
-      .catch(() => {});
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    import("@/lib/apiClient").then(({ adminApi }) => {
+      adminApi.get<{ data: any[] }>("/public/leadership")
+        .then((res) => {
+          if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+            const mappedTeam = res.data.map(member => {
+              const matchedLocal = leadershipTeam.find(
+                m => m.name.toLowerCase() === member.name.toLowerCase() || m.slug === member._id
+              );
+              return {
+                id: member._id,
+                name: member.name,
+                role: member.designation,
+                slug: matchedLocal?.slug || member._id,
+                image: member.imageUrl || matchedLocal?.image || "/assests/rohit-1.webp",
+                bio: matchedLocal?.bio || member.description || member.shortBio || "",
+                linkedin: member.linkedinUrl || matchedLocal?.linkedin || "",
+                experience: matchedLocal?.experience || "Executive",
+                quote: member.shortBio || matchedLocal?.quote || ""
+              };
+            }) as TeamMember[];
+            setTeam(mappedTeam);
+          }
+        })
+        .catch(() => {});
+    });
   }, []);
 
   const updateScrollState = () => {
@@ -47,12 +70,32 @@ export function TeamTeaser() {
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
-    const cardWidth = card ? card.offsetWidth + 32 /* gap-8 */ : el.clientWidth / 4;
+    const cardWidth = card ? card.offsetWidth + 20 : el.clientWidth / 4;
     el.scrollBy({ left: direction * cardWidth, behavior: "smooth" });
   };
 
+  // Close modal on escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedMember(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedMember) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [selectedMember]);
+
   return (
-    <section className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F9F9F8] text-[#1A1A1A] border-t border-[#EAE4D6] select-none overflow-hidden">
+    <section id="leadership" className="relative z-10 py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F9F9F8] text-[#1A1A1A] border-t border-[#EAE4D6] select-none overflow-hidden">
       {/* Subtle dot-grid texture, top-left */}
       <div
         aria-hidden
@@ -107,7 +150,7 @@ export function TeamTeaser() {
           </div>
         </div>
 
-        {/* Team Slider — smaller cards, kept inside the section's own padding */}
+        {/* Team Slider */}
         <div className="relative">
           <div
             ref={scrollRef}
@@ -115,11 +158,12 @@ export function TeamTeaser() {
           >
             {team.map((member) => {
               return (
-                <Link
-                  key={member.slug}
+                <button
+                  key={member.slug || member.id}
                   data-card
-                  href={`/team/${member.slug}`}
-                  className="group shrink-0 grow basis-0 min-w-[150px] sm:min-w-[170px] lg:min-w-[190px] w-full snap-start block bg-white rounded-xl p-2 sm:p-2.5 border border-neutral-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  type="button"
+                  onClick={() => setSelectedMember(member)}
+                  className="group shrink-0 grow basis-0 min-w-[150px] sm:min-w-[170px] lg:min-w-[190px] w-full snap-start text-left bg-white rounded-xl p-2 sm:p-2.5 border border-neutral-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                 >
                   {/* Portrait photo */}
                   <div className="relative aspect-[4/5] w-full rounded-lg overflow-hidden bg-neutral-900 mb-3">
@@ -148,13 +192,14 @@ export function TeamTeaser() {
                     </h3>
                   </div>
 
+                  {/* View Button */}
                   <div className="px-0.5 pb-0.5">
                     <div className="inline-flex items-center gap-1.5 py-1.5 px-3.5 rounded-full bg-neutral-950 group-hover:bg-[#C9A227] text-white group-hover:text-neutral-950 font-sans text-[10.5px] sm:text-[11px] font-semibold tracking-wide transition-all duration-300">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227] group-hover:bg-neutral-950 transition-colors" />
-                      <span>View Details</span>
+                      <span>View</span>
                     </div>
                   </div>
-                </Link>
+                </button>
               );
             })}
           </div>
@@ -162,17 +207,90 @@ export function TeamTeaser() {
           {/* Right-edge fade hint that there's more to scroll, on mobile/tablet */}
           <div className="pointer-events-none absolute top-0 right-0 bottom-2 w-12 bg-gradient-to-l from-[#F9F9F8] to-transparent lg:hidden" />
         </div>
-
         {/* Footer Explore Link */}
         <div className="pt-2 text-center">
-          <Link
+          <a
             href="/about#leadership"
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider text-[#1A1A1A] hover:text-[#C9A227] transition-colors chevron-link"
           >
             Explore Complete Leadership Credo &amp; Board Advisory
-          </Link>
+          </a>
         </div>
       </div>
+
+      {/* Simple Modal for Name and Description rendered in Portal */}
+      {mounted && selectedMember && createPortal(
+        <div 
+          className="fixed inset-0 z-[999999] flex items-center justify-center p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-member-name"
+        >
+          {/* Completely solid dark backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+            onClick={() => setSelectedMember(null)}
+            aria-hidden="true"
+          />
+
+          {/* Modal Container */}
+          <div 
+            className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden border border-neutral-200 animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 sm:px-8 sm:py-5 border-b border-neutral-200 bg-[#F9F9F8]">
+              <div>
+                <h3 id="modal-member-name" className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 tracking-tight">
+                  {selectedMember.name}
+                </h3>
+                {selectedMember.role && (
+                  <p className="text-xs sm:text-sm font-medium text-[#C29D59] mt-0.5">
+                    {selectedMember.role}
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedMember(null)}
+                aria-label="Close modal"
+                className="p-2 -mr-2 text-neutral-500 hover:text-neutral-900 rounded-full hover:bg-neutral-200/60 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Description Body */}
+            <div className="px-6 sm:px-8 py-6 sm:py-8 overflow-y-auto space-y-4">
+              {selectedMember.bio ? (
+                selectedMember.bio
+                  .split(/\n\s*\n/)
+                  .map((para, idx) => (
+                    <p key={idx} className="text-sm sm:text-base text-neutral-700 leading-relaxed font-normal">
+                      {para.trim()}
+                    </p>
+                  ))
+              ) : (
+                <p className="text-sm sm:text-base text-neutral-700 leading-relaxed font-normal">
+                  {selectedMember.quote || "No description available."}
+                </p>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 sm:px-8 py-3.5 border-t border-neutral-100 bg-[#F9F9F8] flex justify-end">
+              <button
+                type="button"
+                onClick={() => setSelectedMember(null)}
+                className="px-5 py-2 text-xs sm:text-sm font-semibold text-neutral-700 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-100 transition-colors shadow-sm cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 }

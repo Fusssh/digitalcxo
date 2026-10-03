@@ -2,8 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { PageHero } from "@/components/layout/PageHero";
-import { OngoingPlatformSection } from "@/components/home/OngoingPlatformSection";
-import { db } from "@/lib/store";
+import { TeamTeaser } from "@/components/home/TeamTeaser";
 import { Shield, Award } from "lucide-react";
 
 export const metadata = {
@@ -12,7 +11,6 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  const team = db.getTeamMembers();
   return (
     <div className="min-h-screen bg-[#181818] text-white">
       {/* Page Hero */}
@@ -54,6 +52,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Leadership Team Section */}
+      <TeamTeaser />
     </div>
   );
 }
