@@ -6,15 +6,18 @@ import {
   MessageSquare, 
   Search, 
   Trash2, 
-  X,
-  Mail,
-  Loader2,
-  ChevronLeft,
-  ChevronRight,
-  Database,
-  Clock,
-  CheckCircle2,
-  AlertCircle
+  X, 
+  Mail, 
+  Loader2, 
+  ChevronLeft, 
+  ChevronRight, 
+  Database, 
+  Clock, 
+  CheckCircle2, 
+  AlertCircle,
+  Shield,
+  Send,
+  AlertTriangle
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
@@ -40,6 +43,7 @@ export default function ContactManager() {
   const [contacts, setContacts] = useState<ContactEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [feedbackMsg, setFeedbackMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
   
   // Pagination & Filters
   const [page, setPage] = useState(1);
@@ -55,6 +59,11 @@ export default function ContactManager() {
   const [editStatus, setEditStatus] = useState("");
   const [editNotes, setEditNotes] = useState("");
 
+  const showToast = (type: "success" | "error", text: string) => {
+    setFeedbackMsg({ type, text });
+    setTimeout(() => setFeedbackMsg(null), 4000);
+  };
+
   const fetchContacts = async () => {
     setIsLoading(true);
     setError("");
@@ -65,37 +74,26 @@ export default function ContactManager() {
       };
       
       if (statusFilter) queryParams.status = statusFilter.toUpperCase();
-      if (searchTerm) queryParams.search = searchTerm;
+      if (searchTerm.trim()) queryParams.search = searchTerm.trim();
 
-      const token = localStorage.getItem("digitalcxo_admin_token") || "DEMO_TOKEN";
-      const res = await adminApi.get<{ data: ContactEntry[], pagination: any }>('/admin/contacts', {
+      const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
+      const res = await adminApi.get<{ data: ContactEntry[]; pagination: any }>("/admin/contacts", {
         params: queryParams,
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setContacts(res.data || []);
-      if (res.pagination) {
-        setTotalPages(res.pagination.totalPages);
+      if (res.data && Array.isArray(res.data)) {
+        setContacts(res.data);
+        if (res.pagination) {
+          setTotalPages(res.pagination.totalPages || 1);
+        }
+      } else {
+        setContacts([]);
+        setTotalPages(1);
       }
     } catch (err: any) {
       setError(err.message || "Failed to fetch contacts");
-      // Fallback
-      setContacts([
-        {
-          _id: "demo-contact-1",
-          title: "Mr.",
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@example.com",
-          phone: "9876543210",
-          subject: "Partnership Inquiry",
-          message: "I would like to explore partnership opportunities.",
-          status: "NEW",
-          adminNotes: "",
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        }
-      ]);
+      setContacts([]);
       setTotalPages(1);
     } finally {
       setIsLoading(false);
@@ -107,7 +105,7 @@ export default function ContactManager() {
     const timer = setTimeout(() => {
       setSearchTerm(searchInput);
       setPage(1);
-    }, 500);
+    }, 400);
     return () => clearTimeout(timer);
   }, [searchInput]);
 
@@ -116,19 +114,24 @@ export default function ContactManager() {
   }, [page, statusFilter, searchTerm]);
 
   const handleOpenContact = async (contact: ContactEntry) => {
-    // Audit log API requires GET /admin/contacts/:id to register CONTACT_VIEWED
+    // Step 3: GET /admin/contacts/:id (registers CONTACT_VIEWED audit log)
     try {
-      const token = localStorage.getItem("digitalcxo_admin_token") || "DEMO_TOKEN";
+      const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
       const res = await adminApi.get<{ data: ContactEntry }>(`/admin/contacts/${contact._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setSelectedContact(res.data);
-      setEditStatus(res.data.status);
-      setEditNotes(res.data.adminNotes || "");
-    } catch (err) {
-      // Fallback
+      if (res.data) {
+        setSelectedContact(res.data);
+        setEditStatus(res.data.status || "NEW");
+        setEditNotes(res.data.adminNotes || "");
+      } else {
+        setSelectedContact(contact);
+        setEditStatus(contact.status || "NEW");
+        setEditNotes(contact.adminNotes || "");
+      }
+    } catch {
       setSelectedContact(contact);
-      setEditStatus(contact.status);
+      setEditStatus(contact.status || "NEW");
       setEditNotes(contact.adminNotes || "");
     }
   };
@@ -137,39 +140,41 @@ export default function ContactManager() {
     if (!selectedContact) return;
     setIsUpdating(true);
     try {
-      const token = localStorage.getItem("digitalcxo_admin_token") || "DEMO_TOKEN";
+      const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
       await adminApi.patch(`/admin/contacts/${selectedContact._id}/status`, {
-        status: editStatus,
+        status: editStatus.toUpperCase(),
         adminNotes: editNotes
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
+      showToast("success", "Contact inquiry status updated successfully.");
       setSelectedContact(null);
       fetchContacts();
     } catch (err: any) {
-      alert(err.message || "Failed to update contact");
+      showToast("error", err.message || "Failed to update contact status.");
     } finally {
       setIsUpdating(false);
     }
   };
 
-  const handleDeleteContact = async (id: string) => {
-    if (!confirm("Are you sure you want to permanently delete this contact inquiry?")) return;
+  const handleDeleteContact = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to permanently delete the contact inquiry from "${name}"?`)) return;
     
     try {
-      const token = localStorage.getItem("digitalcxo_admin_token") || "DEMO_TOKEN";
+      const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
       await adminApi.delete(`/admin/contacts/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      showToast("success", "Contact inquiry deleted successfully.");
       fetchContacts();
     } catch (err: any) {
-      alert(err.message || "Failed to delete contact");
+      showToast("error", err.message || "Failed to delete contact inquiry.");
     }
   };
 
   const getStatusColor = (status: string) => {
-    switch (status.toUpperCase()) {
+    switch (status?.toUpperCase()) {
       case "NEW": return "bg-sky-500/20 text-sky-300 border-sky-500/30";
       case "READ": return "bg-blue-500/20 text-blue-300 border-blue-500/30";
       case "IN_PROGRESS": return "bg-amber-500/20 text-amber-300 border-amber-500/30";
@@ -179,25 +184,53 @@ export default function ContactManager() {
     }
   };
 
+  const getEmailStatusBadge = (emailStatus?: string) => {
+    switch (emailStatus?.toUpperCase()) {
+      case "SENT":
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Email: Sent</span>;
+      case "FAILED":
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-300 border border-red-500/30">Email: Failed</span>;
+      case "DISABLED":
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-500/20 text-slate-400 border border-slate-500/30">Email: Off</span>;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Toast Notification */}
+      {feedbackMsg && (
+        <div 
+          className={`fixed top-6 right-6 z-[1000] px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-semibold animate-in fade-in slide-in-from-top-3 duration-300 ${
+            feedbackMsg.type === "success" 
+              ? "bg-emerald-950/90 text-emerald-300 border-emerald-500/50 backdrop-blur-md" 
+              : "bg-red-950/90 text-red-300 border-red-500/50 backdrop-blur-md"
+          }`}
+        >
+          {feedbackMsg.type === "success" ? <CheckCircle2 className="w-5 h-5 text-emerald-400" /> : <AlertTriangle className="w-5 h-5 text-red-400" />}
+          <span>{feedbackMsg.text}</span>
+        </div>
+      )}
+
+      {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 8</span>
-            <span className="text-xs text-slate-400">• Inquiries Management</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Management Portal</span>
+            <span className="text-xs text-slate-400">• Contact Inquiries &amp; Secretariat Inbox</span>
           </div>
           <h2 className="text-2xl font-serif font-bold text-white mt-1">
-            Contact Us Form Inquiries Inbox
+            Contact Submissions &amp; Inquiries
           </h2>
           <p className="text-xs text-slate-400 mt-1">
-            View submitted executive inquiries, reply notes, and status management.
+            View submitted inquiries, update workflow status, track email notification states, and attach internal audit notes.
           </p>
         </div>
         
         <button 
           onClick={fetchContacts}
-          className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-sm font-semibold transition-colors flex items-center gap-2"
+          className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-sm font-semibold transition-colors flex items-center gap-2 cursor-pointer"
         >
           <Database className="w-4 h-4" />
           Refresh
@@ -212,7 +245,7 @@ export default function ContactManager() {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search by sender or message..."
+            placeholder="Search by sender, email, subject..."
             className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-sm text-slate-200 focus:outline-none focus:border-[#C9A227]"
           />
         </div>
@@ -231,8 +264,9 @@ export default function ContactManager() {
       </div>
 
       {error && (
-        <div className="p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-400 text-sm">
-          Failed to load from API: {error}. Showing fallback demo data.
+        <div className="p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-400 text-sm flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
@@ -243,9 +277,9 @@ export default function ContactManager() {
             <thead className="bg-[#050C1F] text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-white/10">
               <tr>
                 <th className="px-4 py-3">Sender Details</th>
-                <th className="px-4 py-3">Subject & Message</th>
+                <th className="px-4 py-3">Subject &amp; Message</th>
                 <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Status &amp; Delivery</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -263,48 +297,55 @@ export default function ContactManager() {
                   </td>
                 </tr>
               ) : (
-                contacts.map((c) => (
-                  <tr key={c._id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-4 py-3.5">
-                      <p className="font-bold text-white">{c.title || ""} {c.firstName} {c.lastName || ""}</p>
-                      <div className="flex flex-col gap-0.5 mt-1 text-[11px] text-slate-400">
-                        <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {c.email}</span>
-                        {c.phone && <span>{c.phone}</span>}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <p className="font-semibold text-slate-200 mb-0.5 truncate max-w-xs">{c.subject || "New Website Inquiry"}</p>
-                      <p className="truncate max-w-xs text-slate-400">{c.message}</p>
-                    </td>
-                    <td className="px-4 py-3.5 text-slate-400">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-slate-500" />
-                        {formatDate(c.createdAt)}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(c.status)}`}>
-                        {c.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3.5 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleOpenContact(c)}
-                          className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold transition-colors"
-                        >
-                          Review
-                        </button>
-                        <button
-                          onClick={() => handleDeleteContact(c._id)}
-                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                contacts.map((c) => {
+                  const fullName = `${c.title || ""} ${c.firstName} ${c.lastName || ""}`.trim();
+                  return (
+                    <tr key={c._id} className="hover:bg-white/5 transition-colors">
+                      <td className="px-4 py-3.5">
+                        <p className="font-bold text-white">{fullName || "Anonymous"}</p>
+                        <div className="flex flex-col gap-0.5 mt-1 text-[11px] text-slate-400">
+                          <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {c.email}</span>
+                          {c.phone && <span>{c.phone}</span>}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <p className="font-semibold text-slate-200 mb-0.5 truncate max-w-xs">{c.subject || "New Website Inquiry"}</p>
+                        <p className="truncate max-w-xs text-slate-400">{c.message}</p>
+                      </td>
+                      <td className="px-4 py-3.5 text-slate-400">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-slate-500" />
+                          {formatDate(c.createdAt)}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ${getStatusColor(c.status)}`}>
+                            {c.status}
+                          </span>
+                          {getEmailStatusBadge(c.emailStatus)}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => handleOpenContact(c)}
+                            className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold transition-colors cursor-pointer"
+                          >
+                            Review
+                          </button>
+                          <button
+                            onClick={() => handleDeleteContact(c._id, fullName)}
+                            className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors cursor-pointer"
+                            title="Delete Inquiry"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
@@ -318,14 +359,14 @@ export default function ContactManager() {
               <button 
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-white"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-white"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -349,7 +390,7 @@ export default function ContactManager() {
               </h3>
               <button
                 onClick={() => setSelectedContact(null)}
-                className="p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                className="p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -357,7 +398,7 @@ export default function ContactManager() {
 
             <div className="p-6 space-y-6">
               {/* Sender Info */}
-              <div className="grid grid-cols-2 gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5">
                 <div>
                   <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">Sender</p>
                   <p className="text-sm font-semibold text-white">{selectedContact.title || ""} {selectedContact.firstName} {selectedContact.lastName || ""}</p>
@@ -368,12 +409,24 @@ export default function ContactManager() {
                 </div>
                 <div>
                   <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">Email</p>
-                  <p className="text-sm text-[#C9A227]">{selectedContact.email}</p>
+                  <p className="text-sm text-[#C9A227] truncate">{selectedContact.email}</p>
                 </div>
                 <div>
                   <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">Phone</p>
                   <p className="text-sm text-slate-300">{selectedContact.phone || "N/A"}</p>
                 </div>
+                {selectedContact.ipAddress && (
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">IP Address</p>
+                    <p className="text-xs text-slate-400">{selectedContact.ipAddress}</p>
+                  </div>
+                )}
+                {selectedContact.emailStatus && (
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-slate-500 mb-1">Email Notification</p>
+                    {getEmailStatusBadge(selectedContact.emailStatus)}
+                  </div>
+                )}
               </div>
 
               {/* Message Content */}
@@ -429,14 +482,14 @@ export default function ContactManager() {
             <div className="p-6 border-t border-white/10 flex justify-end gap-3 sticky bottom-0 bg-[#0B132B]/95 backdrop-blur-md z-10">
               <button
                 onClick={() => setSelectedContact(null)}
-                className="px-5 py-2.5 rounded-xl font-semibold text-sm bg-white/5 hover:bg-white/10 text-slate-300 transition-colors"
+                className="px-5 py-2.5 rounded-xl font-semibold text-sm bg-white/5 hover:bg-white/10 text-slate-300 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateContact}
                 disabled={isUpdating}
-                className="px-5 py-2.5 rounded-xl font-bold text-sm bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 flex items-center gap-2 disabled:opacity-50 transition-colors shadow-lg"
+                className="px-5 py-2.5 rounded-xl font-bold text-sm bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 flex items-center gap-2 disabled:opacity-50 transition-colors shadow-lg cursor-pointer"
               >
                 {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
                 Save Changes

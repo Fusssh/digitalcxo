@@ -2,23 +2,24 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { 
-  Users, 
+import { Logo } from "@/components/ui/Logo";
+import {
+  Users,
   User,
-  Video, 
-  Calendar, 
-  MessageSquare, 
-  PlusCircle, 
-  Trash2, 
-  CheckCircle2, 
-  Clock, 
-  ExternalLink, 
-  Search, 
-  Filter, 
-  Download, 
-  ShieldAlert, 
-  Sparkles, 
-  Film, 
+  Video,
+  Calendar,
+  MessageSquare,
+  PlusCircle,
+  Trash2,
+  CheckCircle2,
+  Clock,
+  ExternalLink,
+  Search,
+  Filter,
+  Download,
+  ShieldAlert,
+  Sparkles,
+  Film,
   Check,
   Edit2,
   Play,
@@ -50,13 +51,15 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
-  Loader2
+  Loader2,
+  Key,
+  EyeOff
 } from "lucide-react";
-import { 
-  CxoMemberSubmission, 
-  PartnerSubmission, 
-  PodcastEpisode, 
-  EventItem, 
+import {
+  CxoMemberSubmission,
+  PartnerSubmission,
+  PodcastEpisode,
+  EventItem,
   ContactSubmission,
   TeamMember,
   InitiativeItem,
@@ -73,6 +76,9 @@ import ContactManager from "@/components/admin/ContactManager";
 import AdminEventsManager from "@/components/admin/AdminEventsManager";
 import AdminLeadershipManager from "@/components/admin/AdminLeadershipManager";
 import AdminPodcastsManager from "@/components/admin/AdminPodcastsManager";
+import AdminSettingsManager from "@/components/admin/AdminSettingsManager";
+import AdminSocialInitiativesManager from "@/components/admin/AdminSocialInitiativesManager";
+import AdminJoinUsManager from "@/components/admin/AdminJoinUsManager";
 
 // Category options for Enrichment & Contribution
 const INITIATIVE_CATEGORIES = [
@@ -106,36 +112,46 @@ export default function AdminDashboardPage() {
 
   // Auth state
   const [currentUser, setCurrentUser] = useState<AdminUser | null>(null);
-  const [authTab, setAuthTab] = useState<"signin" | "signup" | "forgot" | "reset">("signin");
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [authTab, setAuthTab] = useState<"signin" | "forgot" | "reset">("signin");
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authConfirmPassword, setAuthConfirmPassword] = useState("");
   const [resetToken, setResetToken] = useState("");
-  const [authName, setAuthName] = useState("");
-  const [authRole, setAuthRole] = useState<"Super Admin" | "Content Director" | "Community Lead">("Super Admin");
-  const [authJustification, setAuthJustification] = useState("");
   const [authError, setAuthError] = useState("");
   const [authSuccessMsg, setAuthSuccessMsg] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Active navigation tab
   const [activeTab, setActiveTab] = useState<
-    "overview" | 
+    "overview" |
     "profile" |
+    "settings" |
     "admins" |
     "audit-logs" |
-    "members" | 
-    "forms" | 
-    "initiatives" | 
-    "leadership" | 
-    "social" | 
-    "highlights" | 
-    "podcasts" | 
-    "events" | 
-    "partners" | 
-    "contacts" | 
+    "members" |
+    "forms" |
+    "initiatives" |
+    "leadership" |
+    "social" |
+    "highlights" |
+    "podcasts" |
+    "events" |
+    "partners" |
+    "contacts" |
     "api-hub"
   >("overview");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("digitalcxo_admin_active_tab");
+    if (saved) setActiveTab(saved as any);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("digitalcxo_admin_active_tab", activeTab);
+  }, [activeTab]);
 
   // Forms sub-tab
   const [formsSubTab, setFormsSubTab] = useState<"cxo" | "partners" | "contacts">("cxo");
@@ -249,33 +265,36 @@ export default function AdminDashboardPage() {
   const [partStatus, setPartStatus] = useState<"Active" | "Pending" | "Inactive">("Active");
   const [partDescription, setPartDescription] = useState("");
 
-  // Check stored user session on mount
+  // Check stored user session on mount via GET /auth/profile
   useEffect(() => {
-    const savedUser = localStorage.getItem("digitalcxo_admin_user");
-    if (savedUser) {
-      try {
-        setCurrentUser(JSON.parse(savedUser));
-      } catch {
-        const defaultUser: AdminUser = {
-          id: "admin-super-01",
-          name: "Dr. Rajeshwar Rao",
-          email: "super.admin@digitalcxos.org",
-          role: "Super Admin",
-          avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Admin&backgroundColor=070D1F,1E1E1E&textColor=C9A227"
-        };
-        setCurrentUser(defaultUser);
-      }
-    } else {
-      const defaultUser: AdminUser = {
-        id: "admin-super-01",
-        name: "Dr. Rajeshwar Rao",
-        email: "super.admin@digitalcxos.org",
-        role: "Super Admin",
-        avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Admin&backgroundColor=070D1F,1E1E1E&textColor=C9A227"
-      };
-      setCurrentUser(defaultUser);
-      localStorage.setItem("digitalcxo_admin_user", JSON.stringify(defaultUser));
+    const token = localStorage.getItem("digitalcxo_admin_token");
+    if (!token) {
+      setCurrentUser(null);
+      setIsCheckingAuth(false);
+      return;
     }
+
+    import("@/lib/apiClient").then(({ adminApi }) => {
+      adminApi.get<{ data: AdminUser }>("/auth/profile", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then((res) => {
+          if (res.data) {
+            setCurrentUser(res.data);
+            localStorage.setItem("digitalcxo_admin_user", JSON.stringify(res.data));
+          } else {
+            throw new Error("Invalid session");
+          }
+        })
+        .catch(() => {
+          localStorage.removeItem("digitalcxo_admin_token");
+          localStorage.removeItem("digitalcxo_admin_user");
+          setCurrentUser(null);
+        })
+        .finally(() => {
+          setIsCheckingAuth(false);
+        });
+    });
 
     const savedHost = localStorage.getItem("digitalcxo_backend_host");
     if (savedHost) {
@@ -288,13 +307,13 @@ export default function AdminDashboardPage() {
     setIsLoading(true);
     try {
       const [
-        membersRes, 
-        podRes, 
-        evtRes, 
-        contactRes, 
-        leadRes, 
-        initRes, 
-        socialRes, 
+        membersRes,
+        podRes,
+        evtRes,
+        contactRes,
+        leadRes,
+        initRes,
+        socialRes,
         hlRes,
         partnerRes
       ] = await Promise.all([
@@ -327,10 +346,12 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
-    refreshData();
-  }, []);
+    if (currentUser) {
+      refreshData();
+    }
+  }, [currentUser]);
 
-  // Auth Handlers
+  // Step 1 (Login), Step 2 (Forgot Password), Step 3 (Reset Password)
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError("");
@@ -339,85 +360,66 @@ export default function AdminDashboardPage() {
 
     try {
       const { adminApi } = await import("@/lib/apiClient");
-      
+
       if (authTab === "signin") {
-        const res = await adminApi.post<{ data: { token: string; admin: AdminUser } }>("/auth/login", {
-          email: authEmail,
+        const res = await adminApi.post<{ data: { token: string; admin: AdminUser }; message?: string }>("/auth/login", {
+          email: authEmail.trim(),
           password: authPassword
         });
-        
-        // Save token and user
-        localStorage.setItem("digitalcxo_admin_token", res.data.token);
-        setCurrentUser(res.data.admin);
-        localStorage.setItem("digitalcxo_admin_user", JSON.stringify(res.data.admin));
-        
+
+        if (res.data?.token && res.data?.admin) {
+          localStorage.setItem("digitalcxo_admin_token", res.data.token);
+          localStorage.setItem("digitalcxo_admin_user", JSON.stringify(res.data.admin));
+          setCurrentUser(res.data.admin);
+          setAuthEmail("");
+          setAuthPassword("");
+        } else {
+          throw new Error(res.message || "Invalid authentication response.");
+        }
+
       } else if (authTab === "forgot") {
-        await adminApi.post("/auth/forgot-password", { email: authEmail });
-        setAuthSuccessMsg("If an account exists with that email, a password reset link has been sent.");
-        
+        const res = await adminApi.post<{ message?: string }>("/auth/forgot-password", {
+          email: authEmail.trim()
+        });
+        setAuthSuccessMsg(res.message || "If an account exists with that email, a password reset link has been sent.");
+
       } else if (authTab === "reset") {
+        if (!resetToken.trim()) {
+          throw new Error("Please provide reset token and new password");
+        }
         if (authPassword !== authConfirmPassword) {
           throw new Error("Passwords do not match");
         }
-        await adminApi.post("/auth/reset-password", {
-          token: resetToken,
+        const res = await adminApi.post<{ message?: string }>("/auth/reset-password", {
+          token: resetToken.trim(),
           newPassword: authPassword,
           confirmPassword: authConfirmPassword
         });
-        setAuthSuccessMsg("Password has been reset successfully. You may now login.");
-        setTimeout(() => setAuthTab("signin"), 3000);
-        
-      } else {
-        // Mock signup flow as original
-        setAuthError("Sign up requires approval by existing admins. (Mocked)");
+        setAuthSuccessMsg(res.message || "Password has been reset successfully. You may now login.");
+        setTimeout(() => setAuthTab("signin"), 2500);
       }
     } catch (err: any) {
-      setAuthError(err.message || "Network error contacting auth service.");
+      setAuthError(err.message || "Authentication error contacting server.");
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const handleQuickDemoLogin = (role: "Super Admin" | "Content Director" | "Community Lead") => {
-    const demoMap: Record<string, AdminUser> = {
-      "Super Admin": {
-        id: "admin-super-01",
-        name: "Dr. Rajeshwar Rao",
-        email: "super.admin@digitalcxos.org",
-        role: "Super Admin",
-        avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Admin&backgroundColor=070D1F,1E1E1E&textColor=C9A227"
-      },
-      "Content Director": {
-        id: "admin-content-02",
-        name: "Ananya Deshmukh",
-        email: "content.director@digitalcxos.org",
-        role: "Content Director",
-        avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Content&backgroundColor=070D1F,1E1E1E&textColor=C9A227"
-      },
-      "Community Lead": {
-        id: "admin-comm-03",
-        name: "Vikramaditya Sen",
-        email: "community.lead@digitalcxos.org",
-        role: "Community Lead",
-        avatar: "https://api.dicebear.com/7.x/initials/svg?seed=Community&backgroundColor=070D1F,1E1E1E&textColor=C9A227"
-      }
-    };
-    const user = demoMap[role];
-    setCurrentUser(user);
-    localStorage.setItem("digitalcxo_admin_user", JSON.stringify(user));
-  };
-
+  // Step 7 (Logout)
   const handleLogout = async () => {
     try {
       const { adminApi } = await import("@/lib/apiClient");
-      const token = localStorage.getItem("digitalcxo_admin_token") || "DEMO_TOKEN";
-      await adminApi.post("/auth/logout", {}, { headers: { Authorization: `Bearer ${token}` } });
+      const token = localStorage.getItem("digitalcxo_admin_token") || "";
+      if (token) {
+        await adminApi.post("/auth/logout", {}, { headers: { Authorization: `Bearer ${token}` } }).catch(() => { });
+      }
     } catch (err) {
       console.error("Logout error", err);
+    } finally {
+      setCurrentUser(null);
+      localStorage.removeItem("digitalcxo_admin_user");
+      localStorage.removeItem("digitalcxo_admin_token");
     }
-    setCurrentUser(null);
-    localStorage.removeItem("digitalcxo_admin_user");
-    localStorage.removeItem("digitalcxo_admin_token");
   };
 
   // Save backend host URL
@@ -1035,35 +1037,43 @@ export default function AdminDashboardPage() {
       group: "MAIN DASHBOARD",
       items: [
         { id: "overview", label: "Overview & Hub", icon: LayoutDashboard, count: null },
-        { id: "profile", label: "My Profile", icon: User, count: null },
         { id: "members", label: "Members Directory", icon: Users, count: cxoMembers.length, badge: pendingCxoCount > 0 ? `${pendingCxoCount} Pending` : null, badgeColor: "bg-amber-400 text-slate-950" },
         { id: "forms", label: "Form Submissions", icon: FileCheck, count: partnerMembers.length + contacts.length }
       ]
     },
     {
-      group: "CONTENT CMS (8 MODULES)",
+      group: "CONTENT CMS (7 MODULES)",
       items: [
         { id: "initiatives", label: "1) Enrichment & Contribution", icon: Sparkles, count: initiatives.length },
         { id: "leadership", label: "2) Meet Leadership Team", icon: Award, count: teamMembers.length },
         { id: "social", label: "3) Our Social Initiatives", icon: HeartHandshake, count: socialInitiatives.length },
-        { id: "highlights", label: "4) Event Highlights (MP4)", icon: Film, count: eventHighlights.length },
+        { id: "highlights", label: "4) Event Highlights & Summits", icon: Film, count: events.length },
         { id: "podcasts", label: "5) Podcasts (YouTube)", icon: Video, count: podcasts.length },
         { id: "events", label: "6) Conclaves & Events", icon: Calendar, count: events.length },
-        { id: "partners", label: "7) Partners Directory", icon: Building, count: partnersCatalog.length },
-        { id: "contacts", label: "8) Contact Us Inbox", icon: MessageSquare, count: contacts.length, badge: unreadContactCount > 0 ? `${unreadContactCount} New` : null, badgeColor: "bg-teal-400 text-slate-950 font-bold" }
+        { id: "contacts", label: "7) Contact Us Inbox", icon: MessageSquare, count: contacts.length, badge: unreadContactCount > 0 ? `${unreadContactCount} New` : null, badgeColor: "bg-teal-400 text-slate-950 font-bold" }
       ]
     },
     {
       group: "INTEGRATION & SETTINGS",
       items: [
+        { id: "settings", label: "Admin Settings", icon: Sliders, count: null },
         { id: "admins", label: "Admin Users", icon: Shield, count: null },
         { id: "audit-logs", label: "Audit Logs", icon: Clock, count: null },
-        { id: "api-hub", label: "Backend API Host Config", icon: Globe, count: null, badge: "Host Ready", badgeColor: "bg-sky-500/20 text-sky-300 border border-sky-500/30" }
       ]
     }
   ];
 
-  // If user is not authenticated, render the high-security Sign In / Sign Up portal
+  // If authentication state is being checked on mount
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-[#070D1F] text-slate-100 flex flex-col items-center justify-center p-4 selection:bg-[#C9A227] selection:text-slate-950">
+        <Loader2 className="w-10 h-10 animate-spin text-[#C9A227] mb-3" />
+        <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Verifying Security Clearance...</p>
+      </div>
+    );
+  }
+
+  // If user is not authenticated, render the secure Sign In / Forgot Password portal
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-[#070D1F] text-slate-100 flex items-center justify-center p-4 sm:p-6 select-none relative overflow-hidden">
@@ -1085,42 +1095,25 @@ export default function AdminDashboardPage() {
             </p>
           </div>
 
-          {/* Sign In vs Sign Up Tabs */}
-          <div className="grid grid-cols-2 p-1 rounded-2xl bg-slate-900/80 border border-white/10 text-xs font-semibold">
+          {/* Sign In vs Reset Tab Selector */}
+          <div className="grid grid-cols-1 p-1 rounded-2xl bg-slate-900/80 border border-white/10 text-xs font-semibold">
             <button
-              onClick={() => { setAuthTab("signin"); setAuthError(""); }}
-              className={cn(
-                "py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer",
-                authTab === "signin"
-                  ? "bg-[#C9A227] text-slate-950 font-bold shadow-lg"
-                  : "text-slate-400 hover:text-white"
-              )}
+              onClick={() => { setAuthTab("signin"); setAuthError(""); setAuthSuccessMsg(""); }}
+              className="py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-[#C9A227] text-slate-950 font-bold shadow-lg"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>
             </button>
-            <button
-              onClick={() => { setAuthTab("signup"); setAuthError(""); }}
-              className={cn(
-                "py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer",
-                authTab === "signup"
-                  ? "bg-[#C9A227] text-slate-950 font-bold shadow-lg"
-                  : "text-slate-400 hover:text-white"
-              )}
-            >
-              <UserPlus className="w-3.5 h-3.5" />
-              <span>Request Access</span>
-            </button>
           </div>
 
           {authError && (
-            <div className="p-3 rounded-xl bg-red-900/30 border border-red-500/40 text-red-200 text-xs flex items-center gap-2">
+            <div className="p-3.5 rounded-xl bg-red-900/30 border border-red-500/40 text-red-200 text-xs flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
               <span>{authError}</span>
             </div>
           )}
           {authSuccessMsg && (
-            <div className="p-3 rounded-xl bg-emerald-900/30 border border-emerald-500/40 text-emerald-200 text-xs flex items-center gap-2">
+            <div className="p-3.5 rounded-xl bg-emerald-900/30 border border-emerald-500/40 text-emerald-200 text-xs flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>{authSuccessMsg}</span>
             </div>
@@ -1128,38 +1121,9 @@ export default function AdminDashboardPage() {
 
           {/* Form */}
           <form onSubmit={handleAuthSubmit} className="space-y-4 text-xs">
-            {authTab === "signup" && (
-              <>
-                <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Full Legal Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={authName}
-                    onChange={(e) => setAuthName(e.target.value)}
-                    placeholder="e.g. Dr. Rajeshwar Rao"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Requested Administrative Role</label>
-                  <select
-                    value={authRole}
-                    onChange={(e) => setAuthRole(e.target.value as any)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                  >
-                    <option value="Super Admin">Super Administrator (Full System Control)</option>
-                    <option value="Content Director">Content Director (Podcasts, Initiatives, Videos)</option>
-                    <option value="Community Lead">Community Lead (Members &amp; Forms)</option>
-                  </select>
-                </div>
-              </>
-            )}
-
-            {(authTab === "signin" || authTab === "signup" || authTab === "forgot") && (
+            {authTab === "signin" && (
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Official Executive Email</label>
+                <label className="block text-slate-300 font-semibold mb-1.5">Official Executive Email</label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
@@ -1167,165 +1131,64 @@ export default function AdminDashboardPage() {
                     required
                     value={authEmail}
                     onChange={(e) => setAuthEmail(e.target.value)}
-                    placeholder="admin@digitalcxos.org"
-                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
+                    placeholder="admin@digitalcxos.com"
+                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 text-sm focus:outline-none focus:border-[#C9A227]"
                   />
                 </div>
-              </div>
-            )}
-
-            {authTab === "reset" && (
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Reset Token</label>
-                <div className="relative">
-                  <Shield className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    required
-                    value={resetToken}
-                    onChange={(e) => setResetToken(e.target.value)}
-                    placeholder="Paste token from email"
-                    className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                  />
-                </div>
-              </div>
-            )}
-
-            {(authTab === "signin" || authTab === "signup" || authTab === "reset") && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-slate-300 font-semibold mb-1">
-                    {authTab === "reset" ? "New Password" : "Security Credential / Password"}
-                  </label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="password"
-                      required
-                      value={authPassword}
-                      onChange={(e) => setAuthPassword(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                    />
-                  </div>
-                </div>
-
-                {authTab === "reset" && (
-                  <div>
-                    <label className="block text-slate-300 font-semibold mb-1">Confirm New Password</label>
-                    <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="password"
-                        required
-                        value={authConfirmPassword}
-                        onChange={(e) => setAuthConfirmPassword(e.target.value)}
-                        placeholder="••••••••••••"
-                        className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 focus:outline-none focus:border-[#C9A227]"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {authTab === "signup" && (
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Reason for Admin Clearance</label>
-                <textarea
-                  rows={2}
-                  value={authJustification}
-                  onChange={(e) => setAuthJustification(e.target.value)}
-                  placeholder="Describe your organization role and required responsibilities..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-white/10 text-slate-100 resize-none focus:outline-none focus:border-[#C9A227]"
-                />
               </div>
             )}
 
             {authTab === "signin" && (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => { setAuthTab("forgot"); setAuthError(""); setAuthSuccessMsg(""); }}
-                  className="text-xs text-[#C9A227] hover:underline"
-                >
-                  Forgot Password?
-                </button>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-slate-300 font-semibold">Security Password</label>
+                    <Link
+                      href="/admin/forgot-password"
+                      className="text-[11px] text-[#C9A227] hover:underline"
+                    >
+                      Forgot Password?
+                    </Link>
+                  </div>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={authPassword}
+                      onChange={(e) => setAuthPassword(e.target.value)}
+                      placeholder="••••••••••••"
+                      className="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-100 text-sm focus:outline-none focus:border-[#C9A227]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
-            
-            {(authTab === "forgot" || authTab === "reset") && (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => { setAuthTab("signin"); setAuthError(""); setAuthSuccessMsg(""); }}
-                  className="text-xs text-slate-400 hover:text-white"
-                >
-                  Back to Sign In
-                </button>
-              </div>
-            )}
+
+            {/* Removed forgot and reset forms */}
 
             <button
               type="submit"
               disabled={authLoading}
-              className="w-full py-3 rounded-xl font-bold uppercase tracking-wider text-xs bg-gradient-to-r from-[#C9A227] to-[#E5C058] hover:from-[#D4AF37] hover:to-[#F3CF65] text-slate-950 transition-all duration-200 shadow-xl flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-xl font-bold uppercase tracking-wider text-xs bg-gradient-to-r from-[#C9A227] to-[#E5C058] hover:from-[#D4AF37] hover:to-[#F3CF65] text-slate-950 transition-all duration-200 shadow-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {authLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
-              ) : authTab === "signin" ? (
+              ) : (
                 <>
                   <LogIn className="w-4 h-4" />
                   <span>Authenticate Session</span>
                 </>
-              ) : authTab === "forgot" ? (
-                <>
-                  <Mail className="w-4 h-4" />
-                  <span>Send Reset Link</span>
-                </>
-              ) : authTab === "reset" ? (
-                <>
-                  <Lock className="w-4 h-4" />
-                  <span>Reset Password</span>
-                </>
-              ) : (
-                <>
-                  <UserPlus className="w-4 h-4" />
-                  <span>Submit Clearance Request</span>
-                </>
               )}
             </button>
           </form>
-
-          {/* Quick Demo Logins for instant evaluation */}
-          <div className="pt-4 border-t border-white/10 space-y-2">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 block text-center">
-              Quick 1-Click Demo Profiles
-            </span>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin("Super Admin")}
-                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-amber-400/30 text-amber-300 text-[10px] font-semibold text-center transition-all cursor-pointer"
-              >
-                Super Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin("Content Director")}
-                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-sky-400/30 text-sky-300 text-[10px] font-semibold text-center transition-all cursor-pointer"
-              >
-                Content Lead
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin("Community Lead")}
-                className="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/30 text-emerald-300 text-[10px] font-semibold text-center transition-all cursor-pointer"
-              >
-                Community
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     );
@@ -1336,10 +1199,10 @@ export default function AdminDashboardPage() {
   // ========================================================
   return (
     <div className="min-h-screen bg-[#060B18] text-slate-100 flex flex-col antialiased selection:bg-[#C9A227] selection:text-slate-950">
-      
+
       {/* Mobile Sidebar Overlay */}
       {isMobileSidebarOpen && (
-        <div 
+        <div
           onClick={() => setIsMobileSidebarOpen(false)}
           className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm md:hidden"
         />
@@ -1353,13 +1216,13 @@ export default function AdminDashboardPage() {
         isSidebarCollapsed ? "w-20" : "w-72 xl:w-80",
         isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}>
-        
+
         {/* Sidebar Header & Brand */}
-        <div className="p-4 border-b border-white/10">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#C9A227] via-amber-400 to-[#E5C058] flex items-center justify-center text-slate-950 font-bold font-serif text-lg shadow-lg shrink-0">
-                CX
+        <div className="p-4 border-b border-white/10 relative">
+          <div className={cn("flex items-center gap-3", isSidebarCollapsed ? "flex-col justify-center" : "justify-between")}>
+            <div className="flex items-center gap-3 overflow-hidden">
+              <div className="shrink-0 flex items-center justify-center scale-[0.7] origin-center">
+                <Logo size="sm" />
               </div>
               {!isSidebarCollapsed && (
                 <div className="overflow-hidden">
@@ -1376,23 +1239,36 @@ export default function AdminDashboardPage() {
               )}
             </div>
 
-            {/* Collapse toggle (Desktop) */}
-            <button
-              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="hidden md:flex p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
-              title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-            >
-              {isSidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-            </button>
+            {/* Desktop Collapse Button when Expanded */}
+            {!isSidebarCollapsed && (
+              <button
+                onClick={() => setIsSidebarCollapsed(true)}
+                className="hidden md:flex p-1.5 rounded-lg bg-white/5 hover:bg-[#C9A227] text-slate-400 hover:text-slate-950 border border-white/10 transition-all cursor-pointer shadow-sm"
+                title="Collapse Sidebar"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            )}
 
-            {/* Mobile Close Button */}
-            <button
-              onClick={() => setIsMobileSidebarOpen(false)}
-              className="md:hidden p-1.5 rounded-lg bg-white/5 text-slate-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            {/* Desktop Expand Button when Collapsed */}
+            {isSidebarCollapsed && (
+              <button
+                onClick={() => setIsSidebarCollapsed(false)}
+                className="hidden md:flex items-center justify-center w-9 h-7 mt-1 rounded-lg bg-white/5 hover:bg-[#C9A227] text-slate-300 hover:text-slate-950 border border-white/10 transition-all cursor-pointer shadow-sm"
+                title="Expand Sidebar"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
+
+          {/* Mobile Close Button */}
+          <button
+            onClick={() => setIsMobileSidebarOpen(false)}
+            className="md:hidden absolute right-4 top-4 p-1.5 rounded-lg bg-white/5 text-slate-400 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
 
           {/* User Profile Card */}
           {!isSidebarCollapsed && (
@@ -1488,16 +1364,16 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-3 border-t border-white/10 bg-[#050C1F] space-y-2">
+        <div className="p-3 border-t border-white/10 bg-[#070E22] space-y-2">
           {!isSidebarCollapsed ? (
-            <div className="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between text-[11px]">
+            <div className="p-2.5 rounded-xl bg-slate-900/80 border border-white/10 flex items-center justify-between text-[11px]">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
                 <span className="text-slate-300 font-mono">Mock DB Active</span>
               </div>
               <button
                 onClick={handleLogout}
-                className="text-red-400 hover:text-red-300 font-semibold cursor-pointer text-[10px] uppercase"
+                className="text-red-400 hover:text-red-300 font-semibold cursor-pointer text-[10px] uppercase transition-colors"
               >
                 Sign Out
               </button>
@@ -1506,7 +1382,7 @@ export default function AdminDashboardPage() {
             <button
               onClick={handleLogout}
               title="Sign Out"
-              className="w-full p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center cursor-pointer"
+              className="w-full p-2.5 rounded-xl bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-400 border border-white/5 hover:border-red-500/30 flex items-center justify-center cursor-pointer transition-all"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -1521,10 +1397,19 @@ export default function AdminDashboardPage() {
         "flex-1 flex flex-col min-w-0 bg-[#060B18] transition-all duration-300",
         isSidebarCollapsed ? "md:ml-20" : "md:ml-72 xl:ml-80"
       )}>
-        
+
         {/* Top Navbar Header inside Admin */}
         <header className="sticky top-0 z-30 bg-[#070E22]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-3">
+            {/* Desktop Sidebar Toggle Button in Navbar */}
+            <button
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              className="hidden md:flex items-center justify-center p-2 rounded-xl bg-white/5 hover:bg-[#C9A227] text-slate-300 hover:text-slate-950 border border-white/10 transition-all cursor-pointer shadow-sm"
+            >
+              {isSidebarCollapsed ? <Menu className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+            </button>
+
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setIsMobileSidebarOpen(true)}
@@ -1591,7 +1476,7 @@ export default function AdminDashboardPage() {
 
         {/* Content Canvas */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto">
-          
+
           {/* ========================================================
               TAB 0: OVERVIEW & STRATEGIC HUB
           ======================================================== */}
@@ -1641,7 +1526,7 @@ export default function AdminDashboardPage() {
 
               {/* KPI Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div 
+                <div
                   onClick={() => setActiveTab("members")}
                   className="p-5 rounded-2xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/50 transition-all cursor-pointer group shadow-lg"
                 >
@@ -1653,7 +1538,7 @@ export default function AdminDashboardPage() {
                   <p className="text-[11px] text-amber-300/80 mt-1">{pendingCxoCount} pending approval</p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setActiveTab("initiatives")}
                   className="p-5 rounded-2xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/50 transition-all cursor-pointer group shadow-lg"
                 >
@@ -1665,7 +1550,7 @@ export default function AdminDashboardPage() {
                   <p className="text-[11px] text-slate-400 mt-1">4 core sectors</p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setActiveTab("leadership")}
                   className="p-5 rounded-2xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/50 transition-all cursor-pointer group shadow-lg"
                 >
@@ -1677,7 +1562,7 @@ export default function AdminDashboardPage() {
                   <p className="text-[11px] text-slate-400 mt-1">Founders &amp; Advisors</p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setActiveTab("highlights")}
                   className="p-5 rounded-2xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/50 transition-all cursor-pointer group shadow-lg"
                 >
@@ -1689,7 +1574,7 @@ export default function AdminDashboardPage() {
                   <p className="text-[11px] text-slate-400 mt-1">Summit recordings</p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setActiveTab("podcasts")}
                   className="p-5 rounded-2xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/50 transition-all cursor-pointer group shadow-lg"
                 >
@@ -1701,7 +1586,7 @@ export default function AdminDashboardPage() {
                   <p className="text-[11px] text-slate-400 mt-1">Episodes published</p>
                 </div>
 
-                <div 
+                <div
                   onClick={() => setActiveTab("contacts")}
                   className="p-5 rounded-2xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/50 transition-all cursor-pointer group shadow-lg"
                 >
@@ -1866,8 +1751,8 @@ export default function AdminDashboardPage() {
                             <span className={cn(
                               "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
                               m.status === "Approved" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" :
-                              m.status === "Contacted" ? "bg-sky-500/20 text-sky-300 border border-sky-500/30" :
-                              "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                                m.status === "Contacted" ? "bg-sky-500/20 text-sky-300 border border-sky-500/30" :
+                                  "bg-amber-500/20 text-amber-300 border border-amber-500/30"
                             )}>
                               {m.status}
                             </span>
@@ -1946,12 +1831,6 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
-          {/* ========================================================
-              MY PROFILE TAB
-          ======================================================== */}
-          {activeTab === "profile" && (
-            <AdminProfile />
-          )}
 
           {/* ========================================================
               TAB 1: ENRICHMENT & CONTRIBUTION (Req 1)
@@ -1983,7 +1862,7 @@ export default function AdminDashboardPage() {
 
               {/* Initiatives Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {initiatives.map((item) => {
+                {initiatives.map((item, index) => {
                   const IconComponent = ICON_OPTIONS.find((o) => o.name === item.iconName)?.icon || Sparkles;
 
                   return (
@@ -2010,7 +1889,7 @@ export default function AdminDashboardPage() {
                       </div>
 
                       <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-xs">
-                        <span className="text-[10px] font-mono text-slate-500">#{item.id}</span>
+                        <span className="text-[10px] font-mono text-slate-500">#{index + 1}</span>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleOpenEditInitiative(item)}
@@ -2043,205 +1922,24 @@ export default function AdminDashboardPage() {
           )}
 
           {/* ========================================================
-              TAB 3: OUR SOCIAL INITIATIVES (Req 3 - Images from Admin)
+              TAB 3: OUR SOCIAL INITIATIVES (Req 3 - Step 48-53 APIs)
           ======================================================== */}
           {activeTab === "social" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 3</span>
-                    <span className="text-xs text-slate-400">• Imagery &amp; Campaigns from Admin</span>
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold text-white mt-1">
-                    Our Social Initiatives Management
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Manage philanthropic commitments, CXO wellness retreats, and preventive health screening programs with high-res imagery.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleOpenAddSocial}
-                  className="px-5 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shrink-0 cursor-pointer"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add Social Initiative</span>
-                </button>
-              </div>
-
-              {/* Social Initiatives Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {socialInitiatives.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-3xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/60 overflow-hidden transition-all flex flex-col justify-between shadow-xl group"
-                  >
-                    <div>
-                      {/* Big Photography Banner */}
-                      <div className="relative aspect-[16/10] w-full bg-slate-900 overflow-hidden">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#091228] via-black/20 to-black/30" />
-                        <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-wider text-[#C9A227]">
-                          {item.tag}
-                        </div>
-                      </div>
-
-                      <div className="p-5 space-y-2.5">
-                        <h3 className="text-base font-serif font-bold text-white group-hover:text-amber-300 transition-colors uppercase tracking-wide">
-                          {item.title}
-                        </h3>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 border-t border-white/5 bg-slate-900/50 flex items-center justify-between text-xs">
-                      <span className="text-[11px] text-slate-400 font-mono">Link: {item.link}</span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleOpenEditSocial(item)}
-                          className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                        >
-                          <Edit2 className="w-3 h-3 text-amber-300" />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteSocial(item.id)}
-                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <AdminSocialInitiativesManager />
           )}
 
           {/* ========================================================
-              TAB 4: EVENT HIGHLIGHTS (Req 4 - MP4 Videos from Admin)
+              TAB 4 & 6: CONCLAVES, EVENTS & VIDEO HIGHLIGHTS (Steps 35-41 APIs)
           ======================================================== */}
-          {activeTab === "highlights" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#C9A227]">Requirement 4</span>
-                    <span className="text-xs text-slate-400">• Mainly MP4 Videos from Admin</span>
-                  </div>
-                  <h2 className="text-2xl font-serif font-bold text-white mt-1">
-                    Event Highlights (MP4 Video Manager)
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Publish direct MP4 conclave videos with custom posters, duration tags, and instant in-dashboard video playback testing.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleOpenAddHighlight}
-                  className="px-5 py-2.5 rounded-xl bg-[#C9A227] hover:bg-[#D4AF37] text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shrink-0 cursor-pointer"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  <span>Add MP4 Video Highlight</span>
-                </button>
-              </div>
-
-              {/* Video Highlights Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {eventHighlights.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-3xl bg-[#091228] border border-white/10 hover:border-[#C9A227]/60 overflow-hidden transition-all flex flex-col justify-between shadow-xl group"
-                  >
-                    <div>
-                      {/* Video Poster with Play Overlay */}
-                      <div 
-                        onClick={() => setPreviewVideoUrl(item.videoUrl)}
-                        className="relative aspect-video w-full bg-black overflow-hidden cursor-pointer"
-                      >
-                        <img
-                          src={item.posterUrl}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                          <div className="w-12 h-12 rounded-full bg-[#C9A227] text-slate-950 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                            <Play className="w-5 h-5 fill-current ml-0.5" />
-                          </div>
-                        </div>
-
-                        <div className="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/75 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase text-[#C9A227]">
-                          {item.tag}
-                        </div>
-
-                        <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/80 font-mono text-[10px] text-white">
-                          {item.duration || "03:30"}
-                        </div>
-                      </div>
-
-                      <div className="p-5 space-y-2">
-                        <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">
-                          {item.edition}
-                        </span>
-                        <h3 className="text-sm font-serif font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-[11px] text-slate-400 font-mono truncate">
-                          MP4: {item.videoUrl}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 border-t border-white/5 bg-slate-900/50 flex items-center justify-between text-xs">
-                      <button
-                        onClick={() => setPreviewVideoUrl(item.videoUrl)}
-                        className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 cursor-pointer"
-                      >
-                        <Play className="w-3.5 h-3.5" />
-                        <span>Test MP4 Playback</span>
-                      </button>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleOpenEditHighlight(item)}
-                          className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-                        >
-                          <Edit2 className="w-3 h-3 text-amber-300" />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteHighlight(item.id)}
-                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {(activeTab === "highlights" || activeTab === "events") && (
+            <AdminEventsManager />
           )}
 
           {/* ========================================================
-              TAB 5: PODCAST SERIES (Req 5 - YouTube URL & Auto-fetch)
+              TAB 5: PODCASTS (YOUTUBE) (Steps 42-47 APIs)
           ======================================================== */}
           {activeTab === "podcasts" && (
             <AdminPodcastsManager />
-          )}
-
-          {/* ========================================================
-              TAB 6: EVENTS MANAGEMENT (Req 6)
-          ======================================================== */}
-          {activeTab === "events" && (
-            <AdminEventsManager />
           )}
 
           {/* ========================================================
@@ -2403,8 +2101,8 @@ export default function AdminDashboardPage() {
                               <span className={cn(
                                 "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase",
                                 p.status === "Approved" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" :
-                                p.status === "Contacted" ? "bg-sky-500/20 text-sky-300 border border-sky-500/30" :
-                                "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                                  p.status === "Contacted" ? "bg-sky-500/20 text-sky-300 border border-sky-500/30" :
+                                    "bg-amber-500/20 text-amber-300 border border-amber-500/30"
                               )}>
                                 {p.status}
                               </span>
@@ -2443,120 +2141,10 @@ export default function AdminDashboardPage() {
           )}
 
           {/* ========================================================
-              TAB 9: MEMBERS DIRECTORY
+              TAB 9: MEMBERS DIRECTORY (Join Us Steps 1-7 APIs)
           ======================================================== */}
           {activeTab === "members" && (
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                <div>
-                  <h2 className="text-2xl font-serif font-bold text-white">
-                    CXO Members Directory
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Filter, search, approve, and export validated leadership fraternity applications.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3">
-                  <div className="relative w-full sm:w-64">
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Search by name, organization..."
-                      className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-200 focus:outline-none focus:border-[#C9A227]"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Filter className="w-4 h-4 text-slate-400" />
-                    <select
-                      value={statusFilter}
-                      onChange={(e) => setStatusFilter(e.target.value)}
-                      className="px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-200 focus:outline-none focus:border-[#C9A227]"
-                    >
-                      <option value="All">All Statuses</option>
-                      <option value="Pending Review">Pending Review</option>
-                      <option value="Approved">Approved</option>
-                      <option value="Contacted">Contacted</option>
-                      <option value="Declined">Declined</option>
-                    </select>
-                  </div>
-
-                  <button
-                    onClick={exportCxoCsv}
-                    className="px-4 py-2 rounded-xl bg-emerald-600/20 text-emerald-300 hover:bg-emerald-600/30 border border-emerald-500/40 text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-md"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>Export CSV</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* CXO Members Table */}
-              <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#091228] shadow-xl">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-[#050C1F] text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-white/10">
-                      <tr>
-                        <th className="px-4 py-3">Member Name &amp; Title</th>
-                        <th className="px-4 py-3">Designation &amp; Organization</th>
-                        <th className="px-4 py-3">Official Email</th>
-                        <th className="px-4 py-3">Location</th>
-                        <th className="px-4 py-3">Status</th>
-                        <th className="px-4 py-3 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                      {filteredCxo.map((m) => (
-                        <tr key={m.id} className="hover:bg-white/5 transition-colors">
-                          <td className="px-4 py-3.5">
-                            <p className="font-bold text-white">{m.title} {m.firstName} {m.lastName}</p>
-                            <p className="text-slate-400 text-[11px]">{m.industry}</p>
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <p className="font-semibold text-amber-300">{m.designation}</p>
-                            <p className="text-slate-300">{m.organization}</p>
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <p>{m.officialEmail}</p>
-                            <p className="text-slate-400 text-[11px]">{m.mobile}</p>
-                          </td>
-                          <td className="px-4 py-3.5">{m.city}, {m.state}</td>
-                          <td className="px-4 py-3.5">
-                            <span className={cn(
-                              "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase",
-                              m.status === "Approved" ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" :
-                              m.status === "Contacted" ? "bg-sky-500/20 text-sky-300 border border-sky-500/30" :
-                              "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                            )}>
-                              {m.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5 text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => setSelectedCxo(m)}
-                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold cursor-pointer"
-                              >
-                                Dossier
-                              </button>
-                              <button
-                                onClick={() => handleUpdateCxoStatus(m.id, "Approved")}
-                                className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold cursor-pointer"
-                              >
-                                Approve
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            <AdminJoinUsManager />
           )}
 
           {/* ========================================================
@@ -2724,6 +2312,20 @@ export default function AdminDashboardPage() {
                 </div>
               )}
             </div>
+          )}
+
+          {/* ========================================================
+              MY PROFILE TAB
+          ======================================================== */}
+          {activeTab === "profile" && (
+            <AdminProfile />
+          )}
+
+          {/* ========================================================
+              ADMIN SETTINGS TAB
+          ======================================================== */}
+          {activeTab === "settings" && (
+            <AdminSettingsManager />
           )}
 
           {/* ========================================================

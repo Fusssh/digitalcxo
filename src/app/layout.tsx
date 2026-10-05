@@ -71,9 +71,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="128x128" href="/assets/logo-128.png" />
         <link rel="icon" type="image/png" sizes="256x256" href="/assets/logo-256.png" />
         <link rel="apple-touch-icon" href="/assets/logo-256.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="min-h-screen flex flex-col bg-[#181818] text-[#ccc] font-sans antialiased selection:bg-[#C9A227] selection:text-neutral-950">
         <Header />

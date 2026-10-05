@@ -116,6 +116,44 @@ export function EventCard({ event, className }: EventCardProps) {
           </div>
         )}
       </div>
+
+      {/* Event Details Body */}
+      <div className="p-6 flex flex-col flex-1 justify-between gap-4">
+        <div className="space-y-2.5">
+          {event.venue && (
+            <div className="flex items-center gap-1.5 text-xs text-amber-400/90 font-medium">
+              <MapPin className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">{event.venue}</span>
+            </div>
+          )}
+
+          <h3 className="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-2">
+            {event.title}
+          </h3>
+
+          {(event.description || event.tagline) && (
+            <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+              {event.description || event.tagline}
+            </p>
+          )}
+        </div>
+
+        <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2 mt-auto">
+          <Link
+            href={`/events/${event.slug || event.id}`}
+            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 hover:text-amber-300 transition-colors group/link"
+          >
+            <span>View Event &amp; Gallery</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform" />
+          </Link>
+
+          {event.gallery && event.gallery.length > 0 && (
+            <span className="text-[11px] text-slate-500 font-medium">
+              {event.gallery.length} Photos
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

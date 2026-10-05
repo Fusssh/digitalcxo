@@ -1,4 +1,17 @@
-export const ADMIN_API_BASE_URL = process.env.NEXT_PUBLIC_ADMIN_API_BASE_URL || 'http://localhost:8000/api';
+// Base URL configuration for Backend APIs (Admin & Website)
+const RAW_BASE_URL = (
+  process.env.NEXT_PUBLIC_ADMIN_API_BASE_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  'https://backenddigi-236970479379.asia-south1.run.app/api/v1'
+).trim().replace(/\/+$/, '');
+
+// Normalize base URL to ensure calls always resolve against /api/v1
+export const ADMIN_API_BASE_URL = (() => {
+  if (RAW_BASE_URL.endsWith('/api/v1')) return RAW_BASE_URL;
+  if (RAW_BASE_URL.endsWith('/api')) return `${RAW_BASE_URL}/v1`;
+  return `${RAW_BASE_URL}/api/v1`;
+})();
 
 type FetchOptions = RequestInit & {
   params?: Record<string, string>;
@@ -7,9 +20,14 @@ type FetchOptions = RequestInit & {
 class ApiClient {
   private async request<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
     const { params, ...customConfig } = options;
-    const headers = {
+    const token = typeof window !== 'undefined' 
+      ? (localStorage.getItem('digitalcxo_admin_token') || localStorage.getItem('token') || '')
+      : '';
+
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...customConfig.headers,
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      ...(customConfig.headers as Record<string, string>),
     };
 
     const config: RequestInit = {
@@ -17,7 +35,11 @@ class ApiClient {
       headers,
     };
 
-    let url = `${ADMIN_API_BASE_URL}${endpoint}`;
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    let url = cleanEndpoint.startsWith('/api/v1/')
+      ? `${ADMIN_API_BASE_URL.replace(/\/api\/v1$/, '')}${cleanEndpoint}`
+      : `${ADMIN_API_BASE_URL}${cleanEndpoint}`;
+
     if (params) {
       const searchParams = new URLSearchParams(params);
       url += `?${searchParams.toString()}`;
@@ -33,7 +55,7 @@ class ApiClient {
 
       if (!response.ok) {
         console.error(`API Error [${endpoint}]:`, data.message || response.statusText);
-        return {} as T; // Return empty data on error instead of throwing to prevent crashing the UI
+        return data as T; // Return data on error so UI can display specific messages
       }
 
       return data as T;

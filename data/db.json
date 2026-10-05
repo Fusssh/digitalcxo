@@ -234,5 +234,269 @@
       "attendeesCount": "150+ CISOs & CTOs",
       "description": "High-trust boardroom dialogues examining cyber sovereign defenses, systemic incident management, and DPDP compliance."
     }
+  ],
+  "teamMembers": [
+    {
+      "name": "Rohit Kachroo",
+      "role": "Chief Strategy Officer",
+      "slug": "rohit-kachroo",
+      "image": "/assests/rohit-1.webp",
+      "bio": "A Cybersecurity expert and industry evangelist. Rohit has worked on several critical projects with Fortune 500 companies including some of the world’s top financial institutions during his tenure. Last role was Group CISO at a prominent Financial Indian conglomerate. He is now a first-generation entrepreneur heading a growing Cybersecurity and IT startup.\n\nHe worked closely with key Indian regulators across sectors, contributing to compliance, governance and strategic alignment while also engaging with global regulatory frameworks. Formulated and designed organizational policies and actively participated in invited discussions on key industry policy topics. Recipient of several national awards recognizing his contributions to Cybersecurity and Leadership. A passionate writer and advocate, he regularly shares insights on Cybersecurity along with cultural and social issues drawn from personal experiences.\n\nHe brings both deep technical knowledge and real-world industry experience, making him a respected voice in the cybersecurity space. Rohit is known for turning complex challenges into practical, secure solutions that work at scale. Now as an entrepreneur, he’s focused on building systems that not only protect but also enable India’s digital growth story.\n\nDeeply committed to “Naya Bharat,” he mentors professionals and promotes ethical digital practices. He remains dedicated to shaping a secure, resilient and self-reliant digital India. Inspired by Kabir’s words: “When I was born, the world laughed and I cried; may my life be such that when I leave, I will smile and the world will weep.”",
+      "sectors": [
+        "Financial Services",
+        "ITES",
+        "Enterprise Consulting"
+      ],
+      "experience": "25+ Years Executive Experience",
+      "linkedin": "https://linkedin.com/in/rohitkachroo",
+      "quote": "Empowering boardroom influencers to lead high-impact strategic shifts in India's digital epoch.",
+      "id": "lead-1"
+    },
+    {
+      "name": "Kuldeep Koul",
+      "role": "Chief Digital Officer, Namtech",
+      "slug": "kuldeep-koul",
+      "image": "/assests/kuldeep.webp",
+      "bio": "Dynamic Technology Leader | Digital Transformation Architect | CXO Advisor with nearly 3 decades of technology leadership. Kuldeep stands at the forefront of global digital transformation. A dynamic and future-focused technologist, he has architected enterprise-wide innovation across Defense, Aerospace, Manufacturing, Space and Ground Transportation Systems—industries where precision, resilience and scale are paramount.\n\nAs a CXO, managed operations across Africa, Eurasia and India for a €20B French multinational spanning 68 countries. He has consistently delivered transformative outcomes. He is renowned for building high-impact Global Capability Centers (GCCs) and Centers of Excellence (CoEs), while designing robust IT infrastructure and Cybersecurity frameworks that safeguard mission-critical systems and enable strategic agility. Spearheaded multi-domain initiatives that align cutting-edge technology with business imperatives, driving measurable ROI and operational excellence. Cultivated high-performing, cross-functional teams and fostered cultures of innovation, accountability and continuous improvement.\n\nKuldeep’s strategic foresight and ability to anticipate emerging trends have positioned organizations ahead of the curve on digital front. His leadership blends advanced technologies, agile methodologies and human-centered design to build resilient, scalable and sustainable enterprise. Trusted partner to executive leadership, guiding governance, scalability and innovation across complex global ecosystems. Contributing meaningfully to the vision of Viksit Bharat.",
+      "sectors": [
+        "ITES",
+        "Manufacturing",
+        "Defense & Aerospace"
+      ],
+      "experience": "24+ Years Technology Leadership",
+      "linkedin": "https://linkedin.com/in/kuldeepkoul",
+      "quote": "Building resilient enterprise architectures capable of defending national and corporate cyber infrastructure.",
+      "id": "lead-2"
+    },
+    {
+      "name": "Priya Dar",
+      "role": "Advisor",
+      "slug": "priya-dar",
+      "image": "/assests/priya.png",
+      "bio": "Highly accomplished Senior Technology Executive and Chief Information Officer (CIO) at Valvoline Cummins Pvt Ltd with a proven track record of leading complex technology initiatives and delivering exceptional business outcomes. Bringing over 25 years of experience in enterprise strategy, budget management, customer-facing digital solution mapping, application management and operations across FMCG, telecommunications, retail and financial services.\n\nRecognized for strong leadership, people management and project execution capabilities, consistently delivering large-scale transformation programs that drive innovation, strengthen governance and accelerate business growth through technology and digital transformation.",
+      "sectors": [
+        "Telecom",
+        "Financial Services",
+        "HealthTech"
+      ],
+      "experience": "20+ Years Executive Governance",
+      "linkedin": "https://linkedin.com/in/priyadar",
+      "quote": "Fostering inclusive, high-trust leadership ecosystems to accelerate sustainable enterprise growth.",
+      "id": "lead-3"
+    },
+    {
+      "name": "Sujoy Brahmachari",
+      "role": "Advisor",
+      "slug": "sujoy-brahmachari",
+      "image": "/assests/dfgd.png",
+      "bio": "A distinguished technocrat, technology evangelist and Information Security expert with 34+ years of experience in technology leadership, information security, infrastructure and digital transformation. His professional journey spans strategic IT planning, solution design, infrastructure and network management, applications, automation data centre operations, cybersecurityand large-scale project and service management across global environments.Over more than three decades, he has led complex technology and security initiatives, managing large, geographically distributed teams and multiple programs simultaneously. His strength lies in bringing together business strategy, technology, securityand operational excellence to create solutions that are practical, scalableand aligned with organizational objectives.\n\nThroughout his career, he has worked closely with senior management to define IT strategies, develop technology roadmaps and drive their execution from planning and design through implementation and delivery. He has played a key role in launching and managing new technology initiatives, transforming IT operations, improving service delivery and strengthening the overall technology and security posture of organizations.",
+      "sectors": [
+        "Manufacturing",
+        "Aerospace & Defense",
+        "ITES"
+      ],
+      "experience": "34+ Years Technology Leadership",
+      "linkedin": "https://linkedin.com/in/sujoybrahmachari",
+      "quote": "Aligning boardroom strategy with sovereign technological resilience and crisis preparedness.",
+      "id": "lead-4"
+    },
+    {
+      "name": "Amit Awasthi",
+      "role": "Advisor",
+      "slug": "amit-awasthi",
+      "image": "/assests/amit.png",
+      "bio": "Highly accomplished Information Security Executive and Head of Information Security at Yamuna International Airport Private Limited (Noida International Airport), with over 18 years of experience spanning consulting, production, enterprise technology and aviation, including more than a decade of specialized expertise in cybersecurity.\n\nHis career across consulting and industry has given him a broad understanding of business operations, technology transformation and cybersecurity, enabling him to align security strategies with organizational priorities and deliver sustainable business outcomes. He has led strategic technology and cybersecurity transformation initiatives across complex and dynamic environments, with a focus on strengthening governance, resilience and risk management.\n\nHis experience working across diverse organizations and with senior stakeholders has strengthened his ability to translate complex technology and security challenges into practical, business-focused strategies. Recognized for strategic leadership, stakeholder management and execution, he brings a pragmatic approach to cybersecurity—balancing security, business needs and innovation.\n\nHe is particularly passionate about protecting critical infrastructure, enabling secure digital transformation and building resilient organizations that are prepared to navigate an evolving threat landscape.",
+      "sectors": [
+        "Consulting",
+        "Enterprise IT",
+        "BFSI"
+      ],
+      "experience": "23+ Years Digital Transformation",
+      "linkedin": "https://linkedin.com/in/amitawasthi",
+      "quote": "Catalyzing collective CXO intelligence to co-create solutions for national enterprise challenges.",
+      "id": "lead-5"
+    }
+  ],
+  "initiatives": [
+    {
+      "id": 1,
+      "title": "Create CXO Mentorship & Peer Learning Circles",
+      "description": "Establish mentoring circles and peer learning pods where experienced CXOs guide emerging leaders and regularly exchange insights on industry challenges.",
+      "category": "Mentorship",
+      "iconName": "Users"
+    },
+    {
+      "id": 2,
+      "title": "Organize Local Leadership Roundtables & Sector Forums",
+      "description": "Host city-based forums and industry-specific groups (e.g., BFSI, Healthcare, Manufacturing) for CXOs to collaborate on sector-relevant digital transformation challenges.",
+      "category": "Community & Outreach",
+      "iconName": "Compass"
+    },
+    {
+      "id": 3,
+      "title": "Deliver Strategic Workshops, Webinars & AI Literacy Programs",
+      "description": "Offer focused workshops and webinars on cybersecurity, digital transformation, AI, crisis leadership and practical AI adoption strategies tailored for business executives.",
+      "category": "Innovation & Labs",
+      "iconName": "GraduationCap"
+    },
+    {
+      "id": 4,
+      "title": "Support Women in Tech Leadership Programs",
+      "description": "Empower women leaders through mentoring, networking and visibility initiatives within the technology ecosystem.",
+      "category": "Mentorship",
+      "iconName": "Award"
+    },
+    {
+      "id": 5,
+      "title": "Conduct Crisis Simulation Labs",
+      "description": "Run boardroom-style simulations to enhance CXO decision-making during cyberattacks, system failures and reputational crises.",
+      "category": "Innovation & Labs",
+      "iconName": "ShieldAlert"
+    },
+    {
+      "id": 6,
+      "title": "Host Innovation Showcases & Startup Demo Days",
+      "description": "Showcase innovative solutions from startups and internal teams, fostering collaboration between emerging innovators and senior leaders.",
+      "category": "Innovation & Labs",
+      "iconName": "Sparkles"
+    },
+    {
+      "id": 7,
+      "title": "Lead Impact-Driven Hackathons",
+      "description": "Organize hackathons addressing strategic business and social challenges such as ESG compliance, healthcare access and process automation.",
+      "category": "Community & Outreach",
+      "iconName": "Code"
+    },
+    {
+      "id": 8,
+      "title": "Drive Youth Cyber Safety & Digital Literacy Campaigns",
+      "description": "Engage CXOs in promoting online safety awareness in schools, colleges, and universities, sponsoring community programs to improve digital skills in underserved areas.",
+      "category": "Community & Outreach",
+      "iconName": "HeartHandshake"
+    },
+    {
+      "id": 9,
+      "title": "Create Cross-Industry Collaborative Innovation Labs",
+      "description": "Establish labs where CXOs from different industries co-develop innovative solutions addressing shared challenges, fostering cross-sector learning and breakthrough initiatives.",
+      "category": "Innovation & Labs",
+      "iconName": "Layers"
+    },
+    {
+      "id": 10,
+      "title": "Facilitate Green & Ethical Technology Dialogues",
+      "description": "Lead discussions on sustainable IT, ethical AI deployment and responsible innovation among enterprise leaders.",
+      "category": "Governance & Policy",
+      "iconName": "Leaf"
+    },
+    {
+      "id": 11,
+      "title": "Engage in Tech Policy Panels",
+      "description": "Involve CXOs in shaping cybersecurity, AI and data privacy policies by sharing enterprise-level insights in national and regional forums.",
+      "category": "Governance & Policy",
+      "iconName": "FileCheck"
+    },
+    {
+      "id": 12,
+      "title": "Produce Podcasts, TED Talks & Executive Interviews",
+      "description": "Create podcasts, host TED-style talks and conduct interviews with CXO leaders and visionaries to share knowledge, trends and inspire the digital leadership community.",
+      "category": "Community & Outreach",
+      "iconName": "Mic"
+    }
+  ],
+  "socialInitiatives": [
+    {
+      "id": "si-1",
+      "tag": "Executive Vitality",
+      "title": "CXO WELLNESS RETREATS",
+      "description": "Hosting immersive wellness experiences focused on rejuvenation, relaxation and stress management to support leadership vitality.",
+      "image": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200&auto=format&fit=crop",
+      "link": "/initiatives",
+      "date": "Annual Program"
+    },
+    {
+      "id": "si-2",
+      "tag": "Preventive Care",
+      "title": "HEALTH AWARENESS & SCREENING CAMPS",
+      "description": "Organizing accessible health check-ups and awareness programs to promote preventive care within the CXO community and beyond.",
+      "image": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1200&auto=format&fit=crop",
+      "link": "/initiatives",
+      "date": "Quarterly Series"
+    },
+    {
+      "id": "si-3",
+      "tag": "Philanthropic Pledge",
+      "title": "FOUNDERS' PERSONAL GIVING COMMITMENT",
+      "description": "Our founders personally pledge 3% of their annual profits to support meaningful social causes and contribute to community development.",
+      "image": "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=1200&auto=format&fit=crop",
+      "link": "/initiatives",
+      "date": "Ongoing Pledge"
+    }
+  ],
+  "eventHighlights": [
+    {
+      "id": "eh-1",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "posterUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
+      "tag": "Flagship Conclave",
+      "edition": "2026 Annual Conclave",
+      "title": "Digital CXOS National Conclave — The Sovereign AI Era",
+      "duration": "03:45"
+    },
+    {
+      "id": "eh-2",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "posterUrl": "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop",
+      "tag": "Security Summit",
+      "edition": "Cyber Defense Conclave",
+      "title": "Enterprise Cyber Sovereign Defense & Crisis Simulation",
+      "duration": "04:12"
+    },
+    {
+      "id": "eh-3",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      "posterUrl": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=1200&auto=format&fit=crop",
+      "tag": "Boardroom Roundtable",
+      "edition": "Executive Summit",
+      "title": "Digital Transformation & DPDP Boardroom Accord",
+      "duration": "02:58"
+    }
+  ],
+  "partners": [
+    {
+      "id": "partner-item-1",
+      "name": "CloudScale India Inc",
+      "tier": "Strategic Partner",
+      "logoUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=300&auto=format&fit=crop",
+      "websiteUrl": "https://cloudscale.io",
+      "status": "Active",
+      "description": "Cloud sovereign migration & enterprise zero-trust alliance."
+    },
+    {
+      "id": "partner-item-2",
+      "name": "Apex Global Technologies",
+      "tier": "Technology Partner",
+      "logoUrl": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?q=80&w=300&auto=format&fit=crop",
+      "websiteUrl": "https://apextech.in",
+      "status": "Active",
+      "description": "Enterprise cyber resilience and generative AI labs."
+    },
+    {
+      "id": "partner-item-3",
+      "name": "MediVision Health Systems",
+      "tier": "Knowledge Partner",
+      "logoUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=300&auto=format&fit=crop",
+      "websiteUrl": "https://medivisionhealth.com",
+      "status": "Active",
+      "description": "Healthcare IT standards & DPDP compliance guidance."
+    },
+    {
+      "id": "partner-item-4",
+      "name": "Namtech Industrial Digital",
+      "tier": "Strategic Partner",
+      "logoUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=300&auto=format&fit=crop",
+      "websiteUrl": "https://namtech.ac.in",
+      "status": "Active",
+      "description": "Industrial 4.0 cybersecurity research & workforce enablement."
+    }
   ]
 }

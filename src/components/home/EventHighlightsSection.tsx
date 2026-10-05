@@ -47,40 +47,108 @@ export function EventHighlightsSection() {
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
-    fetch("/api/admin/event-highlights")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.eventHighlights && Array.isArray(data.eventHighlights) && data.eventHighlights.length > 0) {
-          setHighlights(data.eventHighlights);
-        }
+    import("@/lib/apiClient").then(({ adminApi }) => {
+      adminApi.get<{ data: any[] }>("/events/public", {
+        params: { limit: "10" }
       })
-      .catch(() => {});
+        .then((res) => {
+          if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+            const mapped = res.data
+              .filter(e => e.videoUrl || e.coverImageUrl)
+              .map((e, idx) => ({
+                id: e._id || `evt-${idx}`,
+                videoUrl: e.videoUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                posterUrl: e.coverImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
+                tag: e.isFeatured ? "Featured Summit" : (e.location ? `${e.location} Summit` : "Conclave Highlight"),
+                edition: e.eventDate ? new Date(e.eventDate).getFullYear().toString() : "Executive Summit",
+                title: e.title
+              }));
+            if (mapped.length > 0) {
+              setHighlights(mapped);
+            }
+          }
+        })
+        .catch(() => {
+          // fallback to /events
+          adminApi.get<{ data: any[] }>("/events", {
+            params: { limit: "10" }
+          })
+            .then((res) => {
+              if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+                const mapped = res.data
+                  .filter(e => e.videoUrl || e.coverImageUrl)
+                  .map((e, idx) => ({
+                    id: e._id || `evt-${idx}`,
+                    videoUrl: e.videoUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                    posterUrl: e.coverImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
+                    tag: e.isFeatured ? "Featured Summit" : (e.location ? `${e.location} Summit` : "Conclave Highlight"),
+                    edition: e.eventDate ? new Date(e.eventDate).getFullYear().toString() : "Executive Summit",
+                    title: e.title
+                  }));
+                if (mapped.length > 0) {
+                  setHighlights(mapped);
+                }
+              }
+            })
+            .catch(() => {});
+        });
+    });
   }, []);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 6);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 6);
+    const scrollLeft = Math.round(el.scrollLeft);
+    const clientWidth = el.clientWidth;
+    const scrollWidth = el.scrollWidth;
+
+    const hasOverflow = scrollWidth > clientWidth + 4;
+    const canLeft = scrollLeft > 5;
+    const canRight = hasOverflow && (scrollLeft + clientWidth < scrollWidth - 5);
+
+    setCanScrollLeft(canLeft);
+    setCanScrollRight(canRight || (highlights.length > 3 && scrollLeft < 10));
   };
 
   useEffect(() => {
     updateScrollState();
     const el = scrollRef.current;
     if (!el) return;
+
     el.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("resize", updateScrollState);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        updateScrollState();
+      });
+      resizeObserver.observe(el);
+      Array.from(el.children).forEach((child) => resizeObserver?.observe(child));
+    }
+
+    const t1 = setTimeout(updateScrollState, 50);
+    const t2 = setTimeout(updateScrollState, 200);
+    const t3 = setTimeout(updateScrollState, 500);
+
     return () => {
       el.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
+      if (resizeObserver) resizeObserver.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
     };
   }, [highlights]);
 
   const scrollByAmount = (direction: 1 | -1) => {
     const el = scrollRef.current;
     if (!el) return;
-    const cardWidth = el.clientWidth > 768 ? el.clientWidth / 3 : el.clientWidth * 0.85;
+    const card = el.querySelector<HTMLElement>("[data-video-card]");
+    const cardWidth = card ? card.getBoundingClientRect().width + 24 : 380;
     el.scrollBy({ left: direction * cardWidth, behavior: "smooth" });
+    setTimeout(updateScrollState, 350);
+    setTimeout(updateScrollState, 600);
   };
 
   return (
@@ -97,7 +165,7 @@ export function EventHighlightsSection() {
           <div className="max-w-3xl space-y-3 sm:space-y-4">
             <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#111111]/85 border border-neutral-700/80 text-[#C9A227] text-xs font-semibold uppercase tracking-widest shadow-xl">
               <Film className="w-3.5 h-3.5" />
-              <span>Conclave Media &amp; Video Highlights</span>
+              <span>Conclave Media &amp; Video Highlights [{highlights.length.toString().padStart(2, "0")}]</span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-[1.2]">
@@ -120,39 +188,40 @@ export function EventHighlightsSection() {
             </Link>
 
             {/* Slider navigation controls */}
-            <div className="hidden sm:flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => scrollByAmount(-1)}
                 disabled={!canScrollLeft}
                 aria-label="Previous video highlight"
-                className="w-10 h-10 rounded-full border border-neutral-700 bg-[#1E1E1E] flex items-center justify-center text-neutral-300 hover:bg-[#C9A227] hover:text-neutral-950 hover:border-[#C9A227] transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none shadow-md cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-700 bg-[#1E1E1E] flex items-center justify-center text-neutral-300 hover:bg-[#C9A227] hover:text-neutral-950 hover:border-[#C9A227] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed shadow-md cursor-pointer active:scale-95"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 type="button"
                 onClick={() => scrollByAmount(1)}
                 disabled={!canScrollRight}
                 aria-label="Next video highlight"
-                className="w-10 h-10 rounded-full border border-neutral-700 bg-[#1E1E1E] flex items-center justify-center text-neutral-300 hover:bg-[#C9A227] hover:text-neutral-950 hover:border-[#C9A227] transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none shadow-md cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-700 bg-[#1E1E1E] flex items-center justify-center text-neutral-300 hover:bg-[#C9A227] hover:text-neutral-950 hover:border-[#C9A227] transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed shadow-md cursor-pointer active:scale-95"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Video Cards Grid / Carousel — ONLY Video Frames */}
+        {/* Video Cards Slider Carousel */}
         <div className="relative">
           <div
             ref={scrollRef}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+            className="flex gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
             {highlights.map((item) => (
               <div
                 key={item.id}
-                className="group relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 hover:-translate-y-1 snap-start min-w-[290px]"
+                data-video-card
+                className="group relative w-[300px] sm:w-[380px] md:w-[420px] lg:w-[calc((100%-2*2rem)/3)] shrink-0 aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-neutral-800 hover:border-[#C9A227]/80 transition-all duration-300 hover:-translate-y-1 snap-start"
               >
                 {/* Top-Left Category Badge */}
                 <div className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded bg-black/75 backdrop-blur-md border border-white/10 text-[#C9A227] text-[10px] font-bold uppercase tracking-wider shadow-md pointer-events-none">
@@ -178,6 +247,14 @@ export function EventHighlightsSection() {
               </div>
             ))}
           </div>
+
+          {/* Left/Right Edge Gradient Fade Overlays */}
+          {canScrollLeft && (
+            <div className="pointer-events-none absolute top-0 left-0 bottom-4 w-12 sm:w-16 bg-gradient-to-r from-[#181818] to-transparent z-10 transition-opacity duration-300" />
+          )}
+          {canScrollRight && (
+            <div className="pointer-events-none absolute top-0 right-0 bottom-4 w-12 sm:w-16 bg-gradient-to-l from-[#181818] to-transparent z-10 transition-opacity duration-300" />
+          )}
         </div>
       </div>
     </section>

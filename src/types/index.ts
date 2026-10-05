@@ -62,15 +62,28 @@ export interface AdminUser {
 export interface EventItem {
   id: string;
   title: string;
+  slug?: string;
   date: string;
+  eventDate?: string;
   venue?: string;
+  location?: string;
   tagline: string;
   type: "upcoming" | "past";
   videoType?: "youtube" | "mp4";
   videoUrl?: string;
   thumbnailUrl?: string;
+  coverImageUrl?: string;
+  bannerImageUrl?: string;
   attendeesCount?: string;
   description?: string;
+  gallery?: {
+    url: string;
+    caption?: string;
+    _id?: string;
+    key?: string;
+  }[];
+  isFeatured?: boolean;
+  isActive?: boolean;
 }
 
 export interface PodcastEpisode {

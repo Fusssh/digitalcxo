@@ -12,7 +12,9 @@ export default function PodcastPage() {
 
   useEffect(() => {
     import("@/lib/apiClient").then(({ adminApi }) => {
-      adminApi.get<{ data: any[] }>("/public/podcasts?limit=50")
+      adminApi.get<{ data: any[] }>("/podcasts/public", {
+        params: { limit: "50" }
+      })
         .then((res) => {
           if (res.data && Array.isArray(res.data) && res.data.length > 0) {
             const mappedPodcasts = res.data.map(p => ({
@@ -20,7 +22,7 @@ export default function PodcastPage() {
               title: p.title,
               subtitle: p.host ? `Hosted by: ${p.host}` : "Digital CXOS Podcast",
               youtubeUrl: p.podcastUrl,
-              youtubeId: p.youtubeId || p.podcastUrl || "",
+              youtubeId: p.youtubeId || p.podcastUrl?.match(/(?:v=|\/embed\/|\/watch\?v=|\/shorts\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/)?.[1] || p.podcastUrl || "",
               thumbnailUrl: p.thumbnailUrl,
               duration: p.duration,
               overview: p.description,
@@ -30,7 +32,27 @@ export default function PodcastPage() {
           }
         })
         .catch(() => {
-          // fallback to initialPodcastsData
+          // fallback to /podcasts
+          adminApi.get<{ data: any[] }>("/podcasts", {
+            params: { limit: "50" }
+          })
+            .then((res) => {
+              if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+                const mappedPodcasts = res.data.map(p => ({
+                  id: p._id,
+                  title: p.title,
+                  subtitle: p.host ? `Hosted by: ${p.host}` : "Digital CXOS Podcast",
+                  youtubeUrl: p.podcastUrl,
+                  youtubeId: p.youtubeId || p.podcastUrl?.match(/(?:v=|\/embed\/|\/watch\?v=|\/shorts\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/)?.[1] || p.podcastUrl || "",
+                  thumbnailUrl: p.thumbnailUrl,
+                  duration: p.duration,
+                  overview: p.description,
+                  guests: []
+                })) as unknown as PodcastEpisode[];
+                setPodcasts(mappedPodcasts);
+              }
+            })
+            .catch(() => {});
         });
     });
   }, []);

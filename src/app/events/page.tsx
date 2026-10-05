@@ -17,25 +17,69 @@ function EventsContent() {
 
   useEffect(() => {
     import("@/lib/apiClient").then(({ adminApi }) => {
-      adminApi.get<{ data: any[] }>("/public/events?limit=50")
+      adminApi.get<{ data: any[] }>("/events/public", {
+        params: { limit: "50" }
+      })
         .then((res) => {
           if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-            const mappedEvents = res.data.map(evt => ({
-              id: evt._id,
-              title: evt.title,
-              date: evt.createdAt ? new Date(evt.createdAt).toLocaleDateString() : "TBD",
-              venue: evt.location || "TBD",
-              tagline: evt.description || "",
-              type: "upcoming", // All public active events default to upcoming for this layout unless we have a date check
-              thumbnailUrl: evt.coverImageUrl,
-              videoUrl: evt.videoUrl,
-              description: evt.description
-            })) as EventItem[];
+            const now = new Date();
+            const mappedEvents = res.data.map(evt => {
+              const evtDate = evt.eventDate ? new Date(evt.eventDate) : (evt.createdAt ? new Date(evt.createdAt) : null);
+              const isPast = evtDate && evtDate < now && Boolean(evt.videoUrl || (evt.gallery && evt.gallery.length > 0));
+              return {
+                id: evt._id,
+                slug: evt.slug || evt._id,
+                title: evt.title,
+                date: evtDate ? evtDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "TBD",
+                eventDate: evt.eventDate,
+                venue: evt.location || "TBD",
+                location: evt.location || "TBD",
+                tagline: evt.description || "",
+                type: isPast ? "past" : "upcoming",
+                thumbnailUrl: evt.coverImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+                coverImageUrl: evt.coverImageUrl,
+                videoUrl: evt.videoUrl,
+                gallery: evt.gallery,
+                isFeatured: evt.isFeatured,
+                description: evt.description
+              };
+            }) as EventItem[];
             setEventsList(mappedEvents);
           }
         })
         .catch(() => {
-          // fallback to initialEventsData
+          // fallback to /events
+          adminApi.get<{ data: any[] }>("/events", {
+            params: { limit: "50" }
+          })
+            .then((res) => {
+              if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+                const now = new Date();
+                const mappedEvents = res.data.map(evt => {
+                  const evtDate = evt.eventDate ? new Date(evt.eventDate) : (evt.createdAt ? new Date(evt.createdAt) : null);
+                  const isPast = evtDate && evtDate < now && Boolean(evt.videoUrl || (evt.gallery && evt.gallery.length > 0));
+                  return {
+                    id: evt._id,
+                    slug: evt.slug || evt._id,
+                    title: evt.title,
+                    date: evtDate ? evtDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "TBD",
+                    eventDate: evt.eventDate,
+                    venue: evt.location || "TBD",
+                    location: evt.location || "TBD",
+                    tagline: evt.description || "",
+                    type: isPast ? "past" : "upcoming",
+                    thumbnailUrl: evt.coverImageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+                    coverImageUrl: evt.coverImageUrl,
+                    videoUrl: evt.videoUrl,
+                    gallery: evt.gallery,
+                    isFeatured: evt.isFeatured,
+                    description: evt.description
+                  };
+                }) as EventItem[];
+                setEventsList(mappedEvents);
+              }
+            })
+            .catch(() => {});
         });
     });
   }, []);

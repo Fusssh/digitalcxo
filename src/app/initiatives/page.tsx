@@ -125,7 +125,7 @@ export default function InitiativesPage() {
                       "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border",
                       isCream ? "text-[#1A1A1A] border-[#1A1A1A]/20 bg-black/5" : "text-neutral-400 border-neutral-700 bg-neutral-900"
                     )}>
-                      #{item.id}
+                      #{initiatives.findIndex(i => i.id === item.id) + 1}
                     </span>
                   </div>
 

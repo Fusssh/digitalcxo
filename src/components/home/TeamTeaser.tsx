@@ -21,48 +21,123 @@ export function TeamTeaser() {
 
   useEffect(() => {
     import("@/lib/apiClient").then(({ adminApi }) => {
-      adminApi.get<{ data: any[] }>("/public/leadership")
+      const processLeadershipData = (apiData: any[]) => {
+        if (!Array.isArray(apiData)) return;
+
+        const mappedApiMembers: TeamMember[] = apiData.map((member: any) => {
+          const matchedLocal = leadershipTeam.find(
+            (m) =>
+              m.name.toLowerCase().trim() === (member.name || "").toLowerCase().trim() ||
+              m.slug === member._id
+          );
+          return {
+            id: member._id,
+            name: member.name,
+            role: member.designation,
+            slug: matchedLocal?.slug || member._id || member.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+            image: member.imageUrl || matchedLocal?.image || "/assests/rohit-1.webp",
+            bio: matchedLocal?.bio || member.description || member.shortBio || "",
+            linkedin: member.linkedinUrl || matchedLocal?.linkedin || "",
+            sectors: matchedLocal?.sectors || ["Executive Leadership"],
+            experience: matchedLocal?.experience || "Executive",
+            quote: member.shortBio || matchedLocal?.quote || "",
+            displayOrder: typeof member.displayOrder === "number" ? member.displayOrder : 99
+          } as TeamMember & { displayOrder?: number };
+        });
+
+        // Always merge with constant 5 founding members so they are NEVER missing
+        const mergedTeam: TeamMember[] = [...mappedApiMembers];
+        leadershipTeam.forEach((localMember, idx) => {
+          const exists = mergedTeam.some(
+            (m) => m.name.toLowerCase().trim() === localMember.name.toLowerCase().trim()
+          );
+          if (!exists) {
+            mergedTeam.push({
+              ...localMember,
+              id: localMember.id || `lead-${idx + 1}`,
+              displayOrder: idx + 1
+            } as any);
+          }
+        });
+
+        mergedTeam.sort((a: any, b: any) => (a.displayOrder ?? 99) - (b.displayOrder ?? 99));
+        setTeam(mergedTeam);
+      };
+
+      adminApi
+        .get<{ data: any[] }>("/leadership/public")
         .then((res) => {
           if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-            const mappedTeam = res.data.map(member => {
-              const matchedLocal = leadershipTeam.find(
-                m => m.name.toLowerCase() === member.name.toLowerCase() || m.slug === member._id
-              );
-              return {
-                id: member._id,
-                name: member.name,
-                role: member.designation,
-                slug: matchedLocal?.slug || member._id,
-                image: member.imageUrl || matchedLocal?.image || "/assests/rohit-1.webp",
-                bio: matchedLocal?.bio || member.description || member.shortBio || "",
-                linkedin: member.linkedinUrl || matchedLocal?.linkedin || "",
-                experience: matchedLocal?.experience || "Executive",
-                quote: member.shortBio || matchedLocal?.quote || ""
-              };
-            }) as TeamMember[];
-            setTeam(mappedTeam);
+            processLeadershipData(res.data);
+          } else {
+            // fallback to /leadership
+            adminApi
+              .get<{ data: any[] }>("/leadership")
+              .then((fallbackRes) => {
+                if (fallbackRes.data && Array.isArray(fallbackRes.data) && fallbackRes.data.length > 0) {
+                  processLeadershipData(fallbackRes.data);
+                }
+              })
+              .catch(() => {});
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          // fallback to /leadership
+          adminApi
+            .get<{ data: any[] }>("/leadership")
+            .then((res) => {
+              if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+                processLeadershipData(res.data);
+              }
+            })
+            .catch(() => {});
+        });
     });
   }, []);
 
   const updateScrollState = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 4);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    const scrollLeft = Math.round(el.scrollLeft);
+    const clientWidth = el.clientWidth;
+    const scrollWidth = el.scrollWidth;
+
+    const hasOverflow = scrollWidth > clientWidth + 4;
+    const canLeft = scrollLeft > 5;
+    const canRight = hasOverflow && (scrollLeft + clientWidth < scrollWidth - 5);
+
+    setCanScrollLeft(canLeft);
+    setCanScrollRight(canRight || (team.length > 5 && scrollLeft < 10));
   };
 
   useEffect(() => {
     updateScrollState();
     const el = scrollRef.current;
     if (!el) return;
+
     el.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("resize", updateScrollState);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        updateScrollState();
+      });
+      resizeObserver.observe(el);
+      Array.from(el.children).forEach((child) => resizeObserver?.observe(child));
+    }
+
+    const t1 = setTimeout(updateScrollState, 50);
+    const t2 = setTimeout(updateScrollState, 200);
+    const t3 = setTimeout(updateScrollState, 500);
+
     return () => {
       el.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
+      if (resizeObserver) resizeObserver.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
     };
   }, [team]);
 
@@ -70,8 +145,10 @@ export function TeamTeaser() {
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
-    const cardWidth = card ? card.offsetWidth + 20 : el.clientWidth / 4;
+    const cardWidth = card ? card.getBoundingClientRect().width + 20 : 250;
     el.scrollBy({ left: direction * cardWidth, behavior: "smooth" });
+    setTimeout(updateScrollState, 350);
+    setTimeout(updateScrollState, 600);
   };
 
   // Close modal on escape key
@@ -126,25 +203,25 @@ export function TeamTeaser() {
               Our team is a blend of visionaries, enterprise strategists, and technology leaders dedicated to fostering high-trust peer collaboration. We come together with one shared goal: to guide India&apos;s digital future while ensuring every initiative exceeds expectations.
             </p>
 
-            {/* Nav arrows, desktop only */}
-            <div className="hidden lg:flex items-center gap-2 shrink-0">
+            {/* Nav arrows */}
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => scrollByCard(-1)}
                 disabled={!canScrollLeft}
                 aria-label="Previous team members"
-                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm active:scale-95"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 type="button"
                 onClick={() => scrollByCard(1)}
                 disabled={!canScrollRight}
                 aria-label="Next team members"
-                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-300 flex items-center justify-center text-neutral-700 hover:bg-neutral-950 hover:text-white hover:border-neutral-950 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm active:scale-95"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -154,7 +231,7 @@ export function TeamTeaser() {
         <div className="relative">
           <div
             ref={scrollRef}
-            className="flex lg:grid lg:grid-cols-5 gap-4 lg:gap-5 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-smooth pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            className="flex gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
             {team.map((member) => {
               return (
@@ -163,7 +240,7 @@ export function TeamTeaser() {
                   data-card
                   type="button"
                   onClick={() => setSelectedMember(member)}
-                  className="group shrink-0 grow basis-0 min-w-[150px] sm:min-w-[170px] lg:min-w-[190px] w-full snap-start text-left bg-white rounded-xl p-2 sm:p-2.5 border border-neutral-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                  className="group shrink-0 w-[180px] sm:w-[220px] md:w-[240px] lg:w-[calc((100%-4*1.25rem)/5)] snap-start text-left bg-white rounded-xl p-2 sm:p-2.5 border border-neutral-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                 >
                   {/* Portrait photo */}
                   <div className="relative aspect-[4/5] w-full rounded-lg overflow-hidden bg-neutral-900 mb-3">
@@ -204,8 +281,13 @@ export function TeamTeaser() {
             })}
           </div>
 
-          {/* Right-edge fade hint that there's more to scroll, on mobile/tablet */}
-          <div className="pointer-events-none absolute top-0 right-0 bottom-2 w-12 bg-gradient-to-l from-[#F9F9F8] to-transparent lg:hidden" />
+          {/* Edge gradient fade hints */}
+          {canScrollLeft && (
+            <div className="pointer-events-none absolute top-0 left-0 bottom-3 w-12 sm:w-16 bg-gradient-to-r from-[#F9F9F8] to-transparent z-10 transition-opacity duration-300" />
+          )}
+          {canScrollRight && (
+            <div className="pointer-events-none absolute top-0 right-0 bottom-3 w-12 sm:w-16 bg-gradient-to-l from-[#F9F9F8] to-transparent z-10 transition-opacity duration-300" />
+          )}
         </div>
         {/* Footer Explore Link */}
         <div className="pt-2 text-center">
