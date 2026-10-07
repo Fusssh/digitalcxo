@@ -64,7 +64,7 @@ export default function ContactPage() {
       title: "Mr.",
       firstName: "",
       lastName: "",
-      subject: "",
+      subject: "Website Inquiry",
       email: "",
       phone: "",
       message: "",
@@ -88,19 +88,42 @@ export default function ContactPage() {
 
     try {
       const { adminApi } = await import("@/lib/apiClient");
-      await adminApi.post("/contact", {
-        title: data.title,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        name: `${data.firstName} ${data.lastName}`,
-        subject: data.subject,
-        email: data.email,
-        phone: data.phone,
-        message: data.message,
+      const res: any = await adminApi.post("/contact", {
+        title: data.title || "Mr.",
+        firstName: data.firstName.trim(),
+        lastName: data.lastName?.trim() || "",
+        name: `${data.firstName.trim()} ${data.lastName?.trim() || ""}`.trim(),
+        subject: data.subject?.trim() || "Website Inquiry",
+        email: data.email.trim(),
+        phone: data.phone?.trim() || "",
+        message: data.message.trim(),
       });
 
+      if (res && res.success === false) {
+        const errorText = Array.isArray(res.errors) && res.errors.length > 0
+          ? res.errors.join(", ")
+          : res.message || res.error || "Failed to submit message. Please verify all fields.";
+        setServerError(errorText);
+        return;
+      }
+
+      if (!res || (!res.success && !res.data)) {
+        setServerError("Failed to send message. Please try again.");
+        return;
+      }
+
       setSubmittedSuccess(true);
-      reset();
+      reset({
+        title: "Mr.",
+        firstName: "",
+        lastName: "",
+        subject: "Website Inquiry",
+        email: "",
+        phone: "",
+        message: "",
+        honeypot: "",
+        turnstileVerified: true,
+      });
     } catch (err: unknown) {
       const msg =
         err instanceof Error ? err.message : "Something went wrong. Please try again.";
@@ -257,7 +280,6 @@ export default function ContactPage() {
                     <div className="sm:col-span-2">
                       <label htmlFor="title" className={labelClass}>
                         Title
-                        <Required />
                       </label>
                       <div className="relative">
                         <select
@@ -297,7 +319,7 @@ export default function ContactPage() {
                     <div className="sm:col-span-2">
                       <label htmlFor="lastName" className={labelClass}>
                         Last name
-                        <Required />
+                        <span className="text-xs text-slate-400 font-normal ml-1">(Optional)</span>
                       </label>
                       <input
                         id="lastName"
@@ -336,7 +358,7 @@ export default function ContactPage() {
                     <div>
                       <label htmlFor="phone" className={labelClass}>
                         Phone
-                        <Required />
+                        <span className="text-xs text-slate-400 font-normal ml-1">(Optional)</span>
                       </label>
                       <input
                         id="phone"
@@ -356,12 +378,12 @@ export default function ContactPage() {
                   <div>
                     <label htmlFor="subject" className={labelClass}>
                       Subject
-                      <Required />
+                      <span className="text-xs text-slate-400 font-normal ml-1">(Optional)</span>
                     </label>
                     <input
                       id="subject"
                       type="text"
-                      placeholder="What is your inquiry about?"
+                      placeholder="Website Inquiry"
                       aria-invalid={!!errors.subject}
                       aria-describedby={errors.subject ? "subject-error" : undefined}
                       {...register("subject")}
@@ -380,16 +402,16 @@ export default function ContactPage() {
                       <span
                         className={cn(
                           "text-xs font-mono mb-1.5",
-                          charCount >= 480 ? "text-amber-400" : "text-slate-500"
+                          charCount >= 950 ? "text-amber-400" : "text-slate-500"
                         )}
                       >
-                        {charCount}/500
+                        {charCount}/1000
                       </span>
                     </div>
                     <textarea
                       id="message"
                       rows={5}
-                      maxLength={500}
+                      maxLength={1000}
                       placeholder="Write your message here..."
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? "message-error" : "message-hint"}

@@ -164,11 +164,22 @@ export interface PartnerSubmission {
 
 export interface ContactSubmission {
   id: string;
+  _id?: string;
   submittedAt: string;
-  title: string;
-  name: string;
+  title?: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
-  phone: string;
+  phone?: string;
+  subject?: string;
   message: string;
-  status: "Unread" | "Replied" | "Archived";
+  status: "Unread" | "Replied" | "Archived" | "NEW" | "READ" | "IN_PROGRESS" | "RESOLVED" | "SPAM" | string;
+  adminNotes?: string;
+  emailStatus?: "SENT" | "FAILED" | "DISABLED" | string;
+  emailError?: string | null;
+  ipAddress?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }

@@ -77,12 +77,19 @@ export default function ContactManager() {
       if (searchTerm.trim()) queryParams.search = searchTerm.trim();
 
       const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
-      const res = await adminApi.get<{ data: ContactEntry[]; pagination: any }>("/admin/contacts", {
+      const res: any = await adminApi.get<{ data: ContactEntry[]; pagination: any }>("/admin/contacts", {
         params: queryParams,
         headers: { Authorization: `Bearer ${token}` }
       });
+
+      if (res && res.success === false) {
+        setError(res.message || "Failed to fetch contacts");
+        setContacts([]);
+        setTotalPages(1);
+        return;
+      }
       
-      if (res.data && Array.isArray(res.data)) {
+      if (res && res.data && Array.isArray(res.data)) {
         setContacts(res.data);
         if (res.pagination) {
           setTotalPages(res.pagination.totalPages || 1);
@@ -117,10 +124,10 @@ export default function ContactManager() {
     // Step 3: GET /admin/contacts/:id (registers CONTACT_VIEWED audit log)
     try {
       const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
-      const res = await adminApi.get<{ data: ContactEntry }>(`/admin/contacts/${contact._id}`, {
+      const res: any = await adminApi.get<{ data: ContactEntry }>(`/admin/contacts/${contact._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (res.data) {
+      if (res && res.data) {
         setSelectedContact(res.data);
         setEditStatus(res.data.status || "NEW");
         setEditNotes(res.data.adminNotes || "");
@@ -141,14 +148,19 @@ export default function ContactManager() {
     setIsUpdating(true);
     try {
       const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
-      await adminApi.patch(`/admin/contacts/${selectedContact._id}/status`, {
+      const res: any = await adminApi.patch(`/admin/contacts/${selectedContact._id}/status`, {
         status: editStatus.toUpperCase(),
         adminNotes: editNotes
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
+      if (res && res.success === false) {
+        showToast("error", res.message || "Failed to update contact status.");
+        return;
+      }
       
-      showToast("success", "Contact inquiry status updated successfully.");
+      showToast("success", "Contact status updated successfully.");
       setSelectedContact(null);
       fetchContacts();
     } catch (err: any) {
@@ -163,10 +175,16 @@ export default function ContactManager() {
     
     try {
       const token = localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "";
-      await adminApi.delete(`/admin/contacts/${id}`, {
+      const res: any = await adminApi.delete(`/admin/contacts/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      showToast("success", "Contact inquiry deleted successfully.");
+
+      if (res && res.success === false) {
+        showToast("error", res.message || "Failed to delete contact inquiry.");
+        return;
+      }
+
+      showToast("success", "Contact deleted successfully.");
       fetchContacts();
     } catch (err: any) {
       showToast("error", err.message || "Failed to delete contact inquiry.");

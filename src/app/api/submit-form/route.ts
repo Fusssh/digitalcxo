@@ -167,18 +167,51 @@ export async function POST(request: Request) {
         );
       }
 
+      const v = validation.data;
+      const payload = {
+        title: v.title || "Mr.",
+        firstName: v.firstName,
+        lastName: v.lastName || "",
+        name: `${v.firstName} ${v.lastName || ""}`.trim(),
+        email: v.email,
+        phone: v.phone || "",
+        subject: v.subject || "Website Inquiry",
+        message: v.message
+      };
+
+      try {
+        const backendRes = await fetch(`${BACKEND_API_BASE}/contact`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const backendData = await backendRes.json().catch(() => ({}));
+        if (backendRes.ok && backendData.data) {
+          return NextResponse.json({
+            success: true,
+            message: "Contact inquiry submitted successfully",
+            inquiryId: backendData.data.id || backendData.data._id
+          });
+        }
+      } catch (e) {
+        console.warn("Backend /contact call error in submit-form, falling back to local store:", e);
+      }
+
       const newContact = db.addContact({
-        title: validation.data.title,
-        name: `${validation.data.firstName} ${validation.data.lastName}`.trim(),
-        email: validation.data.email,
-        phone: validation.data.phone,
-        message: validation.data.message
+        title: v.title,
+        firstName: v.firstName,
+        lastName: v.lastName,
+        name: `${v.firstName} ${v.lastName || ""}`.trim(),
+        email: v.email,
+        phone: v.phone,
+        subject: v.subject,
+        message: v.message
       });
 
       return NextResponse.json({
         success: true,
         message: "Contact inquiry submitted successfully",
-        inquiryId: newContact.id
+        inquiryId: newContact.id || newContact._id
       });
     }
 

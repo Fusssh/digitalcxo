@@ -320,7 +320,11 @@ export default function AdminDashboardPage() {
         fetch("/api/admin/members").then((r) => r.json()).catch(() => ({})),
         fetch("/api/admin/podcasts").then((r) => r.json()).catch(() => ({})),
         fetch("/api/admin/events").then((r) => r.json()).catch(() => ({})),
-        fetch("/api/admin/contacts").then((r) => r.json()).catch(() => ({})),
+        fetch("/api/admin/contacts", {
+          headers: typeof window !== "undefined" && localStorage.getItem("digitalcxo_admin_token")
+            ? { Authorization: `Bearer ${localStorage.getItem("digitalcxo_admin_token")}` }
+            : {}
+        }).then((r) => r.json()).catch(() => ({})),
         fetch("/api/admin/leadership").then((r) => r.json()).catch(() => ({})),
         fetch("/api/admin/initiatives").then((r) => r.json()).catch(() => ({})),
         fetch("/api/admin/social-initiatives").then((r) => r.json()).catch(() => ({})),
@@ -931,9 +935,13 @@ export default function AdminDashboardPage() {
   // --- Contact update & reply ---
   const handleUpdateContactStatus = async (id: string, status: ContactSubmission["status"]) => {
     try {
+      const token = typeof window !== "undefined" ? (localStorage.getItem("digitalcxo_admin_token") || localStorage.getItem("token") || "") : "";
       const res = await fetch("/api/admin/contacts", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ id, status })
       });
       if (res.ok) {

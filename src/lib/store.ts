@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { 
   CxoMemberSubmission, 
   PartnerSubmission, 
@@ -359,33 +360,71 @@ export const db = {
     memoryDb = ensureDbFile();
     return memoryDb.contacts || [];
   },
-  addContact: (contact: Omit<ContactSubmission, "id" | "submittedAt" | "status">): ContactSubmission => {
+  getContactById: (id: string): ContactSubmission | null => {
     memoryDb = ensureDbFile();
+    const found = (memoryDb.contacts || []).find((c) => c.id === id || c._id === id);
+    return found || null;
+  },
+  addContact: (contact: Partial<ContactSubmission>): ContactSubmission => {
+    memoryDb = ensureDbFile();
+    const hexId = crypto.randomBytes(12).toString("hex");
+    const now = new Date().toISOString();
+    
+    let firstName = contact.firstName || "";
+    let lastName = contact.lastName || "";
+    if (!firstName && contact.name) {
+      const parts = contact.name.trim().split(/\s+/);
+      firstName = parts[0] || "";
+      lastName = parts.slice(1).join(" ") || "";
+    }
+    const name = contact.name || `${firstName} ${lastName}`.trim();
+
     const newContact: ContactSubmission = {
-      ...contact,
-      id: `msg-${Date.now()}`,
-      submittedAt: new Date().toISOString(),
-      status: "Unread"
+      id: hexId,
+      _id: hexId,
+      title: contact.title || "Mr.",
+      firstName: firstName,
+      lastName: lastName,
+      name: name,
+      email: contact.email || "",
+      phone: contact.phone || "",
+      subject: contact.subject || "Website Inquiry",
+      message: contact.message || "",
+      status: (contact.status as any) || "NEW",
+      adminNotes: contact.adminNotes || "",
+      emailStatus: (contact.emailStatus as any) || "SENT",
+      emailError: contact.emailError || null,
+      ipAddress: contact.ipAddress || "::1",
+      submittedAt: now,
+      createdAt: now,
+      updatedAt: now,
+      __v: 0
     };
     memoryDb.contacts = [newContact, ...(memoryDb.contacts || [])];
     writeDb(memoryDb);
     return newContact;
   },
-  updateContactStatus: (id: string, status: ContactSubmission["status"]): boolean => {
+  updateContactStatus: (id: string, status?: string, adminNotes?: string): ContactSubmission | null => {
     memoryDb = ensureDbFile();
-    const idx = memoryDb.contacts.findIndex((c) => c.id === id);
+    const idx = (memoryDb.contacts || []).findIndex((c) => c.id === id || c._id === id);
     if (idx >= 0) {
-      memoryDb.contacts[idx].status = status;
+      if (status) memoryDb.contacts[idx].status = status as any;
+      if (adminNotes !== undefined) memoryDb.contacts[idx].adminNotes = adminNotes;
+      memoryDb.contacts[idx].updatedAt = new Date().toISOString();
       writeDb(memoryDb);
-      return true;
+      return memoryDb.contacts[idx];
     }
-    return false;
+    return null;
   },
   deleteContact: (id: string): boolean => {
     memoryDb = ensureDbFile();
-    memoryDb.contacts = (memoryDb.contacts || []).filter((c) => c.id !== id);
+    const initialLen = (memoryDb.contacts || []).length;
+    memoryDb.contacts = (memoryDb.contacts || []).filter((c) => c.id !== id && c._id !== id);
     writeDb(memoryDb);
-    return true;
+    return memoryDb.contacts.length < initialLen;
+  },
+  logAudit: (action: string, metadata: Record<string, any> = {}) => {
+    console.log(`[AUDIT_LOG] [${new Date().toISOString()}] ACTION=${action}`, JSON.stringify(metadata));
   },
 
   // Podcasts
